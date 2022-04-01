@@ -4,37 +4,21 @@
 \usepackage{circuitikz}
 
 \begin{document}
-	
 	\begin{figure}[h!]
 		\begin{center}
 			\begin{circuitikz}
 				\draw (0,0)
 				to[V,v=$U_e$] (0,2) % The voltage source
-				to[L] (2,2)
-				to[C=$R_1$] (2,0) % The resistor
+				to[L=$l_1$] (2,2)
+				to[C=$c_2$] (2,0) % The resistor
+				(2,2)to[L=$l_3$] (4,2)
+				to[C=$c_2$] (4,0) % The resistor
+				(4,2)to[L=$l_3$] (6,2)
+				to [R=$r$] (6,0) 
 				to[short] (0,0);
 			\end{circuitikz}
-		\begin{circuitikz} \draw
-			(0,0) to[battery] (0,4)
-			to[ammeter] (4,4) 
-			to[C] (4,0) -- (3.5,0)
-			to[lamp, *-*] (0.5,0) -- (0,0)
-			(0.5,0) -- (0.5,-2)
-			to[voltmeter] (3.5,-2) -- (3.5,0)
-			;
-		\end{circuitikz}
-	
-	\begin{circuitikz}
-		 \draw (0,0) node[msport, right, xscale=-1]{}
-		 to[mstline, -o] ++(3,0) coordinate(there)
-		 to[mstline, mstlinelen=2, l=longer, o-*] ++(4,0)
-		 coordinate(here) -- ++(0.5,0) node[mslstub, fill=yellow]{stub}
-		 (here) -- ++(0,0.5) node[mslstub, rotate=90, mstlinelen=0.5]{short};
-		 \draw (there) to[short, o-] ++(0, 0.5) node[msrstub]{};
-		 \draw (here) -- ++(0, -0.5) node[msrstub, yscale=-1]{};
-		 \end{circuitikz}
-			\caption{My first circuit.}
+			
+			\caption{Schéma prototype d'un filtre passe-bas de Tchebycheff en impédance.}
 		\end{center}
 	\end{figure}
-	
 \end{document}
