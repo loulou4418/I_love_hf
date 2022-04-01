@@ -1,0 +1,5 @@
+Materiaux	A pic1	phase			s11			zc
+epoxy large	-4,205	164						  24.364
+epoxy fin	-4,046	-11,232	
+teflon large	-7,643	-167,285
+teflon fin	-2,045	-0,192
