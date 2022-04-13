@@ -46,23 +46,61 @@ Où :
 	\item $\alpha_{max}$ est l'atténuation maximale (en linéaire) du signal dans la bande passante égal à $10^{\frac{0,1}{10}} \approx 1,02$
 \end{itemize}
 
-Ce qui nous donne une application numérique où $n \geq 4,5$ ce qui nous donne un ordre 5 minimum pour respecter le gabarit souhaité.
+L'application nous donne $n \geq 4,5$ soit au minimum un ordre 5 pour respecter le gabarit souhaité. Le schéma passe-bas en impédance que nous allons utiliser est donné ci-dessous par la figure \ref{fig:gabarit_PB}.
+
 \begin{figure}[H]
 	\centering
 	\begin{circuitikz}
 		\draw (0,0)
 		to[V,v=$U_e$] (0,2) % The voltage source
-		to[L=$l_1$] (2,2)
-		to[C=$c_2$] (2,0) % The resistor
-		(2,2)to[L=$l_3$] (4,2)
-		to[C=$c_2$] (4,0) % The resistor
-		(4,2)to[L=$l_3$] (6,2)
+		to[L=$g_1$] (2,2)
+		to[C=$g_2$] (2,0) % The resistor
+		(2,2)to[L=$g_3$] (4,2)
+		to[C=$g_2$] (4,0) % The resistor
+		(4,2)to[L=$g_3$] (6,2)
 		to [R=$r$] (6,0) 
 		to[short] (0,0);
 	\end{circuitikz}
 	\caption{Schéma prototype d'un filtre passe-bas de Tchebycheff en impédance.}
 \end{figure}
-\newpage
+
+Avec :
+\begin{itemize}
+	
+	\item les coefficients $g_k$, les valeurs normalisées des condensateurs et des bobines;
+	\item r, la résistance de charge normalisée et égale à 1. Sa valeur dénormalisé est de $50\Omega$;
+	\item $U_e$, le signal d'entrée ayant une résistance série normalisée égale à 1 et donc $50\Omega$ en dénormalisée.
+\end{itemize}
+
+Pour obtenir les valeurs de $g_k$ nous ne pouvons utilisé les tableaux données dans le polycopié d'électronique moyennes fréquences car ils ne sont valables uniquement pour des ondulations de 0.5 dB et 1 dB. Notre gabarit nous impose une ondulation maximale de 0.1 dB dans la bande passante. Pour obtenir des coefficient $g_k$ qui permettent de respecter l'ondulation voulue nous avons réalisé un script sur Octave disponible en annexe. Le résultat obtenu est le suivant.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+		\hline
+		$g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$\\
+		\hline
+		1.1468 & 1.3712 & 1.9750 & 1.3712 & 1.1468\\
+		\hline
+	\end{tabular}
+	\caption{Valeurs des composants normalisées pour une ondulation de 0.1 dB}
+	\label{tab:coefficient_g_k_passe_bas}
+\end{table}
+ 
+Pour trouver les valeurs réelles des composants il faut : pour les condensateurs, multiplier les $g_k$ pairs par un coefficient $C_{denom}$ et pour les bobines, multiplier les $g_k$ impairs par un coefficient $L_{denom}$. Les valeurs de ces coefficients sont données ci-dessous.
+
+\begin{equation}
+	C_{denom} = \frac{1}{2\pi f_c R}
+	\qquad
+	L_{denom} = \frac{R}{2\pi f_c}
+\end{equation}
+Une application numérique où $f_c = 2GHz$ et $R = 50\Omega$ donne :
+
+% \begin{equation}
+% 	C_{denom} = 1.59 pF
+% 	\qquad
+% 	L_{denom} = 3.98 nH
+
 \section{synthèse d'un filtre passe-bande}
 
 La synthèse d'un filtre en hautes fréquences à partir d'un gabarit se rapporte à la méthode étudiée en moyenne fréquence. Une étape finale est ajoutée permettant la transformation des éléments localisés en éléments distribués.
@@ -186,4 +224,33 @@ Où B désigne la bande passante
 \end{equation}
 \section{Conclusion}
 Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_{so}$ et $f_{co}$. Elle permet d'optimiser la contrainte sur le sélectivité. 
+
+
+
+
+
+
+
+
+
+
+
+
+Une fois le coefficient de dénormalisation appliqué nous obtenons les valeurs suivantes.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+		\hline
+		$L_1$ & $C_2$ & $L_3$ & $C_4$ & $L_5$\\
+		\hline
+		4.56 nH & 2.18 pF & 7.86 nH & 2.18 pF & 4.56 nH\\
+		\hline
+	\end{tabular}
+	\caption{Valeurs réelles des composants du filtre passe-bas.}
+	\label{tab:valeurs_composant_passe_bas}
+\end{table}
+
+test
+
 \end{document}

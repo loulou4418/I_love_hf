@@ -14,7 +14,7 @@ end
 Beta = log(coth(Amax/17.37));
 Gamma = sinh(Beta/(2*n));
 
-for k=1:n
+for k=1:n   
     b_k(k) = Gamma^2 + (sin((k*pi)/n))^2;
 end
 
@@ -23,8 +23,9 @@ g_k(1) = (2*a_k(1))/Gamma;
 for k=2:n
     g_k(k) = (4 * a_k(k-1) * a_k(k)) / (b_k(k-1) * g_k(k-1));
 end
+g_k % Affichage des coefficient
 
-fp = 2e9; % appelé fc dans le poly
+fp = 2e9; % appelé fc dans le poly de TP
 R = 50;
 Cdenorm = 1 / (2 * pi * fp * R);
 Ldenorm =  R / (2 * pi * fp);
@@ -37,3 +38,4 @@ for k=1:n
         printf("L%d =%e\n",k, L);
     end
 end
+
