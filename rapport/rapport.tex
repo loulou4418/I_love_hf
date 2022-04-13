@@ -31,9 +31,12 @@ La conception d'un filtre hautes fréquences débute par une synthèse classique
 
 
 \begin{equation}
-	n \geq \frac{argch(\sqrt{\frac{\alpha_{min}-1}{\alpha_{max} -1}})}{argch(1/k)}
+	n \geq \cfrac{argch(\sqrt{\cfrac{\alpha_{min}-1}{\alpha_{max} -1}})}{argch(1/k)}
 \end{equation}
-
+On rappelle :
+\begin{equation}
+argch(x)=ln(x+\sqrt{x^2-1})
+\end{equation}
 
 Où :
 \begin{itemize}
@@ -59,11 +62,11 @@ Ce qui nous donne une application numérique où $n \geq 4,5$ ce qui nous donne 
 	\end{circuitikz}
 	\caption{Schéma prototype d'un filtre passe-bas de Tchebycheff en impédance.}
 \end{figure}
-
+\newpage
 \section{synthèse d'un filtre passe-bande}
 
 La synthèse d'un filtre en hautes fréquences à partir d'un gabarit se rapporte à la méthode étudiée en moyenne fréquence. Une étape finale est ajoutée permettant la transformation des éléments localisés en éléments distribués.
-Le cahier des charges est le suivant, concevoir un filtre passe bande basé sur une fonction d'approximation de type Tchebychev et respectant le gabarit figure \ref{fig:gab}. L'implémentation réelle doit se en utilisant exclusivement des lignes micro ruban de longueur $\frac{\lambda_g}{2}$ ou $\frac{\lambda_g}{4}$ et des stubs.
+Le cahier des charges est le suivant, concevoir un filtre passe bande basé sur une fonction d'approximation de type Tchebychev et respectant le gabarit figure \ref{fig:gab}. L'implémentation réelle doit se en utilisant exclusivement des lignes micro ruban de longueur $\lambda_g/2$ ou $\lambda_g/4$ et des stubs.
 
 \begin{figure}[H]
 	\centering
@@ -82,7 +85,7 @@ Les valeurs numériques associées au gabarit sont les suivantes. Les fréquence
 \caption{Valeur numérique gabarit souhaité}
 	\end{table}
 \paragraph{Symétrie du gabarit} ~~\\ \noindent
-Avant de commencer la synthèse du filtre il faut valider une condition sur la symétrie. Si elle n'est pas respectée il faut modifier le gabarit du cahier des charges. La condition s'opère sur la moyenne géométrique de la bande passante et de la bande coupée.
+Avant de commencer la synthèse du filtre il est nécessaire de valider une condition sur la symétrie. Si elle n'est pas respectée il faudra modifier le gabarit du cahier des charges. La condition s'opère sur la moyenne géométrique de la bande passante et de la bande coupée notées :
 \begin{equation}
 	 f_{co} = \sqrt{f_c^-.f_c^+}, \quad f_{so} = \sqrt{f_s^- f_s^+}
 \end{equation}
@@ -97,7 +100,7 @@ f_{co} = \sqrt{f_c^-.f_c^+} = \sqrt{1,500*3,000} = 2,121 GHz
 \begin{equation}
 f_{so} <	f_{co}
 \end{equation}
-Le filtre est asymétrique il faut réaliser l'opération de centrage. Dans notre cas elle vise à diminuer $f_{co}$. Il n'est possible de faire varier que la borne positive $.f_c^+$. Cela à pour effet de sur contraindre le cahier des charges. Pour répondre aux exigences il est interdit d'élargir la bande atténué ou de diminuer la bande passante. \footnote{Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_{so}$ et $f_{co}$. Elle permet d'optimiser la contrainte sur le sélectivité. Dans notre cas cela ne change pas l'ordre du filtre.}
+Le filtre est asymétrique il faut réaliser l'opération de centrage. Dans notre cas elle vise à diminuer $f_{co}$. Il est possible de faire varier la borne positive $f_c^+$. Cela à pour effet de sur contraindre le cahier des charges. Pour répondre aux exigences il est interdit d'élargir la bande atténué ou de diminuer la bande passante. Ainsi on fixe la fréquence centrale $f_0 = f_{so} = \sqrt{f_s^- f_s^+}$.  
 Il vient donc :
 \begin{equation}
 f_c^+=\frac{f_{so}^2}{f_c^-}=\frac{1,984^2}{1,500}=2,614GHz
@@ -105,10 +108,10 @@ f_c^+=\frac{f_{so}^2}{f_c^-}=\frac{1,984^2}{1,500}=2,614GHz
 Les nouvelles valeurs numériques pour le gabarit du filtre sont les suivantes. Elle font référence à la figure \ref{fig:gab}.
 	\begin{table}[H]
 	\centering
-	\begin{tabular}{|c|c|c|c|c|c|}
+	\begin{tabular}{|c|c|c|c|c|c|c|}
 		\hline
-		$A_{max}$& $A_{min}$ & $f_c^-$ & $f_s^-$ & $f_s^+$ &$f_c^+$ \\ \hline
-		0,100		 & 15,00 		& 1,500	   & 1,75 & 2,250& 2,614 \\ \hline
+		$A_{max}$& $A_{min}$ & $f_c^-$ & $f_s^-$ & $f_0$ & $f_s^+$ &$f_c^+$ \\ \hline
+		0,1000		 & 15,00 		& 1,500	   & 1,750 & 1,984 & 2,250& 2,614 \\ \hline
 	\end{tabular}
 	\caption{Valeur numérique gabarit centré}
 \end{table}
@@ -116,15 +119,71 @@ Les nouvelles valeurs numériques pour le gabarit du filtre sont les suivantes. 
 L'étape suivant dans la conception d'un filtre passe bande symétrique vise à simplifier la synthèse en passant par un gabarit passe bas. Cela permet de calculer son ordre puis sa structure en éléments localisés.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\linewidth]{ressources/gabarit_passe_pas}
+	\includegraphics[width=0.5\linewidth]{ressources/gabarit_passe_bas}
 	\caption{Gabarit filtre passe bas équivalent}
 	\label{fig:gabaritpassepas}
 \end{figure}
 L'évaluation du coefficient de sélectivité permet d'établir le gabarit normalisée. Cette grandeur se note $k$ est sans unité et strictement inférieure à 1. Son expression est la suivante :
 \begin{equation}
-	k=\frac{\Delta.f_s}{\Delta.f_c}=\frac{f_s^+-f_s^-}{f_c^+-f_c^-}=\frac{2,250-1,75}{2,614-1,500}=
+	k=\frac{\Delta.f_s}{\Delta.f_c}=\frac{f_s^+-f_s^-}{f_c^+-f_c^-}=\frac{2,250-1,75}{2,614-1,500}=0,4488
 \end{equation}
-
-
-
+L'ordre du filtre $\delta \in N$ est donnée pour une fonction d'approximation de Tchebychev avec l'expression suivante. Les atténuations $A_{min}$ et $A_{max}$ en dB correspondent respectivement aux fréquences $f_s$ et $f_c$.
+\begin{equation}
+\delta \geq \frac{argch
+	\Big( \sqrt{\cfrac{10^{A_{min}/10}-1}{10^{A_{max}/10}-1}}
+	\Big)
+}{argch(1/k)}
+\end{equation}
+On rappelle pour la calculatrice :
+\begin{equation}
+argch(x)=ln(x+\sqrt{x^2-1})
+\end{equation}
+On calcule avec $A_{min} = 15dB$ et $A_{max} = 0,1dB$. L'ordre $\delta$ est arrondi à l'entier supérieur.
+\begin{equation}
+\frac{argch
+	\Big( \sqrt{\cfrac{10^{15/10}-1}{10^{0,1/10}-1}}
+	\Big)
+}{argch(1/0,4488)} = 2,975, \quad \delta = 3
+\end{equation}
+Le gabarit impose un ordre minimum de 3, c'est la valeur que nous retiendront. On note tout de même que l'arrondi au supérieur présente un faible écart avec l'ordre choisi. Notre filtre devrait respecter les spécifications mais des approximations pourraient entraîner des débordements notamment aux fréquences particulières $f_c$ et $f_s$.
+\paragraph{Prototype passe bas normalisé vers passe bande dénormalisé} ~~\\ \noindent
+Cette étape vise à transformer le schéma passe bas réalisé en son équivalent passe bande. Il existe deux schémas possible dit de type impédance et de type admittance où, respectivement, le premier élément en partant de la source est une inductance ou le premier élément est une capacité. N'ayant pas d'indications sur ce point dans le cahier des charges nous choisirons arbitrairement. Il faut toutefois avoir à l'esprit que cela engendrera un résultat différent lors de la transposition en éléments distribués. Pour un ordre 3, dans le premier cas on aura deux lignes $\lambda /2$ et un stub. Dans le second, deux stubs et une ligne $\lambda /2$ seront nécessaires.
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}[scale=0.8]
+		\draw 
+		(0,0) to[esource] (0,2) % The voltage source
+		to [R=$1$] (3,2) 
+		to[L=$l'_2$] (6,2)
+		to[short] (8,2)
+		to [R=$r$] (8,0) 
+		to[short] (0,0)
+		(3,2) to[C=$c'_1$] (3,0)
+		(6,2)to[C=$c'_3$] (6,0);
+	\end{circuitikz}
+	\caption{Schéma prototype filtre passe-bas ordre 3 en admittance}
+	\label{fig:ordre3_LP_adm}
+\end{figure}
+La figure \ref{fig:ordre3_LP_adm} représente le prototype du filtre passe bas. Il est composé de trois composants réactifs et le premier est un condensateur, nous sommes bien en présence d'un filtre d'ordre trois de type admittance. Les valeurs normalisées de ces composants s'expriment à partir de l'atténuation maximum $A_{max}$, de l'ordre du filtre et de la charge. Dans le cas des ordres paires les deux résistances n'ont pas la même valeur, il est donc préférable de choisir un ordre impaire sans quoi une problématique d'adaptation se posera. Les calculs pour obtenir les valeurs des composants sont détaillés dans \cite{cours_MF} à la page 93. Ils font intervenir des fonctions trigonométriques relativement complexes. La figures \ref{fig:coefnormaliseondulation01db} ci-dessous rassemble les grandeurs en question pour une ondulation inférieur à 0,1dB en bande passante et pour un ordre compris entre 1 et 10. 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{ressources/coef_normalise_ondulation01dB}
+	\caption{Coefficients normalisés fonction de Tchebychev 0,1dB ondulation}
+	\label{fig:coefnormaliseondulation01db}
+\end{figure}
+La première colonne de ce tableau correspond à l'ordre du filtre. Les valeurs suivantes correspondent aux composants de gauche à droite sur le schéma. La dernière valeur concerne la résistance de charge. On remarque bien que pour les ordres paires cette dernière est différente de la résistance série au générateur. Dans notre cas $c'_1=1,0315$, $l'_2=1,1474$ et $c'_3=1,0315$. Les informations nécessaires à la transformation du schéma équivalant passe bas au schéma équivalent passe bande ont été rassemblé. Nous pouvons opérer cette opération. Les éléments inductifs doivent être remplacés par une self et un condensateur en série. Les éléments capacitifs doivent être remplacés par une self et un condensateur en parallèle. Les valeurs normalisées des nouveau composants sont données par les expressions suivantes:\\
+Cas de l'inductance :
+\begin{equation}
+c_k=\frac{B}{l'_k}, \quad l_k=\frac{l'_k}{B}
+\end{equation}
+Cas du condensateur :
+\begin{equation}
+l_k=\frac{B}{c'_k}, \quad c_k=\frac{c'_k}{B}
+\end{equation}
+Où B désigne la bande passante
+\begin{equation}
+	B=\frac{\Delta f_s}{f_0}=\frac{f_s^+-f_s^-}{f_0}=\frac{2,250-1,75}{1,984}=0,2520
+\end{equation}
+\section{Conclusion}
+Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_{so}$ et $f_{co}$. Elle permet d'optimiser la contrainte sur le sélectivité. 
 \end{document}
