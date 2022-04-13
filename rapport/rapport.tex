@@ -1,9 +1,4 @@
 \documentclass[french]{article}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{lmodern}
-\usepackage{babel}
-\usepackage{graphicx}
 
 
 \input{configuration}
@@ -49,25 +44,21 @@ Où :
 \end{itemize}
 
 Ce qui nous donne une application numérique où $n \geq 4,5$ ce qui nous donne un ordre 5 minimum pour respecter le gabarit souhaité.
-
-%\begin{circuitikz}
-%	\draw (0,0) to [R,v=$U_1$] (2,0);
-%\end{circuitikz}
-%\begin{figure}[H]
-%	\centering
-%	\begin{circuitikz}
-%		\draw (0,0)
-%		to[V,v=$U_e$] (0,2) % The voltage source
-%		to[L=$l_1$] (2,2)
-%		to[C=$c_2$] (2,0) % The resistor
-%		(2,2)to[L=$l_3$] (4,2)
-%		to[C=$c_2$] (4,0) % The resistor
-%		(4,2)to[L=$l_3$] (6,2)
-%		to [R=$r$] (6,0) 
-%		to[short] (0,0);
-%	\end{circuitikz}
-%	\caption{Schéma prototype d'un filtre passe-bas de Tchebycheff en impédance.}
-%\end{figure}
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}
+		\draw (0,0)
+		to[V,v=$U_e$] (0,2) % The voltage source
+		to[L=$l_1$] (2,2)
+		to[C=$c_2$] (2,0) % The resistor
+		(2,2)to[L=$l_3$] (4,2)
+		to[C=$c_2$] (4,0) % The resistor
+		(4,2)to[L=$l_3$] (6,2)
+		to [R=$r$] (6,0) 
+		to[short] (0,0);
+	\end{circuitikz}
+	\caption{Schéma prototype d'un filtre passe-bas de Tchebycheff en impédance.}
+\end{figure}
 
 \section{synthèse d'un filtre passe-bande}
 
