@@ -6,7 +6,72 @@
 \usepackage{babel}
 \usepackage{float}
 \usepackage{graphicx}
+
+
+\documentclass[11pt]{article}
+
+\input{configuration}
+\input{titre}
+
 \begin{document}
+\myTitle[Rapport de mini-projet \\ - Électronique Hautes Fréquences - ]
+\newpage
+
+\section{Résumé}
+
+
+\newpage
+
+\section{Synthèse de filtre passe-bas en technologie }
+
+
+L'objectif est de réaliser un filtre passe-bas dont le gabarit est donné à la figure \ref{fig:gabarit_PB} avec une réponse de Tchebychev.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=15cm]{photo/gabarit_PB.png}
+	\caption{Architecture de la balise}
+	\label{fig:gabarit_PB}
+\end{figure}
+
+
+La conception d'un filtre hautes fréquences débute par une synthèse classique avec des éléments passifs (condensateurs et bobines) comme il a été fait dans le module moyennes fréquences du S7. A partir du gabarit de la figure \ref{fig:gabarit_PB}, l'équation ci-dessous nous est permet d'obtenir l'ordre du filtre à concevoir.
+
+
+
+\begin{equation}
+	n \geq \frac{argch(\sqrt{\frac{\alpha_{min}-1}{\alpha_{max} -1}})}{argch(1/k)}
+\end{equation}
+
+
+Où :
+\begin{itemize}
+	\item n est l'ordre du filtre souhaité;
+	\item k est la sélectivité égal à$\frac{fc}{1,5fc} = \frac{2}{3} \approx 0,67$;
+	\item $\alpha_{min}$ est l'atténuation minimale (en linéaire) du signal dans la bande atténué égal à $10^{\frac{15}{10}} \approx 31,6$
+	\item $\alpha_{max}$ est l'atténuation maximale (en linéaire) du signal dans la bande passante égal à $10^{\frac{0,1}{10}} \approx 1,02$
+\end{itemize}
+
+Ce qui nous donne une application numérique où $n \geq 4,5$ ce qui nous donne un ordre 5 minimum pour respecter le gabarit souhaité.
+
+%\begin{circuitikz}
+%	\draw (0,0) to [R,v=$U_1$] (2,0);
+%\end{circuitikz}
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}
+		\draw (0,0)
+		to[V,v=$U_e$] (0,2) % The voltage source
+		to[L=$l_1$] (2,2)
+		to[C=$c_2$] (2,0) % The resistor
+		(2,2)to[L=$l_3$] (4,2)
+		to[C=$c_2$] (4,0) % The resistor
+		(4,2)to[L=$l_3$] (6,2)
+		to [R=$r$] (6,0) 
+		to[short] (0,0);
+	\end{circuitikz}
+	\caption{Schéma prototype d'un filtre passe-bas de Tchebycheff en impédance.}
+\end{figure}
 
 \section{synthèse d'un filtre passe-bande}
 
@@ -72,4 +137,7 @@ L'évaluation du coefficient de sélectivité permet d'établir le gabarit norma
 \begin{equation}
 	k=\frac{\Delta.f_s}{\Delta.f_c}=\frac{f_s^+-f_s^-}{f_c^+-f_c^-}=\frac{2,250-1,75}{2,614-1,500}=
 \end{equation}
+
+
+
 \end{document}
