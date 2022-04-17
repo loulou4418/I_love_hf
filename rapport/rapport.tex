@@ -16,17 +16,28 @@
 \section{Synthèse de filtre passe-bas en technologie }
 
 
-L'objectif est de réaliser un filtre passe-bas dont le gabarit est donné à la figure \ref{fig:gabarit_PB} avec une réponse de Tchebychev.
+L'objectif est de réaliser un filtre passe-bas dont le gabarit est donné à la figure \ref{fig:gabarit_PasseBas} avec une réponse de Tchebychev.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=15cm]{photo/gabarit_PB.png}
-	\caption{Architecture de la balise}
-	\label{fig:gabarit_PB}
+	\includegraphics[width=0.5\linewidth]{ressources/gabarit_passe_pas}
+	\caption{Gabarit filtre passe bas équivalent}
+	\label{fig:gabarit_PasseBas}
 \end{figure}
 
+Les valeurs numériques associées au gabarit sont les suivantes.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|}
+		\hline
+		$A_{max}$& $A_{min}$ & $f_s$ & $f_c$ \\ \hline
+		0.1	dB & 15,00 dB 		& 2 GHz	   & 3 GHz \\ \hline
+	\end{tabular}
+	\caption{Valeur numérique gabarit souhaité}
+\end{table}
 
-La conception d'un filtre hautes fréquences débute par une synthèse classique avec des éléments passifs (condensateurs et bobines) comme il a été fait dans le module moyennes fréquences du S7. A partir du gabarit de la figure \ref{fig:gabarit_PB}, l'équation ci-dessous nous est permet d'obtenir l'ordre du filtre à concevoir.
+
+La conception d'un filtre hautes fréquences débute par une synthèse classique avec des éléments passifs (condensateurs et bobines) comme il a été fait dans le module moyennes fréquences du S7. A partir du gabarit de la figure \ref{fig:gabarit_PasseBas}, l'équation ci-dessous nous est permet d'obtenir l'ordre du filtre à concevoir.
 
 
 
@@ -41,7 +52,10 @@ argch(x)=ln(x+\sqrt{x^2-1})
 Où :
 \begin{itemize}
 	\item n est l'ordre du filtre souhaité;
-	\item k est la sélectivité égal à$\frac{fc}{1,5fc} = \frac{2}{3} \approx 0,67$;
+	\item k est la sélectivité égal à : 
+	\begin{equation}
+		k=\frac{f_s}{1,5f_s} = \frac{2}{3} \approx 0,67
+	\end{equation}
 	\item $\alpha_{min}$ est l'atténuation minimale (en linéaire) du signal dans la bande atténué égal à $10^{\frac{15}{10}} \approx 31,6$
 	\item $\alpha_{max}$ est l'atténuation maximale (en linéaire) du signal dans la bande passante égal à $10^{\frac{0,1}{10}} \approx 1,02$
 \end{itemize}
@@ -68,7 +82,7 @@ Avec :
 \begin{itemize}
 	
 	\item les coefficients $g_k$, les valeurs normalisées des condensateurs et des bobines;
-	\item r, la résistance de charge normalisée et égale à 1. Sa valeur dénormalisé est de $50\Omega$;
+	\item r, la résistance de charge normalisée est égale à 1. Sa valeur dénormalisé est de $50\Omega$;
 	\item $U_e$, le signal d'entrée ayant une résistance série normalisée égale à 1 et donc $50\Omega$ en dénormalisée.
 \end{itemize}
 
@@ -90,16 +104,28 @@ Pour obtenir les valeurs de $g_k$ nous ne pouvons utilisé les tableaux données
 Pour trouver les valeurs réelles des composants il faut : pour les condensateurs, multiplier les $g_k$ pairs par un coefficient $C_{denom}$ et pour les bobines, multiplier les $g_k$ impairs par un coefficient $L_{denom}$. Les valeurs de ces coefficients sont données ci-dessous.
 
 \begin{equation}
-	C_{denom} = \frac{1}{2\pi f_c R}
+	C_{denom} = \frac{1}{2\pi f_s R}
 	\qquad
-	L_{denom} = \frac{R}{2\pi f_c}
+	L_{denom} = \frac{R}{2\pi f_s}
 \end{equation}
-Une application numérique où $f_c = 2GHz$ et $R = 50\Omega$ donne :
 
-% \begin{equation}
-% 	C_{denom} = 1.59 pF
-% 	\qquad
-% 	L_{denom} = 3.98 nH
+Le tableau ci-dessous donne les applications numériques pour les composants du filtre avec $f_c = 2GHz$ et $R = 50\Omega$.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+		\hline
+		$L_1$ & $C_2$ & $L_3$ & $C_4$ & $L_5$\\
+		\hline
+		4.56 nH & 2.18 pF & 7.86 nH & 2.18 pF & 4.56 nH\\
+		\hline
+	\end{tabular}
+	\caption{Valeurs réelles des composants du filtre passe-bas.}
+	\label{tab:valeurs_composant_passe_bas}
+\end{table}
+
+
+
 
 \section{synthèse d'un filtre passe-bande}
 
@@ -237,22 +263,5 @@ Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de V
 
 
 
-
-Une fois le coefficient de dénormalisation appliqué nous obtenons les valeurs suivantes.
-
-\begin{table}[H]
-	\centering
-	\begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
-		\hline
-		$L_1$ & $C_2$ & $L_3$ & $C_4$ & $L_5$\\
-		\hline
-		4.56 nH & 2.18 pF & 7.86 nH & 2.18 pF & 4.56 nH\\
-		\hline
-	\end{tabular}
-	\caption{Valeurs réelles des composants du filtre passe-bas.}
-	\label{tab:valeurs_composant_passe_bas}
-\end{table}
-
-test
 
 \end{document}
