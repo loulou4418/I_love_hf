@@ -20,7 +20,7 @@ L'objectif est de réaliser un filtre passe-bas dont le gabarit est donné à la
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\linewidth]{ressources/gabarit_passe_pas}
+	\includegraphics[width=0.5\linewidth]{ressources/gabarit_passe_bas}
 	\caption{Gabarit filtre passe bas équivalent}
 	\label{fig:gabarit_PasseBas}
 \end{figure}
@@ -28,17 +28,14 @@ L'objectif est de réaliser un filtre passe-bas dont le gabarit est donné à la
 Les valeurs numériques associées au gabarit sont les suivantes.
 \begin{table}[H]
 	\centering
-	\begin{tabular}{|p{1.5cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|}
+	\begin{tabular}{|c|c|c|c|}
 		\hline
 		$A_{max}$& $A_{min}$ & $f_s$ & $f_c$ \\ \hline
 		0.1	dB & 15,00 dB 		& 2 GHz	   & 3 GHz \\ \hline
 	\end{tabular}
 	\caption{Valeur numérique gabarit souhaité}
 \end{table}
-
-
 La conception d'un filtre hautes fréquences débute par une synthèse classique avec des éléments passifs (condensateurs et bobines) comme il a été fait dans le module moyennes fréquences du S7. A partir du gabarit de la figure \ref{fig:gabarit_PasseBas}, l'équation ci-dessous nous est permet d'obtenir l'ordre du filtre à concevoir.
-
 
 
 \begin{equation}
@@ -52,9 +49,9 @@ argch(x)=ln(x+\sqrt{x^2-1})
 Où :
 \begin{itemize}
 	\item n est l'ordre du filtre souhaité;
-	\item k est la sélectivité égal à : 
+		\item k est la sélectivité égal à : 
 	\begin{equation}
-		k=\frac{f_s}{1,5f_s} = \frac{2}{3} \approx 0,67
+	k=\frac{f_s}{1,5f_s} = \frac{2}{3} \approx 0,67
 	\end{equation}
 	\item $\alpha_{min}$ est l'atténuation minimale (en linéaire) du signal dans la bande atténué égal à $10^{\frac{15}{10}} \approx 31,6$
 	\item $\alpha_{max}$ est l'atténuation maximale (en linéaire) du signal dans la bande passante égal à $10^{\frac{0,1}{10}} \approx 1,02$
@@ -90,7 +87,7 @@ Pour obtenir les valeurs de $g_k$ nous ne pouvons utilisé les tableaux données
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+	\begin{tabular}{|c|c|c|c|c|}
 		\hline
 		$g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$\\
 		\hline
@@ -113,7 +110,7 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+	\begin{tabular}{|c|c|c|c|c|}
 		\hline
 		$L_1$ & $C_2$ & $L_3$ & $C_4$ & $L_5$\\
 		\hline
@@ -123,10 +120,7 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 	\caption{Valeurs réelles des composants du filtre passe-bas.}
 	\label{tab:valeurs_composant_passe_bas}
 \end{table}
-
-
-
-
+\newpage
 \section{synthèse d'un filtre passe-bande}
 
 La synthèse d'un filtre en hautes fréquences à partir d'un gabarit se rapporte à la méthode étudiée en moyenne fréquence. Une étape finale est ajoutée permettant la transformation des éléments localisés en éléments distribués.
@@ -224,7 +218,7 @@ Cette étape vise à transformer le schéma passe bas en son équivalent passe b
 		to[short] (0,0)
 		(5.3,2)to[C=$c'_2$] (5.3,0);
 	\end{circuitikz}
-	\caption{Schéma prototype filtre passe-bas ordre 3 en admittance}
+	\caption{Schéma prototype filtre passe-bas ordre 3 en impédance}
 	\label{fig:ordre3_LP_adm}
 \end{figure}
 La figure \ref{fig:ordre3_LP_adm} représente le prototype du filtre passe bas. Il est composé de trois composants réactifs et le premier est une self, nous sommes bien en présence d'un filtre d'ordre trois de type impédance. Les valeurs normalisées de ces composants s'expriment à partir de l'atténuation maximum $A_{max}$, de l'ordre du filtre et de la charge. Dans le cas des ordres paires les deux résistances n'ont pas la même valeur, il est donc préférable de choisir un ordre impaire sans quoi une problématique d'adaptation se posera. Les calculs pour obtenir les valeurs des composants sont détaillés dans \cite{cours_MF} à la page 93. Ils font intervenir des fonctions trigonométriques relativement complexes. La figures \ref{fig:coefnormaliseondulation01db} ci-dessous rassemble ces grandeurs et nous évite les calcul. Elle correspond  à une ondulation inférieur à 0,1dB en bande passante et un ordre compris entre 1 et 10. 
@@ -237,18 +231,102 @@ La figure \ref{fig:ordre3_LP_adm} représente le prototype du filtre passe bas. 
 La première colonne de ce tableau correspond à l'ordre du filtre. Les valeurs suivantes correspondent aux composants de gauche à droite sur le schéma. La dernière valeur concerne la résistance de charge. On remarque bien que pour les ordres impaire cette dernière vaut l'unité contrairement aux ordres impaires. Dans notre cas $l'_1=1,0315$, $c'_2=1,1474$ et $l'_3=1,0315$. Les informations nécessaires à la transformation du schéma équivalant passe bas au schéma équivalent passe bande ont été rassemblé. Nous pouvons opérer cette opération. Les éléments inductifs doivent être remplacés par une self et un condensateur en série. Les éléments capacitifs doivent être remplacés par une self et un condensateur en parallèle. Les valeurs normalisées des nouveaux composants sont données par les expressions suivantes:\\
 Cas de l'inductance :
 \begin{equation}
-c_k=\frac{B}{l'_k}, \quad l_k=\frac{l'_k}{B}
+c_k=\frac{B}{l'_k}, \quad l_k=\frac{l'_k}{B}, \quad k = \{1,3\}
 \end{equation}
 Cas du condensateur :
 \begin{equation}
-l_k=\frac{B}{c'_k}, \quad c_k=\frac{c'_k}{B}
+c_k=\frac{c'_k}{B}, \quad  l_k=\frac{B}{c'_k}, \quad k = \{2\}
 \end{equation}
 Où B désigne la bande passante
 \begin{equation}
 	B=\frac{\Delta f_s}{f_0}=\frac{f_s^+-f_s^-}{f_0}=\frac{2,250-1,75}{1,984}=0,2520
 \end{equation}
+Le schéma du filtre passe bande en éléments localisés après transformation est illustré par la figure \ref{fig:ordre3_BP_imp}.
 
+\begin{figure}[H]
+	\centering
+	 \ctikzset{bipoles/length=1.1cm}
+	\begin{circuitikz}[scale=0.85]
+		\draw 
+		(0,0) to[esource] (0,3) % The voltage source
+		to [R=$1$] (2,3) 
+		to[L=$l_1$] (4,3)
+		to[C=$c_1$] (6,3)
+		to[L=$l_3$] (8,3)
+		to[C=$c_3$] (10,3)
+		to [R=$r$] (10,0) 
+		to[short] (0,0)
+		(6,3) to[short] (6,2.5)
+		(5.5,2.5) to[short] (6.5,2.5)
+		(5.5,2.5) to[L=$l_2$] (5.5,0.5)
+		(6.5,2.5) to[C=$c_2$] (6.5,0.5)
+		(5.5,0.5) -- (6.5,0.5)
+		(6,0.5) -- (6,0);
+	\end{circuitikz}
+	\caption{Schéma filtre passe-bande ordre 3 en impédance}
+	\label{fig:ordre3_BP_imp}
+\end{figure}
+A partir des expression précédente il est possible de calculer les valeurs normalisée de ces nouveaux composants. Nous pouvons pas le même occasion opérer la dénormalisation. Les grandeurs dénormalisées seront notées en majuscule. De nouveau on s'appuis sur le cours d'électrique moyenne fréquence \cite{cours_MF}. On y extrait les égalités suivantes :
+\begin{equation}
+C_k = \frac{c_k}{2\pi f_0.R},
+\quad
+L_k = \frac{l_k.R}{2\pi .f_0},
+\quad
+k=\{1,2,3\}
+\end{equation}
+On prendra la résistance de charge valant $50\Omega$ et la fréquence centrale $f_0$ 1,984GHz. Un petit programme Octave nous permet d'automatiser ce calcul. Les résultats de l'étape de transformation et de dénormalisation sont rassemblés dans le tableau \ref{tab:denorm_BP}. On rappel que la notation utilisée représente les grandeurs normalisées en minuscule et les grandeurs dénormalisées en majuscule.
 
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		k & 1 & 2 & 3 \\
+		\hline
+		$c_k$ & 0,2443 & 4,553 & 0,2443 \\ \hline
+		$l_k$ &	4,093	&	0,2196	&	4,093	\\ \hline
+		$C_k$ &	0,3917pF&	7,307pF	&	0,3917pF\\ \hline
+		$L_k$ &	16,42nH	&	0,8804nH& 16,42nH	\\ \hline
+	\end{tabular}
+	\caption{Valeurs passe bande avant et après dénormalisation}
+	\label{tab:denorm_BP}
+\end{table}
+%\begin{table}[H]
+%	\centering
+%	\begin{tabular}{|c|c|c|c|}
+%		\hline
+%		k & 1 & 2 & 3 \\
+%		\hline
+%		$c_k$ & 0,2443 & 4,553 & 0,2443 \\ \hline
+%		$l_k$ &	4,093	&	0,2196	&	4,093	\\ \hline
+%		$C_k$ &	0,3919pF&	7,303pF	&	0,3919pF\\ \hline
+%		$L_k$ &	16,41nH	&	0,8808nH& 16,41nH	\\ \hline
+%	\end{tabular}
+%	\caption{Valeurs passe bande avant et après dénormalisation}
+%	\label{tab:denorm_BP}
+%\end{table}
+Afin de valider les valeurs obtenue nous pouvons recourir à une simulation sur ADS. Le schémas tracé est illustré par la figure \ref{fig:ads_sch_BP_localise}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{../4synthPBande/impedance/schema_passe_bande_localise}
+	\caption{Schéma passe bande ADS}
+	\label{fig:ads_sch_BP_localise}
+\end{figure}
+Il fait intervenir des composants de la bibliothèque "lumbed component". La simulation porte sur l'observation des paramètres S et plus particulièrement du coefficient de transition $S_{21}$. Le résultat obtenue est donné par la deux figure \ref{fig:ads_S21_BP_localise1}. Elles permettent respectivement de vérifier la coupure et l'ondulation en bande passante.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.49\linewidth]{../4synthPBande/impedance/S21__passe_bande_localise}
+	\includegraphics[width=0.49\linewidth]{../4synthPBande/impedance/S21__bande_passante_passe_bande_localise}
+	\caption{Simulation S21 passe bande localisé}
+	\label{fig:ads_S21_BP_localise1}
+\end{figure}
+La figure de gauche représente le paramètre S21 en db sur la bande spécifiée par le gabarit. On relève une atténuation de 15,58dB et 14,97dB au points m1 et m4. Seul le premier garantie respect strictement le cahier des charges. La figure de gauche représente elle aussi le coefficient de transition mais sur une bande plus étroite correspondant à la bande passante. La condition du gabarit spécifie une ondulation inférieur à 0,1dB. Elle est respecter partout sauf au point m5 où on relève 0,101dB. Les résultats de cette simulation présentes deux débordement débordements aux fréquences particulières $f_c^-$ et $f_s^-$. Cela s'explique par une approximation réalisée lors du centrage du gabarit. En effet, seule la borne $f_c^+$ a été déplacée se qui entraîne une légère dysmétrie entre le gabarit initial et celui recentré. Aussi, nous avons pu remarqué que l'ordre du filtre décimal est très proche de la valeur entière retenue ce qui a pour effet de laisser peu de marge aux fréquences particulières. Ces deux éléments cumulés ont joué en notre défaveur en aboutie à une synthèse en limite de spécification. 
+Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_c^+$ et $f_c-$ lors du recentrage. Cette méthode est plus complexe mais aurait probablement permise de réaliser une synthèse répondant parfaitement au gabarit.\\
+Les résultats de simulation reste malgré tout concluant car ils présentent une erreur très faible. Nous conserverons donc les valeurs des composants pour la suite des calculs.\\
+
+Les valeurs dénormalisées obtenues devrait permettre en théorie de constituer un filtre passe bande en éléments localisés. Cependant en pratique l'ordre de grandeur (0,1pF pour les condensateurs et 1nH pour les inductances) pose un problème de provisionnement. En effet, elles sont peu réaliste puisque comparables aux phénomènes parasites des boîtiers et conducteurs. Il est possible de résoudre ce problème en transformant cette synthèse localisé en synthèse distribuée.
+
+\subsection{title}
+Il existe plusieurs circuits basés sur les propriété des lignes pour réalisé un filtre passe bande. Nous détaillerons deux solutions basées uniquement sur des lignes $\lambda /2$ et $\lambda /4$. 
 
 \section{Conclusion}
 Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_{so}$ et $f_{co}$. Elle permet d'optimiser la contrainte sur le sélectivité. 
@@ -263,5 +341,22 @@ Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de V
 
 
 
+
+Une fois le coefficient de dénormalisation appliqué nous obtenons les valeurs suivantes.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|p{2cm}|p{2cm}|}
+		\hline
+		$L_1$ & $C_2$ & $L_3$ & $C_4$ & $L_5$\\
+		\hline
+		4.56 nH & 2.18 pF & 7.86 nH & 2.18 pF & 4.56 nH\\
+		\hline
+	\end{tabular}
+	\caption{Valeurs réelles des composants du filtre passe-bas.}
+	\label{tab:valeurs_composant_passe_bas}
+\end{table}
+
+test
 
 \end{document}
