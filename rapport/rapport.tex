@@ -185,31 +185,30 @@ On calcule avec $A_{min} = 15dB$ et $A_{max} = 0,1dB$. L'ordre $\delta$ est arro
 \end{equation}
 Le gabarit impose un ordre minimum de 3, c'est la valeur que nous retiendront. On note tout de même que l'arrondi au supérieur présente un faible écart avec l'ordre choisi. Notre filtre devrait respecter les spécifications mais des approximations pourraient entraîner des débordements notamment aux fréquences particulières $f_c$ et $f_s$.
 \paragraph{Prototype passe bas normalisé vers passe bande dénormalisé} ~~\\ \noindent
-Cette étape vise à transformer le schéma passe bas réalisé en son équivalent passe bande. Il existe deux schémas possible dit de type impédance et de type admittance où, respectivement, le premier élément en partant de la source est une inductance ou le premier élément est une capacité. N'ayant pas d'indications sur ce point dans le cahier des charges nous choisirons arbitrairement. Il faut toutefois avoir à l'esprit que cela engendrera un résultat différent lors de la transposition en éléments distribués. Pour un ordre 3, dans le premier cas on aura deux lignes $\lambda /2$ et un stub. Dans le second, deux stubs et une ligne $\lambda /2$ seront nécessaires.
+Cette étape vise à transformer le schéma passe bas en son équivalent passe bande. Il existe deux schémas possibles dit de type impédance et de type admittance où, respectivement, le premier élément est une inductance ou un condensateur. Le cahier des charges ne donne pas d'indications sur ce point. Nous choisirons le schéma qui a l'avantage de simplifier la transposition micro ruban.
 \begin{figure}[H]
 	\centering
 	\begin{circuitikz}[scale=0.8]
 		\draw 
 		(0,0) to[esource] (0,2) % The voltage source
 		to [R=$1$] (3,2) 
-		to[L=$l'_2$] (6,2)
-		to[short] (8,2)
+		to[L=$l'_1$] (5,2)
+		to[L=$l'_3$] (8,2)
 		to [R=$r$] (8,0) 
 		to[short] (0,0)
-		(3,2) to[C=$c'_1$] (3,0)
-		(6,2)to[C=$c'_3$] (6,0);
+		(5.3,2)to[C=$c'_2$] (5.3,0);
 	\end{circuitikz}
 	\caption{Schéma prototype filtre passe-bas ordre 3 en admittance}
 	\label{fig:ordre3_LP_adm}
 \end{figure}
-La figure \ref{fig:ordre3_LP_adm} représente le prototype du filtre passe bas. Il est composé de trois composants réactifs et le premier est un condensateur, nous sommes bien en présence d'un filtre d'ordre trois de type admittance. Les valeurs normalisées de ces composants s'expriment à partir de l'atténuation maximum $A_{max}$, de l'ordre du filtre et de la charge. Dans le cas des ordres paires les deux résistances n'ont pas la même valeur, il est donc préférable de choisir un ordre impaire sans quoi une problématique d'adaptation se posera. Les calculs pour obtenir les valeurs des composants sont détaillés dans \cite{cours_MF} à la page 93. Ils font intervenir des fonctions trigonométriques relativement complexes. La figures \ref{fig:coefnormaliseondulation01db} ci-dessous rassemble les grandeurs en question pour une ondulation inférieur à 0,1dB en bande passante et pour un ordre compris entre 1 et 10. 
+La figure \ref{fig:ordre3_LP_adm} représente le prototype du filtre passe bas. Il est composé de trois composants réactifs et le premier est une self, nous sommes bien en présence d'un filtre d'ordre trois de type impédance. Les valeurs normalisées de ces composants s'expriment à partir de l'atténuation maximum $A_{max}$, de l'ordre du filtre et de la charge. Dans le cas des ordres paires les deux résistances n'ont pas la même valeur, il est donc préférable de choisir un ordre impaire sans quoi une problématique d'adaptation se posera. Les calculs pour obtenir les valeurs des composants sont détaillés dans \cite{cours_MF} à la page 93. Ils font intervenir des fonctions trigonométriques relativement complexes. La figures \ref{fig:coefnormaliseondulation01db} ci-dessous rassemble ces grandeurs et nous évite les calcul. Elle correspond  à une ondulation inférieur à 0,1dB en bande passante et un ordre compris entre 1 et 10. 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth]{ressources/coef_normalise_ondulation01dB}
 	\caption{Coefficients normalisés fonction de Tchebychev 0,1dB ondulation}
 	\label{fig:coefnormaliseondulation01db}
 \end{figure}
-La première colonne de ce tableau correspond à l'ordre du filtre. Les valeurs suivantes correspondent aux composants de gauche à droite sur le schéma. La dernière valeur concerne la résistance de charge. On remarque bien que pour les ordres paires cette dernière est différente de la résistance série au générateur. Dans notre cas $c'_1=1,0315$, $l'_2=1,1474$ et $c'_3=1,0315$. Les informations nécessaires à la transformation du schéma équivalant passe bas au schéma équivalent passe bande ont été rassemblé. Nous pouvons opérer cette opération. Les éléments inductifs doivent être remplacés par une self et un condensateur en série. Les éléments capacitifs doivent être remplacés par une self et un condensateur en parallèle. Les valeurs normalisées des nouveau composants sont données par les expressions suivantes:\\
+La première colonne de ce tableau correspond à l'ordre du filtre. Les valeurs suivantes correspondent aux composants de gauche à droite sur le schéma. La dernière valeur concerne la résistance de charge. On remarque bien que pour les ordres impaire cette dernière vaut l'unité contrairement aux ordres impaires. Dans notre cas $l'_1=1,0315$, $c'_2=1,1474$ et $l'_3=1,0315$. Les informations nécessaires à la transformation du schéma équivalant passe bas au schéma équivalent passe bande ont été rassemblé. Nous pouvons opérer cette opération. Les éléments inductifs doivent être remplacés par une self et un condensateur en série. Les éléments capacitifs doivent être remplacés par une self et un condensateur en parallèle. Les valeurs normalisées des nouveaux composants sont données par les expressions suivantes:\\
 Cas de l'inductance :
 \begin{equation}
 c_k=\frac{B}{l'_k}, \quad l_k=\frac{l'_k}{B}
@@ -222,6 +221,9 @@ Où B désigne la bande passante
 \begin{equation}
 	B=\frac{\Delta f_s}{f_0}=\frac{f_s^+-f_s^-}{f_0}=\frac{2,250-1,75}{1,984}=0,2520
 \end{equation}
+
+
+
 \section{Conclusion}
 Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_{so}$ et $f_{co}$. Elle permet d'optimiser la contrainte sur le sélectivité. 
 
