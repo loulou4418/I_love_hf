@@ -9,7 +9,55 @@
 \newpage
 
 \section{Résumé}
+\textbf{Resume le mini-projet}
 
+\section{Introduction}
+\subsection{Contextualisation}
+\textbf{Parler de la limite entre BF et HF (longueur du circuit plus négligeable devant la longueur d'onde des signaux mis en jeu)\\
+parler des applications de l'electronique haute frequence}
+\subsection{Objectifs du mini-projet}
+\textbf{developpement connaissance en electronique haute frequence\\
+prise en main de logiciel de conception et de simulations (ADS)}
+
+\newpage
+
+\section{Étude et caractérisation de la technologie micro-ruban}
+
+\subsection{Avant-propos}
+
+L'électronique des hautes-fréquences consiste en la propagation de signaux à fréquences élevées, et de longueurs d'ondes proches des dimensions du circuit, au travers d'une ligne de transmission. Les lignes de transmissions se déclinent sous diverses familles comme les câbles coaxiaux, les lignes bifilaires, les guides d'ondes ou encore les lignes micro-rubans. Comme le schématise la figure (\ref{fig:modele_microstrip}), une ligne micro-ruban (\textit{microstrip line}) est composée d'un conducteur planaire séparé d'un plan de masse par une couche diélectrique appelée substrat. Une telle technologie a été développée par les laboratoires ITT (\textit{International Telephone and Telegraph}) dans les années 1952. Simple de fabrication et coût bas au regard des autres technologies, la ligne micro-ruban permet la conception de nombreuses fonctions d'électroniques comme le filtrage ou l'amplification.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{ressources/modele_microstrip.png}
+	\caption{Modèle d'une ligne micro-ruban}
+	\label{fig:modele_microstrip}
+\end{figure}
+
+Il s'agit dans cette partie de réaliser des caractérisations de lignes, c'est-à-dire la détermination de paramètres d'une ligne micro-ruban. Les lignes à caractériser sont disponibles en laboratoire et sont de l'ordre de quatre, une ligne verre téflon large, verre téflon fin, verre epoxy FR4 large et verre epoxy FR4 fin. Le tableau précisant les dimensions de ces quatre lignes est donné ci-dessous. La caractérisation aura pour finalité l'obtention des paramètres de la ligne telle que la constante diélectrique $\varepsilon_r$ du matériau ainsi que la tangente de perte $\mbox{tan}(\delta)$. Ces paramètres serviront par la suite de valeurs de référence pour la conception de filtres ou d'amplificateurs en technologie micro-ruban. Il s'agit alors de réaliser des mesures à l'aide d'un analyseur de réseau, VNA (\textit{Vector Network Analyzer)}, pour en extraire les valeurs de la matrice $S$. Ces mesures expérimentales constituent la base de la caractérisation. Un modèle théorique de caractérisation de lignes vient se superposer à cette base. Il s'agira alors de faire varier les divers paramètres du modèle afin de faire coïncider celui-ci avec les mesures expérimentales. À ce moment là, les paramètres du modèle correspondent aux paramètres de la ligne et la caractérisation est réussie.
+
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		Matériaux & Impédance caractéristique & hauteur $h$ & largeur $W$ & longueur $L$\\
+		\hline
+		Verre téflon large & $Z_C < 50 \Omega$ & 1.58 & 7.87 & 74.82 \\
+		\hline
+		Verre téflon fin & $Z_C > 50 \Omega$ & 1.58 & 0.469 & 74.978\\
+		\hline
+		Verre epoxy FR4 large & $Z_C < 50 \Omega$ & 1.50 & 7.928 & 100.037\\
+		\hline
+		Verre epoxy FR4 fin & $Z_C > 50 \Omega$ & 1.50 & 0.46 & 100.44\\
+		\hline
+	\end{tabular}
+	\caption{Tableau présentant les paramètres géométriques (exprimés en mm) des différentes lignes à caractériser}
+\end{table}
+
+\newpage
+
+\subsection{Présentation du modèle théorique de caractérisation de lignes}
 
 \newpage
 
