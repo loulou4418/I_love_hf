@@ -8,6 +8,8 @@
 \myTitle[Rapport de mini-projet \\ - Électronique Hautes Fréquences - ]
 \newpage
 
+\textbf{Il faudra pas oublier de rajouter une table des figures et matières}
+
 \section{Résumé}
 \textbf{Resume le mini-projet}
 
@@ -34,7 +36,7 @@ L'électronique des hautes-fréquences consiste en la propagation de signaux à 
 	\label{fig:modele_microstrip}
 \end{figure}
 
-Il s'agit dans cette partie de réaliser des caractérisations de lignes, c'est-à-dire la détermination de paramètres d'une ligne micro-ruban. Les lignes à caractériser sont disponibles en laboratoire et sont de l'ordre de quatre, une ligne verre téflon large, verre téflon fin, verre epoxy FR4 large et verre epoxy FR4 fin. Le tableau précisant les dimensions de ces quatre lignes est donné ci-dessous. La caractérisation aura pour finalité l'obtention des paramètres de la ligne telle que la constante diélectrique $\varepsilon_r$ du matériau ainsi que la tangente de perte $\mbox{tan}(\delta)$. Ces paramètres serviront par la suite de valeurs de référence pour la conception de filtres ou d'amplificateurs en technologie micro-ruban. Il s'agit alors de réaliser des mesures à l'aide d'un analyseur de réseau, VNA (\textit{Vector Network Analyzer)}, pour en extraire les valeurs de la matrice $S$. Ces mesures expérimentales constituent la base de la caractérisation. Un modèle théorique de caractérisation de lignes vient se superposer à cette base. Il s'agira alors de faire varier les divers paramètres du modèle afin de faire coïncider celui-ci avec les mesures expérimentales. À ce moment là, les paramètres du modèle correspondent aux paramètres de la ligne et la caractérisation est réussie.
+Il s'agit dans cette partie de réaliser des caractérisations de lignes, c'est-à-dire la détermination de paramètres d'une ligne micro-ruban. Les lignes à caractériser sont disponibles en laboratoire et sont de l'ordre de quatre, une ligne verre téflon large, verre téflon fin, verre epoxy FR4 large et verre epoxy FR4 fin. Des photographies de ces plaques sont présentes en annexe. Le tableau précisant les dimensions de ces quatre lignes est donné ci-dessous. La caractérisation aura pour finalité l'obtention des paramètres de la ligne telle que la constante diélectrique $\varepsilon_r$ du matériau ainsi que la tangente de perte $\mbox{tan}(\delta)$. Ces paramètres serviront par la suite de valeurs de référence pour la conception de filtres ou d'amplificateurs en technologie micro-ruban. Il s'agit alors de réaliser des mesures à l'aide d'un analyseur de réseau, VNA (\textit{Vector Network Analyzer)}, pour en extraire les valeurs de la matrice $S$. Ces mesures expérimentales constituent la base de la caractérisation. Un modèle théorique de caractérisation de lignes vient se superposer à cette base. Il s'agira alors de faire varier les divers paramètres du modèle afin de faire coïncider celui-ci avec les mesures expérimentales. À ce moment là, les paramètres du modèle correspondent aux paramètres de la ligne et la caractérisation est réussie.
 
 
 \begin{table}[H]
@@ -59,12 +61,52 @@ Il s'agit dans cette partie de réaliser des caractérisations de lignes, c'est-
 
 \subsection{Présentation du modèle théorique de caractérisation de lignes}
 
+Cette section est consacrée à la présentation d'une structure modélisant le comportement d'une ligne de caractérisation. Un tel modèle possède divers paramètres dont il est nécessaire de déterminer leur valeurs offrant la meilleure superposition avec les courbes expérimentales. Un schéma de ce modèle est présenté ci-dessous. Celui-ci comporte aux extrémités deux terminaux TERM 1 et TERM 2 qui représentent les câbles coaxiaux SMA (\textit{Subminiature version A}) de 50 $\Omega$ du VNA. Les composants MLIN 1 (\textit{Microstrip line 1}), MLIN 2 et 3 sont des lignes micro-rubans de largeur et longueur respectives $W_{acc1}$ et $L_{acc1}$, $W$ et $L$ et $W_{acc2}$ et $L_{acc2}$. MLIN 1 et MLIN 3 modélisent les lignes d'accès et MLIN 2 correspond à la ligne micro-ruban à caractériser. Un tableau ci-dessous précise les différents paramètres.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+		\hline
+		Matériaux & $W_{acc1}$ & $L_{acc1}$ & $W_{acc2}$ & $L_{acc2}$ & $W$ & $L$\\
+		\hline
+		Verre téflon large & 4.278 & 5.345 & 4.225 & 5.349 & 7.87 & 74.82 \\
+		\hline
+		Verre téflon fin & 4.397 & 5.385 & 4.302 & 4.925 & 0.469 & 74.978\\
+		\hline
+		Verre epoxy FR4 large & 2.918 & 10.031 & 2.944 & 10.063 & 7.928 & 100.037\\
+		\hline
+		Verre epoxy FR4 fin & 2.862 & 9.982 & 2.914 & 9.948 & 0.46 & 100.44\\
+		\hline
+	\end{tabular}
+	\caption{Tableau présentant les paramètres géométriques (exprimés en mm) des différents MLIN}
+\end{table}
+
+
 \begin{figure}[H]
 	\centering
 	\input{ressources/schema_modele_caract.tex}
 	\caption{Schéma représentatif du modèle de caractérisation de lignes}
 	\label{fig:schema_modele_caract}
 \end{figure}
+
+Les résonateurs $L_{dis}C_{dis}$ ainsi que les composants MSTEP 1 et MSTEP 2 sont utilisés dans ce modèle pour prendre en compte des phénomènes de discontinuités. Les largeurs entre les lignes MLIN 1, MLIN 2 et MLIN 3 sont différentes et mènent à une déformation des champs électromagnétiques à l'interface entre ces lignes. Les composants MSTEP 1 et MSTEP 2 modélisent cette interface et ajoute cette discontinuité de largeur au modèle\footnote{Un tel phénomène de discontinuité peut être utile et mis à profit du concepteur. En effet, ces changements brutes de largeur de lignes permettent de réaliser des transformateurs d'impédances.}. En ce qui concerne les résonateurs $L_{dis}C_{dis}$, ces cellules prennent en compte la modification de la distribution du champ électromagnétique à l'interface entre le câble SMA et la plaque. En effet, le champ électromagnétique passe d'une distribution cylindrique à une distribution planaire.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.8]{ressources/electromagnetic_distribution_coaxial.png}
+	\includegraphics[scale=0.5]{ressources/electromagnetic_distribution_microstrip.png}
+	\caption{Schéma de coupe normal à la direction de propagation représentant les distributions du champ électromagnétique dans un câble coaxial (à gauche) et dans une ligne micro-ruban (à droite)}
+	\label{fig:schema_distribution_EOM}
+\end{figure}
+
+\newpage
+
+Dans le cas de la ligne micro-ruban, il est possible de remarquer des effets de bord du champ électrique. Ces effets de bord sont également présents selon la direction de propagation (non visible sur la figure \ref{fig:schema_distribution_EOM}). Le mode de propagation n'est donc pas un mode TEM car une telle distribution présente des composantes du champ $\overrightarrow{E}$ selon l'axe de propagation, à cause des effets de bord. Cependant, il est possible de poser l'hypothèse d'un mode quasi-TEM à la condition d'être loin des extrémités de la ligne pour éviter les fuites du champ $\overrightarrow{E}$. En effet avec cette condition, sur une tranche infinitésimale le mode de propagation est considéré comme un mode TEM. Dans la suite du rapport, le mode de propagation utilisé sera un mode quasi-TEM.
+
+\subsection{Caractérisation des lignes micro-rubans sous ADS}
+
+Il s'agit dans cette section de réaliser les quatre caractérisations en s'appuyant sur le modèle théorique décrit précédemment. Sur l'ensemble des paramètres à déterminer, il a été possible de fixer les paramètres géométriques par mesures directes sur les plaques. Le nombre d'inconnues est grandement réduit et les valeurs à fixer sont la constante diélectrique $\varepsilon_r$, la tangente de perte $\mbox{tan}(\delta)$ ainsi que l'inductance $L_{dis}$ et la capacité $C_{dis}$ des cellules résonatrices.
 
 \newpage
 
@@ -529,6 +571,17 @@ Une fois le coefficient de dénormalisation appliqué nous obtenons les valeurs 
 	\label{tab:valeurs_composant_passe_bas}
 \end{table}
 
-test
+
+\newpage
+
+\section*{Annexes}
+
+\subsection*{Plaque avec lignes de caractérisation}
+\includegraphics[scale=0.0525]{photo/ligne et filtre/plaque_caract_teflon.jpg}
+\includegraphics[scale=0.07]{photo/ligne et filtre/plaque_caract_epoxy.jpg}
+\begin{center}
+	Annexe 1 : Photographies de plaques avec des lignes de caractérisation (à gauche plaque en verre téflon et à gauche en verre epoxy FR4)
+\end{center}
+
 
 \end{document}
