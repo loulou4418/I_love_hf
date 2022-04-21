@@ -59,7 +59,7 @@ Il s'agit dans cette partie de réaliser des caractérisations de lignes, c'est-
 
 \newpage
 
-\subsection{Présentation du modèle théorique de caractérisation de lignes}
+\subsection{Présentation du modèle théorique de caractérisation large bande de lignes}
 
 Cette section est consacrée à la présentation d'une structure modélisant le comportement d'une ligne de caractérisation. Un tel modèle possède divers paramètres dont il est nécessaire de déterminer leur valeurs offrant la meilleure superposition avec les courbes expérimentales. Un schéma de ce modèle est présenté ci-dessous. Celui-ci comporte aux extrémités deux terminaux TERM 1 et TERM 2 qui représentent les câbles coaxiaux SMA (\textit{Subminiature version A}) de 50 $\Omega$ du VNA. Les composants MLIN 1 (\textit{Microstrip line 1}), MLIN 2 et 3 sont des lignes micro-rubans de largeur et longueur respectives $W_{acc1}$ et $L_{acc1}$, $W$ et $L$ et $W_{acc2}$ et $L_{acc2}$. MLIN 1 et MLIN 3 modélisent les lignes d'accès et MLIN 2 correspond à la ligne micro-ruban à caractériser. Un tableau ci-dessous précise les différents paramètres.
 
@@ -102,11 +102,97 @@ Les résonateurs $L_{dis}C_{dis}$ ainsi que les composants MSTEP 1 et MSTEP 2 so
 
 \newpage
 
-Dans le cas de la ligne micro-ruban, il est possible de remarquer des effets de bord du champ électrique. Ces effets de bord sont également présents selon la direction de propagation (non visible sur la figure \ref{fig:schema_distribution_EOM}). Le mode de propagation n'est donc pas un mode TEM car une telle distribution présente des composantes du champ $\overrightarrow{E}$ selon l'axe de propagation, à cause des effets de bord. Cependant, il est possible de poser l'hypothèse d'un mode quasi-TEM à la condition d'être loin des extrémités de la ligne pour éviter les fuites du champ $\overrightarrow{E}$. En effet avec cette condition, sur une tranche infinitésimale le mode de propagation est considéré comme un mode TEM. Dans la suite du rapport, le mode de propagation utilisé sera un mode quasi-TEM.
+Dans le cas de la ligne micro-ruban, il est possible de remarquer des effets de bord du champ électrique. Ces effets de bord sont également présents selon la direction de propagation (non visible sur la figure \ref{fig:schema_distribution_EOM}). Le mode de propagation n'est donc pas un mode TEM car une telle distribution présente des composantes du champ $\overrightarrow{E}$ selon l'axe de propagation, à cause des effets de bord. Cependant, il est possible de poser l'hypothèse d'un mode quasi-TEM à la condition d'être loin des extrémités de la ligne pour éviter les fuites du champ $\overrightarrow{E}$. En effet avec cette condition, sur une tranche infinitésimale le mode de propagation est considéré comme un mode TEM. Dans la suite du rapport, le mode de propagation utilisé sera un mode quasi-TEM. Afin d'approximer la propagation à un mode quasi-TEM, il est aussi nécessaire de travailler non pas avec la constante diélectrique $\varepsilon_r$ mais avec la constante $\varepsilon_{reff}$. Cela sera abordé plus tard dans le rapport.
 
-\subsection{Caractérisation des lignes micro-rubans sous ADS}
+\subsection{Caractérisation large bande des lignes micro-rubans sous ADS}
 
-Il s'agit dans cette section de réaliser les quatre caractérisations en s'appuyant sur le modèle théorique décrit précédemment. Sur l'ensemble des paramètres à déterminer, il a été possible de fixer les paramètres géométriques par mesures directes sur les plaques. Le nombre d'inconnues est grandement réduit et les valeurs à fixer sont la constante diélectrique $\varepsilon_r$, la tangente de perte $\mbox{tan}(\delta)$ ainsi que l'inductance $L_{dis}$ et la capacité $C_{dis}$ des cellules résonatrices.
+Il s'agit dans cette section de réaliser les quatre caractérisations en s'appuyant sur le modèle théorique décrit précédemment. Sur l'ensemble des paramètres à déterminer, il a été possible de fixer les paramètres géométriques par mesures directes sur les plaques. Le nombre d'inconnues est grandement réduit et les valeurs à fixer sont la constante diélectrique $\varepsilon_r$, la tangente de perte $\mbox{tan}(\delta)$ ainsi que l'inductance $L_{dis}$ et la capacité $C_{dis}$ des cellules résonatrices.\\
+Le logiciel de conception et de simulation ADS offre un ensemble d'outils utile à la caractérisation des divers substrats. La figure ci-dessous représente le modèle théorique transposé sur ADS. Le composant \texttt{MSub} est utilisé pour donner les caractéristiques géométriques et électriques de la ligne micro-ruban. \texttt{H} représente la hauteur $h$ de la figure (\ref{fig:modele_microstrip}), c'est-à-dire la distance entre le plan de masse et la ligne micro-ruban. \texttt{Er} et \texttt{Mur} sont respectivement la permittivité diélectrique $\varepsilon_r$ et la perméabilité magnétique $\mu_r$. Le paramètre \texttt{Cond} correspond à la conductivité du matériaux utilisé. Dans le cas du cuivre (Cu), sa conductivité $\sigma$ est de l'ordre de $5,87.10^{7}$ S/m. \texttt{Hu} représente la hauteur de la cage dans le cas d'une conception de ligne micro-ruban avec blindage, \texttt{T} est le paramètre $t$ de la figure (\ref{fig:modele_microstrip}), c'est-à-dire la hauteur de la couche de métallisation. Dans les technologies de photolithographie utilisées pour les plaques en laboratoire, en prenant en compte le phénomène de sous-gravure il faut espérer obtenir une précision de 17 ou 35 $\mu m$. Le paramètre \texttt{Rough} représente la rugosité du métal. Un tel paramètre permet de prendre en compte de l'état de surface, parfois inhomogène, du matériaux.\\
+Le paramètre \texttt{TanD} correspond à la tangente de perte $\mbox{tan}(\delta)$. Cette grandeur est définie comme le rapport de la partie imaginaire sur la partie réelle de la constante diélectrique $\varepsilon_r$. En effet pour un matériau réel, des pertes diélectriques peuvent apparaître au sein de celui-ci. Cet aspect de perte est formalisé mathématiquement par une partie imaginaire négative. Ainsi la permittivité diélectrique s'écrit :
+
+\begin{equation}
+	\varepsilon_r=\varepsilon'-j\varepsilon''=\varepsilon'(1-j\frac{\varepsilon''}{\varepsilon'}) \mbox{ avec } \mbox{tan}(\delta)=\frac{\varepsilon''}{\varepsilon'}
+\end{equation}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.29]{../2carac/caract_large_bande/modele_ADS.png}
+	\caption{Structure du modèle de caractérisation sur ADS}
+	\label{fig:modele_caract_ADS}
+\end{figure}
+
+\newpage
+
+Suite à l'implémentation du modèle théorique de caractérisation de ligne sur ADS, les simulations sont réalisées en respectant les dimensions de chaque plaque. Les quatre cas sont donnés dans la figure ci-dessous présentant l'évolution du paramètre $S_{11}$, le coefficient de réflexion en entrée, en fonction de la fréquence $f$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.24]{../2carac/caract_large_bande/caract_large_bande_teflarge.png}
+	\includegraphics[scale=0.20]{../2carac/caract_large_bande/caract_large_bande_teffin.png}\\
+	\includegraphics[scale=0.20]{../2carac/caract_large_bande/caract_large_bande_epoxylarge.png}
+	\includegraphics[scale=0.21]{../2carac/caract_large_bande/caract_large_bande_epoxyfin.png}
+	\caption{Graphique représentant les résultats de caractérisation large bande pour le téflon large (en haut à gauche), téflon fin (en haut à droite), epoxy large (en bas à gauche) et epoxy fin (en bas à droite)}
+	\label{fig:caracterisations}
+\end{figure}
+
+La superposition des résultats expérimentaux (courbe rouge) avec le résultat du modèle de caractérisation (courbe bleu) est effectué à l'aide du mode \texttt{tuning} d'ADS. Un tel mode laisse la main au concepteur pour modifier en temps-réel les paramètres qu'il souhaite, dans le cas de ces caractérisations il s'agit de $\mbox{tan}(\delta)$, $L_{dis}$, $C_{dis}$ et $\varepsilon_r$. Les paramètres obtenus après réglage sont donnés dans le tableau ci-dessous. Il faut remarque que dans les lignes larges ($W$ de l'ordre de 8mm), la superposition des deux courbes s'effectue sur environ 5 ventres et nœuds tandis que pour des largeurs fines ($W$ de l'ordre de 0,5mm), la superposition est seulement sur 2 ventres et 1 nœud.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		Matériaux & $\varepsilon_r$ & $\mbox{tan}(\delta)$ & $C_{dis}$ en pF & $L_{dis}$ en nH\\
+		\hline
+		Verre téflon large & 2.624 & 0.046 & 0.2 & 1.15\\
+		\hline
+		Verre téflon fin & 2.724 & 0.009 & 0.25 & 0.55\\
+		\hline
+		Verre epoxy FR4 large & 4.574 & 0.018 & 0.25 & 1.3\\
+		\hline
+		Verre epoxy FR4 fin & 4.674 & 0.048 & 0.3 & 1.45\\
+		\hline
+	\end{tabular}
+	\caption{Résultats des paramètres de la ligne après simulation et ajustement du modèle}
+\end{table}
+
+Les paramètres sont à mettre en regard avec les données garanties par le fabricant. La fiche technique pour le verre téflon (autrement nommé PTFE, polytétrafluoroéthylène) est proposée par la société CIF (Circuit Imprimé Français). La fiche technique pour le verre epoxy FR4 est celle de LP (Laminated Plastics). Ces paramètres $\varepsilon_r$ et $\mbox{tan}(\delta)$ donnés dans le tableau ci-après ont été déterminés sous une fréquence de 1 GHz avec une hauteur de substrat de 0,062 pouce, soit 1,58 mm, qui semble être après recherche une hauteur de référence pour la documentation des fabricants.
+
+\newpage
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Matériaux (fabricant) & $\varepsilon_r$ & $\mbox{tan}(\delta)$\\
+		\hline
+		Verre téflon (CIF) & 2.4 à 2.65 & 0.022\\
+		\hline
+		Verre epoxy FR4 (LP) & 4.34 & 0.016\\
+		\hline
+	\end{tabular}
+	\caption{Paramètres garanties par les fabricants de circuits imprimés}
+\end{table}
+
+Pour le cas de verre téflon et epoxy large ($W$ d'environ 8 mm), les valeurs obtenus sont de même ordre de grandeur que les données du fabricant. En ce qui concerne les caractérisations en largeur fine ($W$ d'environ 0,5 mm), les valeurs de la constante diélectrique ne sont pas aberrantes, cependant il y a une mauvaise évaluation de l'angle de perte $\mbox{tan}(\delta)$. Les résultats non conformes dans le cas des largeurs fines semblent être la conséquence d'une mauvaise superposition entre les deux courbes comme le montre la figure (\ref{fig:caracterisations}). Il a été cependant possible d'améliorer la caractérisation du téflon fin en modifiant le paramètre $t$, la hauteur de métallisation, à 17 $\mu m$. À l'aide de ce réglage, la constante diélectrique $\varepsilon_r$ est de 2,574, la tangente de perte $\mbox{tan}(\delta)$ est de 0,015 une inductance $L_{dis}$ de 0,9 nH et une capacité de 0,25 pF. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.26]{../2carac/caract_large_bande/caract_teflonfin_t_17_micron.png}
+	\caption{Graphique représentant les résultats de caractérisation large bande pour le téflon fin avec une hauteur de métallisation de 17 $\mu m$}
+	\label{fig:amelioration_teflon_fin}
+\end{figure}
+
+Pour finir avec la caractérisation de ces lignes, il est possible de\\
+
+Le logiciel fournit également un paramètre appelé la permittivité diélectrique relative effective $\varepsilon_{reff}$, déjà évoqué dans le rapport. Il s'agit d'une grandeur utile pour considérer le mode de propagation comme un mode quasi-TEM.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{../2carac/caract_large_bande/image_1_non_homogene.png}
+	\includegraphics[scale=0.4]{../2carac/caract_large_bande/image_2_homogene.png}
+	\caption{Schéma du principe d'homogénéisation de la constante diélectrique}
+	\label{fig:homogeneisation_epsilon_reff}
+\end{figure}
 
 \newpage
 
