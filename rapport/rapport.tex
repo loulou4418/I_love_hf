@@ -222,6 +222,17 @@ Le logiciel fournit également un paramètre appelé la permittivité diélectri
 	\caption{Schéma du principe d'homogénéisation de la constante diélectrique}
 	\label{fig:homogeneisation_epsilon_reff}
 \end{figure}
+
+Ce modèle simplifie grandement le mode de propagation puisqu'il est considéré comme non dispersif. Cependant ce modèle n'est valable que pour des fréquences faibles pour linéariser le mode dominant comme le montre le diagramme de dispersion (figure \ref{fig:diagramme_dispersion}). Au-delà de 10 GHz le mode quasi-TEM n'est plus valide et il est nécessaire de passer à un mode de propagation dispersif.\\
+En remarque supplémentaire, l'approximation quasi-TEM est indispensable car celle-ci constitue la base de la formation de toutes les grandeurs et formules utilisées au cours de ce rapport. Par exemple, sans une telle approximation il est impossible de définir une impédance caractéristique $Z_C$ pour le milieu.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.3]{../2carac/caract_large_bande/approx_QTEM.png}
+	\caption{Diagramme de dispersion de la ligne micro-ruban}
+	\label{fig:diagramme_dispersion}
+\end{figure}
+
 \newpage
 
 \subsection{Caractérisation faible bande des lignes micro-rubans}
@@ -260,17 +271,6 @@ En expriment non pas $\varepsilon_{reff}$ mais $\varepsilon_{r}$ fonction des au
 Le résultat de l'application numérique avec h = 1,58mm, w = 7,87mm et L=74,83mm est donné par un script Octave pour limiter les erreurs de frappe et conserver des décimales. La constante diélectrique $\varepsilon_{r}$ du teflon large caractérisée sur la bande $[1,43;2,79]GHz$ est de 2,4881 $F.m^{-1}$. La valeur obtenue est parfaitement cohérente avec les données du constructeurs CIF qui donne plage comprise entre 2,4 et 2,65 $F.m^{-1}$. Cette seconde méthode pour caractériser la constante diélectrique des lignes micro-rubans offre de bons résultats et permet de gagner du temps dans le cas d'une étude faible bande d'un substrat sans pertes.
 
 
-Ce modèle simplifie grandement le mode de propagation puisqu'il est considéré comme non dispersif. Cependant ce modèle n'est valable que pour des fréquences faibles pour linéariser le mode dominant comme le montre le diagramme de dispersion (figure \ref{fig:diagramme_dispersion}). Au-delà de 10 GHz le mode quasi-TEM n'est plus valide et il est nécessaire de passer à un mode de propagation dispersif.\\
-En remarque supplémentaire, l'approximation quasi-TEM est indispensable car celle-ci constitue la base de la formation de toutes les grandeurs et formules utilisées au cours de ce rapport. Par exemple, sans une telle approximation il est impossible de définir une impédance caractéristique $Z_C$ pour le milieu.
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.3]{../2carac/caract_large_bande/approx_QTEM.png}
-	\caption{Diagramme de dispersion de la ligne micro-ruban}
-	\label{fig:diagramme_dispersion}
-\end{figure}
-
-\newpage
 
 \section{Synthèse de filtre passe-bas en technologie}
 
