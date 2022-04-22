@@ -111,7 +111,7 @@ Le logiciel de conception et de simulation ADS offre un ensemble d'outils utile 
 Le paramètre \texttt{TanD} correspond à la tangente de perte $\mbox{tan}(\delta)$. Cette grandeur est définie comme le rapport de la partie imaginaire sur la partie réelle de la constante diélectrique $\varepsilon_r$. En effet pour un matériau réel, des pertes diélectriques peuvent apparaître au sein de celui-ci. Cet aspect de perte est formalisé mathématiquement par une partie imaginaire négative. Ainsi la permittivité diélectrique s'écrit :
 
 \begin{equation}
-	\varepsilon_r=\varepsilon'-j\varepsilon''=\varepsilon'(1-j\frac{\varepsilon''}{\varepsilon'}) \mbox{ avec } \mbox{tan}(\delta)=\frac{\varepsilon''}{\varepsilon'}
+	\varepsilon_r=\varepsilon'-j\varepsilon''=\varepsilon'(1-j\frac{\varepsilon''}{\varepsilon'}) \mbox{ avec } \mbox{tan}(\delta)=\frac{\varepsilon''}{\varepsilon'} \mbox{ dans le cas d'un diélectrique idéal avec $\sigma$=0}
 \end{equation}
 
 \begin{figure}[H]
@@ -182,9 +182,37 @@ Pour le cas de verre téflon et epoxy large ($W$ d'environ 8 mm), les valeurs ob
 	\label{fig:amelioration_teflon_fin}
 \end{figure}
 
-Pour finir avec la caractérisation de ces lignes, il est possible de\\
+Pour finir avec la caractérisation de ces lignes, il est possible de calculer des paramètres complémentaires à l'aide du logiciel AppCAD développé par la société Agilent. Une présentation de l'interface est donnée sur la figure ci-après. Le tableau ci-dessous présente les différents résultats. Les impédances caractéristiques $Z_C$ sont cohérentes. En effet pour le cas des lignes larges $Z_C<50$ $\Omega$ et pour les lignes fines $Z_C>50$ $\Omega$. Ces valeurs donnent également les avantages ou inconvénients d'un matériau en fonction d'un critère précis. Par exemple dans le cas d'application imposant des vitesses de propagation des signaux importantes, il est préférable de sélectionner un verre téflon plutôt qu'un verre epoxy (car le rapport $v_{\phi}/c$ est plus élevé pour le téflon). Le rapport $W/h$ est utile dans la détermination de l'impédance caractéristique de la ligne micro-ruban. En effet, selon sa valeur la formule est différente. 
 
-Le logiciel fournit également un paramètre appelé la permittivité diélectrique relative effective $\varepsilon_{reff}$, déjà évoqué dans le rapport. Il s'agit d'une grandeur utile pour considérer le mode de propagation comme un mode quasi-TEM.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		Matériaux & $Z_C$ (en $\Omega$) & $\lambda$ (en mm) & $v_{\phi}/c$ & $\varepsilon_{reff}$ & $W/h$\\
+		\hline
+		Verre téflon large & 33.15 & 201.7 & 0.673 & 2.209 & 4.981\\
+		\hline
+		Verre téflon fin & 140.31 & 217.6 & 0.726 & 1.898 & 0.297\\
+		\hline
+		Verre epoxy large & 24.19 & 153.3 & 0.511 & 3.822 & 5.285\\
+		\hline
+		Verre epoxy fin & 107.79 & 171.9 & 0.574 & 3.038 & 0.307\\
+		\hline
+	\end{tabular}
+	\caption{Paramètres calculés sur AppCAD à 1 GHz avec $\varepsilon_r$ de 2,55 pour le téflon et 4,6 pour l'epoxy}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{../2carac/caract_large_bande/interface_AppCAD.png}
+	\caption{Interface du logiciel AppCAD d'Agilent (exemple sur le calcul du verre epoxy fin)}
+	\label{fig:interface_appcad}
+\end{figure}
+
+
+
+
+Le logiciel fournit également un paramètre appelé la permittivité diélectrique relative effective $\varepsilon_{reff}$, déjà évoqué dans le rapport. Il s'agit d'une grandeur utile pour considérer le mode de propagation comme un mode quasi-TEM. En effet, dans le cas réel la ligne micro-ruban est entourée d'un second milieu autre que le diélectrique, l'air. Il s'agit alors d'homogénéiser l'ensemble afin de passer d'un système à 2 milieux ($\varepsilon_r$ et $\varepsilon_0$) à 1 seul milieu ($\varepsilon_{reff}$). Un schéma de principe est précisé ci-dessous.
 
 \begin{figure}[H]
 	\centering
@@ -192,6 +220,16 @@ Le logiciel fournit également un paramètre appelé la permittivité diélectri
 	\includegraphics[scale=0.4]{../2carac/caract_large_bande/image_2_homogene.png}
 	\caption{Schéma du principe d'homogénéisation de la constante diélectrique}
 	\label{fig:homogeneisation_epsilon_reff}
+\end{figure}
+
+Ce modèle simplifie grandement le mode de propagation puisqu'il est considéré comme non dispersif. Cependant ce modèle n'est valable que pour des fréquences faibles pour linéariser le mode dominant comme le montre le diagramme de dispersion (figure \ref{fig:diagramme_dispersion}). Au-delà de 10 GHz le mode quasi-TEM n'est plus valide et il est nécessaire de passer à un mode de propagation dispersif.\\
+En remarque supplémentaire, l'approximation quasi-TEM est indispensable car celle-ci constitue la base de la formation de toutes les grandeurs et formules utilisées au cours de ce rapport. Par exemple, sans une telle approximation il est impossible de définir une impédance caractéristique $Z_C$ pour le milieu.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.3]{../2carac/caract_large_bande/approx_QTEM.png}
+	\caption{Diagramme de dispersion de la ligne micro-ruban}
+	\label{fig:diagramme_dispersion}
 \end{figure}
 
 \newpage
