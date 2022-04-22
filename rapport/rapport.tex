@@ -55,6 +55,7 @@ Il s'agit dans cette partie de réaliser des caractérisations de lignes, c'est-
 		\hline
 	\end{tabular}
 	\caption{Tableau présentant les paramètres géométriques (exprimés en mm) des différentes lignes à caractériser}
+	 \label{tab:geo_ligne}
 \end{table}
 
 \newpage
@@ -193,10 +194,47 @@ Le logiciel fournit également un paramètre appelé la permittivité diélectri
 	\caption{Schéma du principe d'homogénéisation de la constante diélectrique}
 	\label{fig:homogeneisation_epsilon_reff}
 \end{figure}
+\newpage
+
+\subsection{Caractérisation faible bande des lignes micro-rubans}
+La partie précédente s'est chargée  de détailler une première démarche pour caractériser une ligne micro-ruban. Elle s'appuie sur la correspondance entre un modèle théorique simulé sous ADS et des mesures pratiques. La mise en place d'une simulation nécessite d'avoir sous la main des outils logiciels complexe. Dans cette partie, une seconde méthode, plus simple, dite de "coin de table" va être présentée. Elle a l'avantage de faire appel uniquement à des calculs simples. En contrepartie le résultat obtenue n'est valable que sur une partie de la bande passante. Les équations utilisées se base sur un modèle de substrat sans pertes où $tan( \delta)$ est négligé. Ainsi, seule la constante diélectrique $\varepsilon_r$ est obtenue avec cette méthode. \\
+La mesure s'effectue comme pour la méthode précédente sur une ligne micro-ruban de longueur l, de hauteur h et largeur w connues comme sur la figure \ref{fig:modele_microstrip}. Nous prendront l'exemple de la ligne de teflon large déjà caractérisée dont les données sont disponibles dans le tableau \ref{tab:geo_ligne}. Le coefficient de réflexion $S_{11}$ de cette ligne lorsqu’elle est chargée par 50$\Omega$ en sortie est le suivant :
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../2carac/S11_ADS/teflonLarge_commente}
+	\caption{Paramètre $S_{11}$ caractérisation faible bande teflon large}
+	\label{fig:teflonlargecommente}
+\end{figure}
+La figure \ref{fig:teflonlargecommente} illustre le relevé du coefficient de réflexion sur une ligne teflon large. On observe une périodicité qui s'explique de la façon suivante. L'impédance $Z_c$ de la ligne ne vaut pas 50$\Omega$, mais aux fréquences multiple de $\lambda /2$ (fréquence de résonance), l'impédance vue en entrée est de 50$\Omega$ et le coefficient de réflexion est nul. Aux fréquences de résonances, dont les premières sont repérées sur la figure \ref{fig:teflonlargecommente}, on a l'égalité suivante donnant la vitesse V fonction de l'écart entre $F1$ et $F2$ et de la longueur L :  
+\begin{equation}
+V=2.L(F2-F1) 
+\end{equation}
+Application numérique avec L = 74,82mm, $F_1$ = 1,43GHz et $F_2$ = 2,79GHz :
+\begin{equation}
+V= 2*74,82*10^{-3}(2,79-1,43)10^9=203.10^6m.s^{-1}
+\end{equation}
+Nous avons également $\varepsilon_{reff}$ fonction de la célérité C et de la vitesse V :
+\begin{equation}
+\varepsilon_{reff} = \Big(\frac{C}{V}\Big)^2
+\end{equation}
+Application numérique avec C = $3.10^8m.s^{-1}$ et V = $203.10^6m.s^{-1}$ :
+\begin{equation}
+\varepsilon_{reff} = \Big(\frac{3.10^8}{203,5.10^6}\Big)^2=2,173 F.m^{-1}
+\end{equation}
+Et finalement, dans le cas d'une ligne micro-rubans, l'expression liant $\varepsilon_{reff}$ en fonction des paramètres de la lignes est la suivante :
+\begin{equation}
+	\varepsilon_{reff} = \frac{\varepsilon_r+1}{2}+\frac{\varepsilon_r-1}{2}\sqrt{1+\frac{10h}{w}}
+\end{equation}
+En expriment non pas $\varepsilon_{reff}$ mais $\varepsilon_{r}$ fonction des autres éléments on obtient : 
+\begin{equation}
+\varepsilon_{r} = \frac{2\varepsilon_{reff} + \sqrt{1 + \cfrac{10h}{w}} - 1}{1 + \sqrt{1 + \cfrac{10h}{w}}}
+\end{equation}
+Le résultat de l'application numérique avec h = 1,58mm, w = 7,87mm et L=74,83mm est donné par un script Octave pour limiter les erreurs de frappe et conserver des décimales. La constante diélectrique $\varepsilon_{r}$ du teflon large caractérisée sur la bande $[1,43;2,79]GHz$ est de 2,4881 $F.m^{-1}$. La valeur obtenue est parfaitement cohérente avec les données du constructeurs CIF qui donne plage comprise entre 2,4 et 2,65 $F.m^{-1}$. Cette seconde méthode pour caractériser la constante diélectrique des lignes micro-rubans offre de bons résultats et permet de gagner du temps dans le cas d'une étude faible bande d'un substrat sans pertes.
+
 
 \newpage
 
-\section{Synthèse de filtre passe-bas en technologie }
+\section{Synthèse de filtre passe-bas en technologie}
 
 
 L'objectif est de réaliser un filtre passe-bas dont le gabarit est donné à la figure \ref{fig:gabarit_PasseBas} avec une réponse de Tchebychev.
