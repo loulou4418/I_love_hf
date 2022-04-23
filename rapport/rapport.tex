@@ -156,7 +156,7 @@ La superposition des résultats expérimentaux (courbe rouge) avec le résultat 
 	\caption{Résultats des paramètres de la ligne après simulation et ajustement du modèle}
 \end{table}
 
-Les paramètres sont à mettre en regard avec les données garanties par le fabricant. La fiche technique pour le verre téflon (autrement nommé PTFE, polytétrafluoroéthylène) est proposée par la société CIF (Circuit Imprimé Français). La fiche technique pour le verre epoxy FR4 est celle de LP (Laminated Plastics). Ces paramètres $\varepsilon_r$ et $\mbox{tan}(\delta)$ donnés dans le tableau ci-après ont été déterminés sous une fréquence de 1 GHz avec une hauteur de substrat de 0,062 pouce, soit 1,58 mm, qui semble être après recherche une hauteur de référence pour la documentation des fabricants.
+Les paramètres sont à mettre en regard avec les données garanties par le fabricant. La fiche technique pour le verre téflon (autrement nommé PTFE, polytétrafluoroéthylène) est proposée par la société CIF (Circuit Imprimé Français).\cite{data_PTFE} La fiche technique pour le verre epoxy FR4 est celle de LP (Laminated Plastics).\cite{data_fr4} Ces paramètres $\varepsilon_r$ et $\mbox{tan}(\delta)$ donnés dans le tableau ci-après ont été déterminés sous une fréquence de 1 GHz avec une hauteur de substrat de 0,062 pouce, soit 1,58 mm, qui semble être après recherche une hauteur de référence pour la documentation des fabricants.
 
 \newpage
 
@@ -510,14 +510,64 @@ Le gabarit en atténuation fourni dans le cahier des charges est donné ci-desso
 	\label{fig:gabarit_elliptique}
 \end{figure}
 
-Le cahier des charges contient également une table de valeurs pour la détermination du filtre passe-bas elliptique normalisé
+Le cahier des charges contient également une table de valeurs pour la détermination du filtre passe-bas elliptique normalisé. Le choix de la ligne est effectuée en fonction des spécifications données sur le gabarit. Il est demandé par exemple une atténuation maximale $A_{max}$ en bande passante de 0,01 dB et un ROS (Rapport d'ondes stationnaires) n'excédant pas 1,1. La ligne choisie dans le nomogramme est donnée ci-dessous.
 
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		$A_{max}$ (en dB) & $VSWR$ & $\Omega$ & $A_s$ (en dB) & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$ & $g_7$\\
+		\hline
+		0.01 & 1.10 & 1.41 & 30.2 & 0.6265 & 0.1920 & 1.1099 & 1.2706 & 0.6535 & 0.7125 & 0.3441\\
+		\hline
+	\end{tabular}
+	\caption{Nomogramme pour la détermination du filtre passe-bas elliptique normalisé}
+	\label{tab:nomogramme_elliptique}
+\end{table}
 
-\subsection{Synthèse du filtre passe-bas en éléments localisés}
+L'ensemble des $g_k$ formera un filtre respectant le gabarit imposé. Il s'agit des quatre premiers paramètres qui justifient le choix de ces valeurs. En effet l'atténuation maximale en bande passante est de 0,01 dB comme exigé sur le cahier des charges. Le VSWR (\textit{Voltage standing wave ratio}) est un paramètre inconnu mais simplement de nom. En réalité il s'agit du ROS, un critère à maîtriser afin d'éviter une importante réflexion qui mènerait à une perte de puissance. Le ROS est fixé à 1,10 c'est-à-dire que sur l'ensemble de la puissance transmise, 99,8\% est pour la charge et 0,2\% de la puissance est réfléchie. Ce paramètre semble peut-être anecdotique mais il peut s'avérer très important dans certaines applications. Par exemple, une puissance réfléchie trop élevée brûlerait le circuit et provoquerait la destruction du composant. Le paramètre $A_s$ donnera une atténuation minimale en bande atténuée de 30,2 dB, ce qui satisfait amplement le cahier des charges. Par ailleurs, la dernière variable $\Omega$ garantit qu'à la fréquence de 1,41$f_c$, la valeur $A_s$ sera atteinte.
+
+\newpage
+
+\subsection{Synthèse du filtre passe-bas elliptique en éléments localisés}
+
+Dans cette section, il s'agit de synthétiser le filtre passe-bas elliptique en éléments localisés, c'est-à-dire avec des selfs et des capacités. Le cahier des charges offre le choix entre le filtre passe-bas en topologie impédance ou admittance. Le choix de l'un par rapport à l'autre n'apportera aucune différence sur le comportement fréquentiel. Afin de respecter le modèle d'équivalence tronçon de ligne - éléments localisés en technologie micro-ruban, la topologie impédance est choisie car le modèle suggère que les capacités doivent être tirées à la masse. Cependant, une publication IEEE (\textit{Institute electrical and electronics engineers}) propose la conception en micro-ruban de filtres elliptiques topologie admittance à l'aide d'une ligne symétrique à deux coudes et d'une capacité interdigitée.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{../3synthPBas/elliptique/solution_admittance.png}
+	\caption{Topologie admittance du filtre elliptique en éléments localisés (b) et de son équivalent en technologie micro-ruban}
+	\label{fig:elliptique_IEEE}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}
+		\ctikzset{inductors/scale=0.9,inductor=american}
+		\draw (0,2)
+		to[L=$g_1$] (2,2)
+		to[L=$g_2$] (2,0)
+		to[C=$g_3$]	(2,-1) node[ground]{}
+		(2,2)to[L=$g_4$] (4,2)
+		to[L=$g_5$] (4,0)
+		to[C=$g_6$]	(4,-1) node[ground]{}
+		(4,2)to[L=$g_7$] (6,2);
+	\end{circuitikz}
+	\caption{Schéma prototype d'un filtre passe-bas de Cauer en topologie impédance}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{../3synthPBas/elliptique/}
+	\caption{Topologie admittance du filtre elliptique en éléments localisés (b) et de son équivalent en technologie micro-ruban}
+	\label{fig:montage_ADS_elliptique}
+\end{figure}
+
+\newpage
 
 \subsection*{Validations}
 
-\subsection{Transposition du filtre passe-bas en technologie micro-ruban}
+\subsection{Transposition du filtre passe-bas elliptique en technologie micro-ruban}
 
 \subsection*{Validations}
 
