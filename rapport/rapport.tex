@@ -739,7 +739,230 @@ Une fois le coefficient de dénormalisation appliqué nous obtenons les valeurs 
 \end{table}
 
 \newpage
-\section{Synthèse d'amplificateur}
+\section{Synthèse d'amplificateur à bande étroite}
+L’objectif de cette partie est de réaliser un amplificateur à bande étroite adapté en MAG (Maximum Available Gain) à 2GHz prenant la méthodologie de conception (vue en TD). Le transistor utilisé est le transistor AT-41485. En entrée, il reçoit le maximum de puissance par le générateur, et a la sortie, il envoie le maximum de puissance à la charge de 50 Ohm.
+
+\subsection{Démarche de conception d’amplificateur}
+
+\subsubsection{Théorie de la matrice S}
+Les paramètres S relient les ondes réfléchies et les ondes incidentes. En mathématiques, la matrice S est utilisée pour représenter ces paramètres. Un quadripôle est illustré à la figure \ref{fig:matrice_s}, les entrées sont représentées par $a_{1}$ et $a_{2}$, les sorties sont représentées par $b_{1}$ et $b_{2}$. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{../5SynthAmp/Matrice_S}
+	\caption{Matrice S dans un quadripôle}
+	\label{fig:matrice_s}
+\end{figure}
+
+La matrice de ce quadripôle est la suivante :
+
+\begin{equation}
+	\begin{bmatrix}
+		b_{1}\\
+		b_{2}
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		S_{11} & S_{12}\\
+		S_{21} & S_{22}
+	\end{bmatrix}
+	\begin{bmatrix}
+		a_{1}\\
+		a_{2}
+	\end{bmatrix}
+\end{equation}
+
+En développant cette matrice, on obtient la relation suivante :
+
+\begin{equation}
+	\left\{\begin{matrix}
+		b_{1}=S_{11}a_{1}+S_{12}a_{2}\\
+		b_{2}=S_{21}a_{1}+S_{22}a_{2}
+	\end{matrix}\right.
+	\label{eqmatrix}
+\end{equation}
+
+D’où:
+
+$\bullet$ $S_{11}$: Le coefficient de réflexion à l’entrée lorsque la sortie du quadripôle est fermée sur une charge adaptée;
+
+$\bullet$ $S_{12}$: Le coefficient de transmission entre le port 2 et le port 1 lorsque le port 1 est fermée sur une charge adaptée;
+
+$\bullet$ $S_{21}$: Le coefficient de transmission entre le port 1 et le port 2 lorsque le port 2 est fermée sur une charge adaptée;
+
+$\bullet$ $S_{22}$: Le coefficient à la sortie du quadripôle.
+
+\subsubsection{Calcul du MAG}
+
+Le transistor AT-41485 est défini par les paramètres de la matrice S. Grâce à la datasheet, nous pouvons obtenir les paramètres S de AT-41485, c'est-à-dire les éléments de la matrice S. Selon le cahier des charges, l'amplificateur à concevoir fonctionnera à 2GHz, et le point de polarisation retenu pour l’amplificateur est le suivant :
+
+{\centering
+	$V_{CE}=8V$\\
+	$I_{C}=10mA$\\
+}
+
+Donc la datasheet choisie est la suivante: 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{../5SynthAmp/Datasheet_AT41485}
+	\caption{Datasheet de AT-41485}
+	\label{fig:datasheet_AT}
+\end{figure}
+
+Les paramètres S de AT-41485 sont :
+
+{\centering
+$S_{11}=0.58e^{j166^{\circ}}$\\
+$S_{21}=3.55e^{j64^{\circ}}$\\
+$S_{12}=0.06e^{j54^{\circ}}$\\
+$S_{22}=0.41e^{-j38^{\circ}}$\\
+}
+
+Pour réaliser cet amplificateur, il faut mettre en cascade. Donc on insère le transistor polarise entre deux quadripôles sans pertes symétriques : Quadripôle d’entrée et quadripôle de sortie. La figure \ref{fig:schema_ampli} montre le montage amplificateur. 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{../5SynthAmp/Schema_ampli}
+	\caption{Schéma du montage amplificateur}
+	\label{fig:schema_ampli}
+\end{figure}
+
+La matrice S du quadripôle d’entrée est :
+\begin{equation}
+	Q_{E} = \begin{bmatrix}
+		\Gamma_{E} & t_{E}\\
+		t_{E} & \Gamma_{E}\\
+	\end{bmatrix}
+\end{equation}
+
+La matrice S du quadripôle de sortie est :
+\begin{equation}
+	Q_{L} = \begin{bmatrix}
+		\Gamma_{L} & t_{L}\\
+		t_{L} & \Gamma_{L}\\
+	\end{bmatrix}
+\end{equation}
+
+Parce que les quadripôles d'entrée et de sortie sont sans perte, la relation est la suivante :
+\begin{equation}
+	{\begin{bmatrix}
+		S^\ast 
+	\end{bmatrix}}'
+	\begin{bmatrix}
+		S
+	\end{bmatrix}=
+	\begin{bmatrix}
+		I
+	\end{bmatrix}
+\end{equation}
+
+Donc:
+\begin{equation}
+	\begin{bmatrix}
+		\Gamma_{E}^\ast & t_{E}^\ast\\
+		t_{E}^\ast & \Gamma_{E}^\ast
+	\end{bmatrix}
+	\begin{bmatrix}
+		\Gamma_{E} & t_{E}\\
+		t_{E} & \Gamma_{E}
+	\end{bmatrix}=
+	\begin{bmatrix}
+		1 & 0\\
+		0 & 1
+	\end{bmatrix}
+\end{equation}
+
+Soit:
+\begin{equation}
+	\Gamma_{E}^{\ast}\Gamma_{E}+t_{E}^{\ast}t_{E}
+	={\mid \Gamma_{E}\mid}^2+{\mid t_{E}\mid}^2
+	=1
+	\label{eq2}
+\end{equation}
+
+De même, on a:
+\begin{equation}
+	{\mid \Gamma_{L}\mid}^2+{\mid t_{L}\mid}^2
+	=1
+	\label{eq3}
+\end{equation}
+
+Ensuite, on utilise le graphe de fluence pour analyser la relation entre les trois parties de l'amplificateur. Par la mise en cascade du générateur, du quadripôle d’entrée, du transistor, du quadripôle de sortie, et de la charge, on peut déduire le graphe de fluence global comme suit :
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{../5SynthAmp/flux_global}
+	\caption{Graphe de fluence global du montage amplificateur}
+	\label{fig:flux_global}
+\end{figure}
+
+On suppose que le générateur et la charge sont adaptées, c’est-à-dire $\Gamma_{g}=\Gamma_{2}=0$, on peut simplifier le graphe de fluence comme suit :
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{../5SynthAmp/flux_simple}
+	\caption{Graphe de fluence simplifié du montage amplificateur}
+	\label{fig:flux_simple}
+\end{figure}
+
+Grâce aux équations \ref{eqmatrix}, nous pouvons obtenir la relation suivante:
+\begin{equation}
+	b_{2}=\frac{S_{21}}{1-S_{22}\Gamma_{L}}a_{1}
+\end{equation}
+
+Soit: 
+\begin{equation}
+	b_{1}=S_{11}a_{1}+\frac{S_{12}S_{21}\Gamma_{L}}{1-S_{22}\Gamma_{2}}a_{1}
+\end{equation}
+
+Par conséquent, nous pouvons dériver l'equation de ${S_{11}}'$:
+\begin{equation}
+	{S_{11}}'=\frac{b_{1}}{a_{1}}
+	=S_{11}+\frac{S_{12}S_{21}\Gamma_{L}}{1-S_{22}\Gamma_{L}}
+\end{equation}
+
+De la même manière, nous pouvons dériver l'equation de ${S_{22}}'$:
+\begin{equation}
+	{S_{22}}'=\frac{b_{2}}{a_{2}}
+	=S_{22}+\frac{S_{12}S_{21}\Gamma_{E}}{1-S_{11}\Gamma_{E}}
+\end{equation}
+
+On peut utiliser la règle de Mason afin de déterminer le gain de l’amplificateur. Cette règle indique que :
+\begin{equation}
+	G=\frac{B}{A}=\frac{N}{D}
+\end{equation}
+
+Où:
+\begin{equation}
+	\left\{\begin{matrix}
+		D=1-\sum{B_{i}}+\sum{B_{i}B_{j}}-\sum{B_{i}B_{j}B_{k}}+{\cdots}\\ 
+		N=\sum{T_{i}D_{i}}
+	\end{matrix}\right.
+\end{equation}
+
+Avec:
+
+$\bullet$ $B_{i}$ représente le produit des paramètres S dans une boucle;\\
+$\bullet$ $B_{i}B_{j}$ est les produits des boucles disjointes ;\\
+$\bullet$ $T_{i}$ est le produit des paramètres S d’un trajet direct de A à B;\\
+$\bullet$ $D_{i}$ est calculé comme D après avoir supprimé le trajet direct de A à B.\\
+
+Donc dans nos cas, on obtient finalement:
+\begin{equation}
+	G=\frac{B}{A}=\frac{t_{e}S_{21}t_{L}}{1-\left (S_{11}\Gamma_{e}+S_{22}\Gamma_{L}+S_{21}\Gamma_{L}S_{12}\Gamma_{e}\right)+S_{11}\Gamma_{e}S_{22}\Gamma_{L}}
+\end{equation}
+
+Par la suite, on utilise les équations \ref{eq2} et \ref{eq3} pour remplacer $\mid t_{e}\mid ^{2}$ et $\mid t_{l}\mid ^{2}$. On obtient donc:
+\begin{equation}
+	G_{T}=\frac{\mid t_{e}\mid ^{2}}{\mid 1-\Gamma_{e}{S_{11}}'\mid ^{2}}\mid S_{21}\mid ^{2}\frac{\mid t_{L}\mid ^{2}}{\mid 1-\Gamma_{L}S_{22}\mid^{2}}
+\end{equation}
+
+
+\subsection{Conception d’amplificateur idéal}
+
+\subsection{Conception d’amplificateur en technologie micro-ruban}
+
+\subsection{Adaptation d’un transistor avec polarisation}
+
 
 \cite{cours_MF} \cite{cours_HF}
 \bibliography{bib_hf}{}
@@ -754,6 +977,8 @@ Une fois le coefficient de dénormalisation appliqué nous obtenons les valeurs 
 \begin{center}
 	Annexe 1 : Photographies de plaques avec des lignes de caractérisation (à gauche plaque en verre téflon et à gauche en verre epoxy FR4)
 \end{center}
+
+
 
 
 
