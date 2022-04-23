@@ -500,6 +500,19 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 
 \subsection{Avant-propos : rappel du cahier des charges}
 
+La partie qui suit consiste en la conception d'un second type de filtre passe-bande. Il s'agit d'un filtre passe-bas elliptique, également appelé filtre de Cauer selon la littérature. Un tel système possède diverses propriétés intéressantes. En effet, il s'agit d'un filtre avec une ondulation en bande passante mais également en bande atténuée. L'ondulation en bande atténuée présente à des fréquences particulières un gain en dB projeté vers $-\infty$. Il s'agit d'une propriété très intéressante car si le concepteur a la main sur ces fréquences particulières, celui-ci peut s'en servir pour grandement atténuer un quelconque signal nuisible. De plus, aucun autre filtre d'ordre égal peut avoir une raideur aussi importante que le filtre de Cauer. 
+Le gabarit en atténuation fourni dans le cahier des charges est donné ci-dessous avec $f_c$ la fréquence de coupure du filtre à 2,5 GHz.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{../3synthPBas/elliptique/gabarit_passe-bas_elliptique.png}
+	\caption{Gabarit du filtre passe-bas elliptique imposé par le cahier des charges}
+	\label{fig:gabarit_elliptique}
+\end{figure}
+
+Le cahier des charges contient également une table de valeurs pour la détermination du filtre passe-bas elliptique normalisé
+
+
 \subsection{Synthèse du filtre passe-bas en éléments localisés}
 
 \subsection*{Validations}
