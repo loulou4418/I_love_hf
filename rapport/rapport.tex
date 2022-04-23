@@ -55,6 +55,7 @@ Il s'agit dans cette partie de réaliser des caractérisations de lignes, c'est-
 		\hline
 	\end{tabular}
 	\caption{Tableau présentant les paramètres géométriques (exprimés en mm) des différentes lignes à caractériser}
+	 \label{tab:geo_ligne}
 \end{table}
 
 \newpage
@@ -111,7 +112,7 @@ Le logiciel de conception et de simulation ADS offre un ensemble d'outils utile 
 Le paramètre \texttt{TanD} correspond à la tangente de perte $\mbox{tan}(\delta)$. Cette grandeur est définie comme le rapport de la partie imaginaire sur la partie réelle de la constante diélectrique $\varepsilon_r$. En effet pour un matériau réel, des pertes diélectriques peuvent apparaître au sein de celui-ci. Cet aspect de perte est formalisé mathématiquement par une partie imaginaire négative. Ainsi la permittivité diélectrique s'écrit :
 
 \begin{equation}
-	\varepsilon_r=\varepsilon'-j\varepsilon''=\varepsilon'(1-j\frac{\varepsilon''}{\varepsilon'}) \mbox{ avec } \mbox{tan}(\delta)=\frac{\varepsilon''}{\varepsilon'}
+	\varepsilon_r=\varepsilon'-j\varepsilon''=\varepsilon'(1-j\frac{\varepsilon''}{\varepsilon'}) \mbox{ avec } \mbox{tan}(\delta)=\frac{\varepsilon''}{\varepsilon'} \mbox{ dans le cas d'un diélectrique idéal avec $\sigma$=0}
 \end{equation}
 
 \begin{figure}[H]
@@ -155,7 +156,7 @@ La superposition des résultats expérimentaux (courbe rouge) avec le résultat 
 	\caption{Résultats des paramètres de la ligne après simulation et ajustement du modèle}
 \end{table}
 
-Les paramètres sont à mettre en regard avec les données garanties par le fabricant. La fiche technique pour le verre téflon (autrement nommé PTFE, polytétrafluoroéthylène) est proposée par la société CIF (Circuit Imprimé Français). La fiche technique pour le verre epoxy FR4 est celle de LP (Laminated Plastics). Ces paramètres $\varepsilon_r$ et $\mbox{tan}(\delta)$ donnés dans le tableau ci-après ont été déterminés sous une fréquence de 1 GHz avec une hauteur de substrat de 0,062 pouce, soit 1,58 mm, qui semble être après recherche une hauteur de référence pour la documentation des fabricants.
+Les paramètres sont à mettre en regard avec les données garanties par le fabricant. La fiche technique pour le verre téflon (autrement nommé PTFE, polytétrafluoroéthylène) est proposée par la société CIF (Circuit Imprimé Français).\cite{data_PTFE} La fiche technique pour le verre epoxy FR4 est celle de LP (Laminated Plastics).\cite{data_fr4} Ces paramètres $\varepsilon_r$ et $\mbox{tan}(\delta)$ donnés dans le tableau ci-après ont été déterminés sous une fréquence de 1 GHz avec une hauteur de substrat de 0,062 pouce, soit 1,58 mm, qui semble être après recherche une hauteur de référence pour la documentation des fabricants.
 
 \newpage
 
@@ -182,9 +183,37 @@ Pour le cas de verre téflon et epoxy large ($W$ d'environ 8 mm), les valeurs ob
 	\label{fig:amelioration_teflon_fin}
 \end{figure}
 
-Pour finir avec la caractérisation de ces lignes, il est possible de\\
+Pour finir avec la caractérisation de ces lignes, il est possible de calculer des paramètres complémentaires à l'aide du logiciel AppCAD développé par la société Agilent. Une présentation de l'interface est donnée sur la figure ci-après. Le tableau ci-dessous présente les différents résultats. Les impédances caractéristiques $Z_C$ sont cohérentes. En effet pour le cas des lignes larges $Z_C<50$ $\Omega$ et pour les lignes fines $Z_C>50$ $\Omega$. Ces valeurs donnent également les avantages ou inconvénients d'un matériau en fonction d'un critère précis. Par exemple dans le cas d'application imposant des vitesses de propagation des signaux importantes, il est préférable de sélectionner un verre téflon plutôt qu'un verre epoxy (car le rapport $v_{\phi}/c$ est plus élevé pour le téflon). Le rapport $W/h$ est utile dans la détermination de l'impédance caractéristique de la ligne micro-ruban. En effet, selon sa valeur la formule est différente. 
 
-Le logiciel fournit également un paramètre appelé la permittivité diélectrique relative effective $\varepsilon_{reff}$, déjà évoqué dans le rapport. Il s'agit d'une grandeur utile pour considérer le mode de propagation comme un mode quasi-TEM.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		Matériaux & $Z_C$ (en $\Omega$) & $\lambda$ (en mm) & $v_{\phi}/c$ & $\varepsilon_{reff}$ & $W/h$\\
+		\hline
+		Verre téflon large & 33.15 & 201.7 & 0.673 & 2.209 & 4.981\\
+		\hline
+		Verre téflon fin & 140.31 & 217.6 & 0.726 & 1.898 & 0.297\\
+		\hline
+		Verre epoxy large & 24.19 & 153.3 & 0.511 & 3.822 & 5.285\\
+		\hline
+		Verre epoxy fin & 107.79 & 171.9 & 0.574 & 3.038 & 0.307\\
+		\hline
+	\end{tabular}
+	\caption{Paramètres calculés sur AppCAD à 1 GHz avec $\varepsilon_r$ de 2,55 pour le téflon et 4,6 pour l'epoxy}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{../2carac/caract_large_bande/interface_AppCAD.png}
+	\caption{Interface du logiciel AppCAD d'Agilent (exemple sur le calcul du verre epoxy fin)}
+	\label{fig:interface_appcad}
+\end{figure}
+
+
+
+
+Le logiciel fournit également un paramètre appelé la permittivité diélectrique relative effective $\varepsilon_{reff}$, déjà évoqué dans le rapport. Il s'agit d'une grandeur utile pour considérer le mode de propagation comme un mode quasi-TEM. En effet, dans le cas réel la ligne micro-ruban est entourée d'un second milieu autre que le diélectrique, l'air. Il s'agit alors d'homogénéiser l'ensemble afin de passer d'un système à 2 milieux ($\varepsilon_r$ et $\varepsilon_0$) à 1 seul milieu ($\varepsilon_{reff}$). Un schéma de principe est précisé ci-dessous.
 
 \begin{figure}[H]
 	\centering
@@ -194,9 +223,56 @@ Le logiciel fournit également un paramètre appelé la permittivité diélectri
 	\label{fig:homogeneisation_epsilon_reff}
 \end{figure}
 
+Ce modèle simplifie grandement le mode de propagation puisqu'il est considéré comme non dispersif. Cependant ce modèle n'est valable que pour des fréquences faibles pour linéariser le mode dominant comme le montre le diagramme de dispersion (figure \ref{fig:diagramme_dispersion}). Au-delà de 10 GHz le mode quasi-TEM n'est plus valide et il est nécessaire de passer à un mode de propagation dispersif.\\
+En remarque supplémentaire, l'approximation quasi-TEM est indispensable car celle-ci constitue la base de la formation de toutes les grandeurs et formules utilisées au cours de ce rapport. Par exemple, sans une telle approximation il est impossible de définir une impédance caractéristique $Z_C$ pour le milieu.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.3]{../2carac/caract_large_bande/approx_QTEM.png}
+	\caption{Diagramme de dispersion de la ligne micro-ruban}
+	\label{fig:diagramme_dispersion}
+\end{figure}
+
 \newpage
 
-\section{Synthèse de filtre passe-bas en technologie micro ruban}
+\subsection{Caractérisation faible bande des lignes micro-rubans}
+La partie précédente s'est chargée de détailler une première démarche pour caractériser une ligne micro-ruban. Elle s'appuie sur la correspondance entre un modèle théorique simulé sous ADS et des mesures pratiques. La mise en place d'une simulation nécessite d'avoir sous la main des outils logiciels complexes. Dans cette partie, une seconde méthode, plus simple, dite de "coin de table" va être présentée. Elle a l'avantage de faire appel uniquement à des calculs simples. En contrepartie le résultat obtenue n'est valable que sur une partie de la bande passante. Les équations utilisées se base sur un modèle de substrat sans pertes où $tan( \delta)$ est négligé. Ainsi, seule la constante diélectrique $\varepsilon_r$ est obtenue avec cette méthode. \\
+La mesure s'effectue comme pour la méthode précédente sur une ligne micro-ruban de longueur l, de hauteur h et largeur w connues comme sur la figure \ref{fig:modele_microstrip}. Nous prendront l'exemple de la ligne de teflon large déjà caractérisée dont les données sont disponibles dans le tableau \ref{tab:geo_ligne}. Le coefficient de réflexion $S_{11}$ de cette ligne lorsqu’elle est chargée par 50$\Omega$ en sortie est le suivant :
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../2carac/S11_ADS/teflonLarge_commente}
+	\caption{Paramètre $S_{11}$ caractérisation faible bande teflon large}
+	\label{fig:teflonlargecommente}
+\end{figure}
+La figure \ref{fig:teflonlargecommente} illustre le relevé du coefficient de réflexion sur une ligne teflon large. On observe une périodicité qui s'explique de la façon suivante. L'impédance $Z_c$ de la ligne ne vaut pas 50$\Omega$, mais aux fréquences multiple de $\lambda /2$ (fréquence de résonance), l'impédance vue en entrée est de 50$\Omega$ et le coefficient de réflexion est nul. Aux fréquences de résonances, dont les premières sont repérées sur la figure \ref{fig:teflonlargecommente}, on a l'égalité suivante donnant la vitesse V fonction de l'écart entre $F1$ et $F2$ et de la longueur L :  
+\begin{equation}
+V=2.L(F2-F1) 
+\end{equation}
+Application numérique avec L = 74,82mm, $F_1$ = 1,43GHz et $F_2$ = 2,79GHz :
+\begin{equation}
+V= 2*74,82*10^{-3}(2,79-1,43)10^9=203.10^6m.s^{-1}
+\end{equation}
+Nous avons également $\varepsilon_{reff}$ fonction de la célérité C et de la vitesse V :
+\begin{equation}
+\varepsilon_{reff} = \Big(\frac{C}{V}\Big)^2
+\end{equation}
+Application numérique avec C = $3.10^8m.s^{-1}$ et V = $203.10^6m.s^{-1}$ :
+\begin{equation}
+\varepsilon_{reff} = \Big(\frac{3.10^8}{203,5.10^6}\Big)^2=2,173 F.m^{-1}
+\end{equation}
+Et finalement, dans le cas d'une ligne micro-rubans, l'expression liant $\varepsilon_{reff}$ en fonction des paramètres de la lignes est la suivante :
+\begin{equation}
+	\varepsilon_{reff} = \frac{\varepsilon_r+1}{2}+\frac{\varepsilon_r-1}{2}\sqrt{1+\frac{10h}{w}}
+\end{equation}
+En expriment non pas $\varepsilon_{reff}$ mais $\varepsilon_{r}$ fonction des autres éléments on obtient : 
+\begin{equation}
+\varepsilon_{r} = \frac{2\varepsilon_{reff} + \sqrt{1 + \cfrac{10h}{w}} - 1}{1 + \sqrt{1 + \cfrac{10h}{w}}}
+\end{equation}
+Le résultat de l'application numérique avec h = 1,58mm, w = 7,87mm et L=74,83mm est donné par un script Octave pour limiter les erreurs de frappe et conserver des décimales. La constante diélectrique $\varepsilon_{r}$ du teflon large caractérisée sur la bande $[1,43;2,79]GHz$ est de 2,4881 $F.m^{-1}$. La valeur obtenue est parfaitement cohérente avec les données du constructeurs CIF qui donne plage comprise entre 2,4 et 2,65 $F.m^{-1}$. Cette seconde méthode pour caractériser la constante diélectrique des lignes micro-rubans offre de bons résultats et permet de gagner du temps dans le cas d'une étude faible bande d'un substrat sans pertes.
+
+
+
+\section{Synthèse de filtre passe-bas Tchebychev en technologie micro-ruban}
 
 \subsection{Filtre de Tchebychev}
 \subsubsection{Choix des valeurs de composants}
@@ -520,8 +596,84 @@ Dans cette partie on cherche à remplacer les condensateurs parallèles du filtr
 	%	\label{fig:observation_registres_internes}
 \end{figure}
 
+\newpage
 
-\subsection{Filtre Elliptique}
+\section{Synthèse d'un filtre passe-bas elliptique en technologie micro-ruban}
+
+\subsection{Avant-propos : rappel du cahier des charges}
+
+La partie qui suit consiste en la conception d'un second type de filtre passe-bande. Il s'agit d'un filtre passe-bas elliptique, également appelé filtre de Cauer selon la littérature. Un tel système possède diverses propriétés intéressantes. En effet, il s'agit d'un filtre avec une ondulation en bande passante mais également en bande atténuée. L'ondulation en bande atténuée présente à des fréquences particulières un gain en dB projeté vers $-\infty$. Il s'agit d'une propriété très intéressante car si le concepteur a la main sur ces fréquences particulières, celui-ci peut s'en servir pour grandement atténuer un quelconque signal nuisible. De plus, aucun autre filtre d'ordre égal peut avoir une raideur aussi importante que le filtre de Cauer. 
+Le gabarit en atténuation fourni dans le cahier des charges est donné ci-dessous avec $f_c$ la fréquence de coupure du filtre à 2,5 GHz.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{../3synthPBas/elliptique/gabarit_passe-bas_elliptique.png}
+	\caption{Gabarit du filtre passe-bas elliptique imposé par le cahier des charges}
+	\label{fig:gabarit_elliptique}
+\end{figure}
+
+Le cahier des charges contient également une table de valeurs pour la détermination du filtre passe-bas elliptique normalisé. Le choix de la ligne est effectuée en fonction des spécifications données sur le gabarit. Il est demandé par exemple une atténuation maximale $A_{max}$ en bande passante de 0,01 dB et un ROS (Rapport d'ondes stationnaires) n'excédant pas 1,1. La ligne choisie dans le nomogramme est donnée ci-dessous.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		$A_{max}$ (en dB) & $VSWR$ & $\Omega$ & $A_s$ (en dB) & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$ & $g_7$\\
+		\hline
+		0.01 & 1.10 & 1.41 & 30.2 & 0.6265 & 0.1920 & 1.1099 & 1.2706 & 0.6535 & 0.7125 & 0.3441\\
+		\hline
+	\end{tabular}
+	\caption{Nomogramme pour la détermination du filtre passe-bas elliptique normalisé}
+	\label{tab:nomogramme_elliptique}
+\end{table}
+
+L'ensemble des $g_k$ formera un filtre respectant le gabarit imposé. Il s'agit des quatre premiers paramètres qui justifient le choix de ces valeurs. En effet l'atténuation maximale en bande passante est de 0,01 dB comme exigé sur le cahier des charges. Le VSWR (\textit{Voltage standing wave ratio}) est un paramètre inconnu mais simplement de nom. En réalité il s'agit du ROS, un critère à maîtriser afin d'éviter une importante réflexion qui mènerait à une perte de puissance. Le ROS est fixé à 1,10 c'est-à-dire que sur l'ensemble de la puissance transmise, 99,8\% est pour la charge et 0,2\% de la puissance est réfléchie. Ce paramètre semble peut-être anecdotique mais il peut s'avérer très important dans certaines applications. Par exemple, une puissance réfléchie trop élevée brûlerait le circuit et provoquerait la destruction du composant. Le paramètre $A_s$ donnera une atténuation minimale en bande atténuée de 30,2 dB, ce qui satisfait amplement le cahier des charges. Par ailleurs, la dernière variable $\Omega$ garantit qu'à la fréquence de 1,41$f_c$, la valeur $A_s$ sera atteinte.
+
+\newpage
+
+\subsection{Synthèse du filtre passe-bas elliptique en éléments localisés}
+
+Dans cette section, il s'agit de synthétiser le filtre passe-bas elliptique en éléments localisés, c'est-à-dire avec des selfs et des capacités. Le cahier des charges offre le choix entre le filtre passe-bas en topologie impédance ou admittance. Le choix de l'un par rapport à l'autre n'apportera aucune différence sur le comportement fréquentiel. Afin de respecter le modèle d'équivalence tronçon de ligne - éléments localisés en technologie micro-ruban, la topologie impédance est choisie car le modèle suggère que les capacités doivent être tirées à la masse. Cependant, une publication IEEE (\textit{Institute electrical and electronics engineers}) propose la conception en micro-ruban de filtres elliptiques topologie admittance à l'aide d'une ligne symétrique à deux coudes et d'une capacité interdigitée.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{../3synthPBas/elliptique/solution_admittance.png}
+	\caption{Topologie admittance du filtre elliptique en éléments localisés (b) et de son équivalent en technologie micro-ruban}
+	\label{fig:elliptique_IEEE}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}
+		\ctikzset{inductors/scale=0.9,inductor=american}
+		\draw (0,2)
+		to[L=$g_1$] (2,2)
+		to[L=$g_2$] (2,0)
+		to[C=$g_3$]	(2,-1) node[ground]{}
+		(2,2)to[L=$g_4$] (4,2)
+		to[L=$g_5$] (4,0)
+		to[C=$g_6$]	(4,-1) node[ground]{}
+		(4,2)to[L=$g_7$] (6,2);
+	\end{circuitikz}
+	\caption{Schéma prototype d'un filtre passe-bas de Cauer en topologie impédance}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{../3synthPBas/elliptique/}
+	\caption{Topologie admittance du filtre elliptique en éléments localisés (b) et de son équivalent en technologie micro-ruban}
+	\label{fig:montage_ADS_elliptique}
+\end{figure}
+
+\newpage
+
+\subsection*{Validations}
+
+\subsection{Transposition du filtre passe-bas elliptique en technologie micro-ruban}
+
+\subsection*{Validations}
+
+\newpage
 
 \section{synthèse d'un filtre passe-bande}
 
@@ -759,7 +911,9 @@ Une fois le coefficient de dénormalisation appliqué nous obtenons les valeurs 
 	\label{tab:valeurs_composant_passe_bas}
 \end{table}
 
-
+\cite{cours_MF} \cite{cours_HF} \cite{data_fr4} \cite{data_PTFE}
+\bibliography{bib_hf}{}
+\bibliographystyle{plain}
 \newpage
 
 \section*{Annexes}
@@ -770,6 +924,7 @@ Une fois le coefficient de dénormalisation appliqué nous obtenons les valeurs 
 \begin{center}
 	Annexe 1 : Photographies de plaques avec des lignes de caractérisation (à gauche plaque en verre téflon et à gauche en verre epoxy FR4)
 \end{center}
+
 
 
 \end{document}
