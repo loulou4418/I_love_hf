@@ -535,10 +535,12 @@ Dans cette section, il s'agit de synthétiser le filtre passe-bas elliptique en 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=10cm]{../3synthPBas/elliptique/solution_admittance.png}
+	\includegraphics[width=9cm]{../3synthPBas/elliptique/solution_admittance.png}
 	\caption{Topologie admittance du filtre elliptique en éléments localisés (b) et de son équivalent en technologie micro-ruban}
 	\label{fig:elliptique_IEEE}
 \end{figure}
+
+\vspace{-1cm} %retrecissement pour que tout rentre sur une page
 
 \begin{figure}[H]
 	\centering
@@ -556,16 +558,22 @@ Dans cette section, il s'agit de synthétiser le filtre passe-bas elliptique en 
 	\caption{Schéma prototype d'un filtre passe-bas de Cauer en topologie impédance}
 \end{figure}
 
+La structure a été décrite sous ADS, en passant des éléments $g_k$ normalisés aux valeurs de selfs et de capacités. Celle-ci est disponible dans la figure ci-dessous.
+
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=10cm]{../3synthPBas/elliptique/}
-	\caption{Topologie admittance du filtre elliptique en éléments localisés (b) et de son équivalent en technologie micro-ruban}
+	\includegraphics[width=12cm]{../3synthPBas/elliptique/modele_ADS_elliptique.png}
+	\caption{Structure du filtre passe-bas elliptique en impédance sous ADS}
 	\label{fig:montage_ADS_elliptique}
 \end{figure}
 
 \newpage
 
 \subsection*{Validations}
+
+La sous-section qui suit s'intéresse à valider la conception du filtre passe-bas elliptique en éléments localisés avant la transposer en lignes micro-rubans.
+
+\newpage
 
 \subsection{Transposition du filtre passe-bas elliptique en technologie micro-ruban}
 
