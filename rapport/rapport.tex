@@ -4,9 +4,11 @@
 \input{configuration}
 \input{titre}
 
+
 \begin{document}
 \myTitle[Rapport de mini-projet \\ - Électronique Hautes Fréquences - ]
 \newpage
+\pagestyle{plain} % Début de la numérotation des pages
 
 \textbf{Il faudra pas oublier de rajouter une table des figures et matières}
 
@@ -414,10 +416,10 @@ D'une manière globale on a bien un comportement de type basse-bas. L'ondulation
 La prochaine étape est de choisir une technologie pour implémenter ce filtre. C'est là que la subtilité des hautes fréquences intervient. Le choix que l'on aurait fait en basse ou moyenne fréquence de prendre une technologie localisé (composants traversant et CMS)\footnote{Cette technologie est dite localisée car elle fait référence aux composants qui voient leurs tailles physiques grandes ou proches de la longueur d'onde des signaux qu'ils traitent.} serait faux. La principale raison est la prise en compte des effets inductifs qui était négligeable en basse et en moyenne fréquence va maintenant entraîner des effets parasites indésirables. La technologie proposé dans le cours est dite distribué. Ce terme vient du fait que la longueur d'onde des signaux mises en jeu est proche de la taille des éléments physiques qui vont remplacer les capacités et les bobines voulues. Chaque éléments discrets (bobine et capacité) va être remplacé par une ligne à micro ruban. Une ligne à micro ruban est une ligne de propagation qui peut avoir des effets capacitifs ou inductifs selon son dimensionnement. 
 
 \subsection{La technologie micro ruban}
-\subsubsection{Les lignes de transmission inductives\\}
+\subsubsection{Les lignes de transmission inductives}
 
 
-Dans cette partie on cherche à remplacer les inductances série du filtre par des lignes de transmissions qui apportent le même effet capacitif. La figure \ref{fig:probleme_ligne_inductive} illustre les deux schémas que nous utiliserons.
+Dans cette partie on cherche à remplacer les inductances série du filtre par des lignes de transmission qui apportent le même effet capacitif. La figure \ref{fig:probleme_ligne_inductive} illustre les deux schémas que nous utiliserons.
 
 
 \begin{figure}[H]
@@ -442,19 +444,19 @@ Dans cette partie on cherche à remplacer les inductances série du filtre par d
 	\label{fig:probleme_ligne_inductive}
 \end{figure}
 
-On précise que $Z_c$ est l'impédance caractéristique de la ligne de transmission, $l$ est la longueur de la ligne, $L$ la valeur de l'inductance et $Z_0$ la charge. L'impédance vue en entrée de la ligne de transmission est donné par la formule :
+On précise que $Z_c$ est l'impédance caractéristique de la ligne de transmission, $l$ est la longueur de la ligne, $L$ la valeur de l'inductance équivalente et $Z_0$ la charge. L'impédance vue en entrée de la ligne de transmission est donné par la formule :
 
 \begin{equation}
 	Z_{vue} = Z_c\ \frac{Z_0 + j Z_c tan(\beta l)}{Z_c + j Z_0 tan(\beta l)}
 \end{equation}
 
-Dans le cas où l'on choisit une ligne de transmission avec une impédance caractéristique identique à l'impédance de charge on a $Z_c=Z_0$ et donc :
+Dans le cas où l'on choisit une ligne de transmission avec une impédance caractéristique très supérieur à l'impédance de charge on a $Z_c>>Z_0$ et donc :
 
 \begin{equation}
 	Z_{vue} = Z_0 + j Z_c tan(\beta l)
 \end{equation}
 
-L'impédance vue en entrée du montage avec l'inductance idéale L est donne par 
+L'impédance vue en entrée du montage avec la bobine idéale L est donne par 
 
 \begin{equation}
 	Z_{vue'} = Z_0 + j 2\pi f L 
@@ -467,17 +469,17 @@ On a ici une évolution de l'impédance $Z_{vue'}$ proportionnelle à la fréque
 	\beta = \frac{2 \pi f}{v_\phi}
 \end{equation}
 
-Où $f$ est la fréquence en Hz et $v_\phi$ la vitesse de l'onde électromagnétique dans la ligne en m/s. On sait également que le développement limité de $tan(x)=x$ pour des petites variations de x autour de 0. Dans ces conditions on se trouve également avec une relation de proportionnalité entre $Z_{vue}$ et la fréquence :
+Où $f$ est la fréquence en Hz et $v_\phi$ la vitesse de l'onde électromagnétique dans la ligne en m/s. On sait aussi que le développement limité de $tan(x)=x$ pour des petites variations de x autour de 0. Dans ces conditions on se trouve également avec une relation de proportionnalité entre $Z_{vue}$ et la fréquence :
 
 \begin{equation}
-	Z_{vue} = Z_0 + jZ_c\frac{2 \pi f}{c} l
+	Z_{vue} = Z_0 + jZ_c\frac{2 \pi f}{v_\phi} l
 	\label{eq:ZvueL2}
 \end{equation}
 
 Il nous est maintenant possible d'assimiler les équations \ref{eq:ZvueL1} et \ref{eq:ZvueL2} on obtient :
 
 \begin{equation}
-	Z_0 + j 2\pi f L = Z_0 + jZ_c\frac{2 \pi f}{c} l
+	Z_0 + j 2\pi f L = Z_0 + jZ_c\frac{2 \pi f}{v_\phi} l
 \end{equation}
 
 On isole l'inductance $L$.
@@ -488,9 +490,9 @@ On isole l'inductance $L$.
 
 On a ici une expression d'une inductance en fonction des paramètre d'une ligne de transmission à savoir, son impédance $Z_c$ et de sa longueur $l$. 
 
-\subsubsection{Les lignes de transmission capacitives\\}
+\subsubsection{Les lignes de transmission capacitives}
 
-Dans cette partie on cherche à remplacer les condensateurs parallèles du filtre par des lignes de transmissions qui apportent le même effet capacitif. La figure \ref{fig:probleme_ligne_capacitive} illustre les deux schémas pour cette étude.
+Dans cette partie on cherche à remplacer les condensateurs parallèles du filtre par des lignes de transmission qui apportent le même effet capacitif. La figure \ref{fig:probleme_ligne_capacitive} illustre les deux schémas pour cette étude.
 
 \begin{figure}[H]
 	\centering
@@ -517,10 +519,91 @@ Dans cette partie on cherche à remplacer les condensateurs parallèles du filtr
 	\label{fig:probleme_ligne_capacitive}
 \end{figure}
 
+Comme pour la partie précédente, on précise que $Z_c$ est l’impédance caractéristique de la ligne de transmission, $l$ est la longueur de laligne, $C$ la valeur de l’inductance équivalente et $Z_0$ la charge. L’impédance vue en entrée de la ligne de transmissionest donné par la formule :
 
-\subsubsection{Limites de validité\\}
 
-\subsection{Passage des composants discrets à des lignes de transmissions}
+\begin{equation}
+	Z_{vue} = Z_c\ \frac{Z_0 + j Z_c tan(\beta l)}{Z_c + j Z_0 tan(\beta l)}
+\end{equation}
+
+Dans le cas où l'on choisit une ligne de transmission avec une impédance caractéristique très inférieure à l'impédance de charge on a $Z_c<<Z_0$ et donc :
+
+\begin{equation}
+	Z_{vue} = \frac{Z_c Z_0}{2_c + j Z_0 tan(\beta l)}
+\end{equation}
+
+On en déduit que l'admittance vue en entrée de la ligne de transmission est égal à :
+
+\begin{equation}
+	Y_{vue} = \frac{1}{Z_{vue}} = \frac{1}{Z_0} + \frac{j tan(\beta l)}{Z_c}
+\end{equation}
+
+Du côté de l'impédance vue en entrée du montage avec le condensateur C on a :
+
+\begin{equation}
+	Z_{vue'} = \frac{Z_0}{1 + j C Z_0 2 \pi f}
+\end{equation}
+
+
+Et donc une admittance $Y_{vue'}$ :
+
+\begin{equation}
+	Y_{vue'} =  \frac{1}{Z_{vue'}} = \frac{1}{Z_0} + j C 2 \pi f
+	\label{eq:YvueC1}
+\end{equation}
+
+
+On a ici une évolution de l'admittance $Y_{vue'}$ proportionnelle à la fréquence. Dans le cas de la ligne de transmission on rappelle que la constante de phase $beta$ est relié à la fréquence par la formule :
+
+\begin{equation}
+	\beta = \frac{2 \pi f}{v_\phi}
+\end{equation}
+
+
+Où $f$ est la fréquence en Hz et $v_\phi$ la vitesse de l'onde électromagnétique dans la ligne en m/s. On sait aussi que le développement limité de $tan(x)=x$ pour des petites variations de x autour de 0. Dans ces conditions on se trouve également avec une relation de proportionnalité entre $Y_{vue}$ et la fréquence :
+
+\begin{equation}
+	Y_{vue} = \frac{1}{Z_{vue}} = \frac{1}{Z_0} + \frac{j 2\pi f}{v_\phi Z_c} l
+	\label{eq:YvueC2}
+\end{equation}
+
+Il nous est maintenant possible d'assimiler les équations \ref{eq:YvueC1} et \ref{eq:YvueC2} on obtient :
+
+\begin{equation}
+	\frac{1}{Z_0} + j C 2 \pi f = \frac{1}{Z_0} + \frac{j 2\pi f}{v_\phi Z_c} l
+\end{equation}
+
+On isole la capacité $C$.
+
+\begin{equation}
+	C = \frac{l}{Z_c v_\phi}
+\end{equation}
+
+On a ici une expression d'une capacité en fonction des paramètre d'une ligne de transmission à savoir, son impédance $Z_c$ et de sa longueur $l$. 
+
+
+\subsubsection{Limites de validité}
+
+Comme nous l'avons vu dans les parties précédentes, des lignes de transmission peuvent s'apparenter à des effets capacitifs ou inductifs sous certaines conditions. Ces conditions sont aux nombres de deux. La première est sur l'impédance de la ligne de transmission $Z_c$ tandis que la deuxième est lié à la constante de phase $\beta$ et plus particulièrement la fréquence.\\
+%La condition du $Z_c$ est lié aux contraintes dépend de la largeur des pistes et donc de des procédés de fabrication. Cette condition sera abordé dans la partie suivante sur le passage des composants discret à des lignes de transmission. Il nous reste donc la
+
+\textbf{Condition du $Z_c$\\}
+
+Dans le cas où l'on cherche apparenter une bobine série à une ligne de transmission, son impédance caractéristique doit être très supérieur à $Z_0$ soit $Z_c >> Z_0$. Dans ces conditions l'impédance $Z_c$ s'écrit :
+
+\begin{equation}
+	Z_c= \frac{119,9\pi}{2\sqrt{\epsilon_r}}\left[\frac{w}{2h} + \frac{ln4}{\pi} + \frac{ln(e\pi^2 / 16)}{2\pi}\left(\frac{\epsilon_r + 1}{\epsilon_r}\right) + \frac{\epsilon_r + 1}{2\pi \epsilon_r} \left( ln\frac{\pi e}{2} +  ln\left(\frac{w}{2h} + 0,94 \right) \right)  \right]^{-1}
+\end{equation}
+
+Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'épaisseur de cuivre en mm et $w$ la largeur de la piste de cuivre en mm. La permittivité relative est donné par le constructeur où alors elle peut être trouver de manière expérimentale comme on a pu le faire dans les premières séance de TP (cf partie sur la caractérisation). Dans notre cas l'épaisseur h a une valeur standard de 1,58 mm. La largeur $w$ quant à elle, dépend des procédés de fabrication. Au vue de l'expression de $Z_c$, sachant $Z_0=50 \Omega$ où w de 4,8 mm (donnée dans le sujet du TP) et sachant également l'expression de $Z_c$ ainsi que $Z_c>>Z_0$, on en déduit qu'il faut $w<< 4,8$ mm.
+
+
+
+
+
+
+
+\subsection{Passage des composants discrets à des lignes de transmission}
 
 
 \begin{figure}[H]
@@ -659,7 +742,7 @@ Dans cette section, il s'agit de synthétiser le filtre passe-bas elliptique en 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=10cm]{../3synthPBas/elliptique/}
+%	\includegraphics[width=10cm]{../3synthPBas/elliptique/}
 	\caption{Topologie admittance du filtre elliptique en éléments localisés (b) et de son équivalent en technologie micro-ruban}
 	\label{fig:montage_ADS_elliptique}
 \end{figure}
