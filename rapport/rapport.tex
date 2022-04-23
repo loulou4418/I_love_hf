@@ -274,8 +274,7 @@ Le résultat de l'application numérique avec h = 1,58mm, w = 7,87mm et L=74,83m
 
 \section{Synthèse de filtre passe-bas Tchebychev en technologie micro-ruban}
 
-\subsection{Filtre de Tchebychev}
-\subsubsection{Choix des valeurs de composants}
+\subsection{Choix des valeurs de composants}
 
 L'objectif est de réaliser un filtre passe-bas dont le gabarit est donné à la figure \ref{fig:gabarit_PasseBas} avec une réponse de Tchebychev.
 
@@ -414,8 +413,8 @@ D'une manière globale on a bien un comportement de type basse-bas. L'ondulation
 
 La prochaine étape est de choisir une technologie pour implémenter ce filtre. C'est là que la subtilité des hautes fréquences intervient. Le choix que l'on aurait fait en basse ou moyenne fréquence de prendre une technologie localisé (composants traversant et CMS)\footnote{Cette technologie est dite localisée car elle fait référence aux composants qui voient leurs tailles physiques grandes ou proches de la longueur d'onde des signaux qu'ils traitent.} serait faux. La principale raison est la prise en compte des effets inductifs qui était négligeable en basse et en moyenne fréquence va maintenant entraîner des effets parasites indésirables. La technologie proposé dans le cours est dite distribué. Ce terme vient du fait que la longueur d'onde des signaux mises en jeu est proche de la taille des éléments physiques qui vont remplacer les capacités et les bobines voulues. Chaque éléments discrets (bobine et capacité) va être remplacé par une ligne à micro ruban. Une ligne à micro ruban est une ligne de propagation qui peut avoir des effets capacitifs ou inductifs selon son dimensionnement. 
 
-\subsubsection{La technologie micro ruban}
-\textbf{Les lignes de transmission inductives\\}
+\subsection{La technologie micro ruban}
+\subsubsection{Les lignes de transmission inductives\\}
 
 
 Dans cette partie on cherche à remplacer les inductances série du filtre par des lignes de transmissions qui apportent le même effet capacitif. La figure \ref{fig:probleme_ligne_inductive} illustre les deux schémas que nous utiliserons.
@@ -489,7 +488,7 @@ On isole l'inductance $L$.
 
 On a ici une expression d'une inductance en fonction des paramètre d'une ligne de transmission à savoir, son impédance $Z_c$ et de sa longueur $l$. 
 
-\textbf{Les lignes de transmission capacitives\\}
+\subsubsection{Les lignes de transmission capacitives\\}
 
 Dans cette partie on cherche à remplacer les condensateurs parallèles du filtre par des lignes de transmissions qui apportent le même effet capacitif. La figure \ref{fig:probleme_ligne_capacitive} illustre les deux schémas pour cette étude.
 
@@ -519,9 +518,9 @@ Dans cette partie on cherche à remplacer les condensateurs parallèles du filtr
 \end{figure}
 
 
-\textbf{Limites de validité\\}
+\subsubsection{Limites de validité\\}
 
-\subsubsection{Passage des composants discrets à des lignes de transmissions}
+\subsection{Passage des composants discrets à des lignes de transmissions}
 
 
 \begin{figure}[H]
