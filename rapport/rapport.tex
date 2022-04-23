@@ -196,8 +196,10 @@ Le logiciel fournit également un paramètre appelé la permittivité diélectri
 
 \newpage
 
-\section{Synthèse de filtre passe-bas en technologie }
+\section{Synthèse de filtre passe-bas en technologie micro ruban}
 
+\subsection{Filtre de Tchebychev}
+\subsubsection{Choix des valeurs de composants}
 
 L'objectif est de réaliser un filtre passe-bas dont le gabarit est donné à la figure \ref{fig:gabarit_PasseBas} avec une réponse de Tchebychev.
 
@@ -304,6 +306,7 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 	\label{tab:valeurs_composant_passe_bas}
 \end{table}
 
+Pour vérifier et valider les valeurs de composants de notre filtre nous utilisons le logiciel ADS. Le schéma simulé est celui de la figure \ref{fig:schema_distribue_ameliore_passe_bas_ads}. 
 
 \begin{figure}[H]
 	\centering
@@ -312,6 +315,7 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 	\label{fig:schema_localise_passe_bas_ads}
 \end{figure}
 
+On note la présence de deux blocs S-PARAMETERS. Le premier permet une simulation sur la bande de fréquence $[0; 10\ GHz]$ pour observer le comportement général du filtre. Le second permet une simulation sur la bande $[0; 2\ GHz]$ pour avoir un zoom sur la bande passante et analyser l'ondulation en bande passante. La figure \ref{fig:simu_passe_bas_localise_global} montre le résultat de ces simulations.
 
 \begin{figure}[H]
 	\centering
@@ -326,8 +330,122 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 		\label{fig:simu_zoom_passe_bas_localise}
 	\end{subfigure}
 	\caption{Simulation du module du coefficient de transmission S21 en dB}
-%	\label{fig:observation_registres_internes}
+	\label{fig:simu_passe_bas_localise_global}
 \end{figure}
+
+D'une manière globale on a bien un comportement de type basse-bas. L'ondulation en bande passante sur la figure \ref{fig:simu_zoom_passe_bas_localise} est comprise entre 0 et 0,1 dB comme souhaité par notre cahier des charges. Au niveau des fréquences caractéristiques nous observons que l'ondulation en bande passante est correctement conservé jusqu'à 2 GHz (fréquence de coupure nommée fs dans le gabarit de la figure \ref{fig:gabarit_PasseBas}). Au delà de 3 GHz (fréquence nommée fc sur la figure \ref{fig:gabarit_PasseBas}) l'atténuation du filtre est supérieur à 19 dB ce qui est conforme aux 15 dB d'atténuation minimum voulus par le cahier des charges. Les résultat observé à la figure \ref{fig:simu_passe_bas_localise_global} nous permettent donc de valider les valeurs des composants (condensateurs et bobines) au regard du cahier des charges. \\
+
+
+La prochaine étape est de choisir une technologie pour implémenter ce filtre. C'est là que la subtilité des hautes fréquences intervient. Le choix que l'on aurait fait en basse ou moyenne fréquence de prendre une technologie localisé (composants traversant et CMS)\footnote{Cette technologie est dite localisée car elle fait référence aux composants qui voient leurs tailles physiques grandes ou proches de la longueur d'onde des signaux qu'ils traitent.} serait faux. La principale raison est la prise en compte des effets inductifs qui était négligeable en basse et en moyenne fréquence va maintenant entraîner des effets parasites indésirables. La technologie proposé dans le cours est dite distribué. Ce terme vient du fait que la longueur d'onde des signaux mises en jeu est proche de la taille des éléments physiques qui vont remplacer les capacités et les bobines voulues. Chaque éléments discrets (bobine et capacité) va être remplacé par une ligne à micro ruban. Une ligne à micro ruban est une ligne de propagation qui peut avoir des effets capacitifs ou inductifs selon son dimensionnement. 
+
+\subsubsection{La technologie micro ruban}
+\textbf{Les lignes de transmission inductives\\}
+
+
+Dans cette partie on cherche à remplacer les inductances série du filtre par des lignes de transmissions qui apportent le même effet capacitif. La figure \ref{fig:probleme_ligne_inductive} illustre les deux schémas que nous utiliserons.
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\begin{circuitikz}
+			\draw (0,2)
+			node[above]{$Z_{vue}$}
+			to[TL=$Z_c$\texttt{,} $l$] (2,2)
+			to [generic=$Z_0$] (2,0) node[ground]{};
+		\end{circuitikz}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\begin{circuitikz}
+			\draw (0,2)
+			node[above]{$Z_{vue'}$}
+			to[L=$L$] (2,2)
+			to [generic=$Z_0$] (2,0) node[ground]{};
+		\end{circuitikz}
+	\end{subfigure}
+	\caption{Schéma d'une ligne de transmission apparenter à une inductance.}
+	\label{fig:probleme_ligne_inductive}
+\end{figure}
+
+On précise que $Z_c$ est l'impédance caractéristique de la ligne de transmission, $l$ est la longueur de la ligne, $L$ la valeur de l'inductance et $Z_0$ la charge. L'impédance vue en entrée de la ligne de transmission est donné par la formule :
+
+\begin{equation}
+	Z_{vue} = Z_c\ \frac{Z_0 + j Z_c tan(\beta l)}{Z_c + j Z_0 tan(\beta l)}
+\end{equation}
+
+Dans le cas où l'on choisit une ligne de transmission avec une impédance caractéristique identique à l'impédance de charge on a $Z_c=Z_0$ et donc :
+
+\begin{equation}
+	Z_{vue} = Z_0 + j Z_c tan(\beta l)
+\end{equation}
+
+L'impédance vue en entrée du montage avec l'inductance idéale L est donne par 
+
+\begin{equation}
+	Z_{vue'} = Z_0 + j 2\pi f L 
+	\label{eq:ZvueL1}
+\end{equation}
+
+On a ici une évolution de l'impédance $Z_{vue'}$ proportionnelle à la fréquence. Dans le cas de la ligne de transmission on rappelle que la constante de phase $beta$ est relié à la fréquence par la formule :
+
+\begin{equation}
+	\beta = \frac{2 \pi f}{v_\phi}
+\end{equation}
+
+Où $f$ est la fréquence en Hz et $v_\phi$ la vitesse de l'onde électromagnétique dans la ligne en m/s. On sait également que le développement limité de $tan(x)=x$ pour des petites variations de x autour de 0. Dans ces conditions on se trouve également avec une relation de proportionnalité entre $Z_{vue}$ et la fréquence :
+
+\begin{equation}
+	Z_{vue} = Z_0 + jZ_c\frac{2 \pi f}{c} l
+	\label{eq:ZvueL2}
+\end{equation}
+
+Il nous est maintenant possible d'assimiler les équations \ref{eq:ZvueL1} et \ref{eq:ZvueL2} on obtient :
+
+\begin{equation}
+	Z_0 + j 2\pi f L = Z_0 + jZ_c\frac{2 \pi f}{c} l
+\end{equation}
+
+On isole l'inductance $L$.
+
+\begin{equation}
+	L = \frac{Z_c l}{v_\phi}
+\end{equation}
+
+On a ici une expression d'une inductance en fonction des paramètre d'une ligne de transmission à savoir, son impédance $Z_c$ et de sa longueur $l$. 
+
+\textbf{Les lignes de transmission capacitives\\}
+
+Dans cette partie on cherche à remplacer les condensateurs parallèles du filtre par des lignes de transmissions qui apportent le même effet capacitif. La figure \ref{fig:probleme_ligne_capacitive} illustre les deux schémas pour cette étude.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\begin{circuitikz}
+			\draw (0,2)
+			node[above]{$Z_{vue}$}
+			to[TL=$Z_c$\texttt{,} $l$] (2,2)
+			to [generic=$Z_0$] (2,0) node[ground]{};
+		\end{circuitikz}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\begin{circuitikz}
+			\draw (0,2)
+			node[above]{$Z_{vue'}$}
+			to [short](2,2)
+			(2,2)to[C=$C$] (2,0)
+			(2,0)node[ground]{}
+			(2,2) to [short](4,2)
+			(4,2)to [generic=$Z_0$] (4,0) node[ground]{};
+		\end{circuitikz}
+	\end{subfigure}
+	\caption{Schéma d'une ligne de transmission apparenter à un condensateur.}
+	\label{fig:probleme_ligne_capacitive}
+\end{figure}
+
+
+\textbf{Limites de validité\\}
+
+\subsubsection{Passage des composants discrets à des lignes de transmissions}
 
 
 \begin{figure}[H]
@@ -384,33 +502,17 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 
 
 
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_passe_bas_reel_tche_epoxy.PNG}
-		\caption{Sans zoom}
-		\label{fig:simu_passe_bas_reel_tche_epoxy}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_zoom_passe_bas_reel_tche_epoxy.PNG}
-		\caption{Avec zoom sur la bande passante}
-		\label{fig:simu_zoom_passe_bas_distribue_ameliore}
-	\end{subfigure}
-	\caption{Module du coefficient de transmission S65 en dB d'un filtre passe-bas sur substrat epoxy}
-	%	\label{fig:observation_registres_internes}
-\end{figure}
-
 
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_passe_bas_reel_tche_teflon.PNG}
+		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_passe_bas_reel_tche.PNG}
 		\caption{Sans zoom}
 		\label{fig:simu_passe_bas_reel_tche_teflon}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_zoom_passe_bas_reel_tche_teflon.PNG}
+		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_zoom_passe_bas_reel_tche.PNG}
 		\caption{Avec zoom sur la bande passante}
 		\label{fig:simu_zoom_passe_bas_reel_tche_teflon}
 	\end{subfigure}
@@ -419,7 +521,7 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 \end{figure}
 
 
-
+\subsection{Filtre Elliptique}
 
 \section{synthèse d'un filtre passe-bande}
 
