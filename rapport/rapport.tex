@@ -531,7 +531,7 @@ Les valeurs numériques associées au gabarit sont les suivantes. Les fréquence
 	\end{tabular}
 \caption{Valeur numérique gabarit souhaité}
 	\end{table}
-\paragraph{Symétrie du gabarit} ~~\\ \noindent
+\subsection{Symétrie du gabarit}
 Avant de commencer la synthèse du filtre il est nécessaire de valider une condition sur la symétrie. Si elle n'est pas respectée il faudra modifier le gabarit du cahier des charges. La condition s'opère sur la moyenne géométrique de la bande passante et de la bande coupée notées :
 \begin{equation}
 	 f_{co} = \sqrt{f_c^-.f_c^+}, \quad f_{so} = \sqrt{f_s^- f_s^+}
@@ -562,7 +562,7 @@ Les nouvelles valeurs numériques pour le gabarit du filtre sont les suivantes. 
 	\end{tabular}
 	\caption{Valeur numérique gabarit centré}
 \end{table}
-\paragraph{Gabarit passe bas} ~~\\ \noindent
+\subsection{Gabarit passe bas}
 L'étape suivant dans la conception d'un filtre passe bande symétrique vise à simplifier la synthèse en passant par un gabarit passe bas. Cela permet de calculer son ordre puis sa structure en éléments localisés.
 \begin{figure}[H]
 	\centering
@@ -593,7 +593,7 @@ On calcule avec $A_{min} = 15dB$ et $A_{max} = 0,1dB$. L'ordre $\delta$ est arro
 }{argch(1/0,4488)} = 2,975, \quad \delta = 3
 \end{equation}
 Le gabarit impose un ordre minimum de 3, c'est la valeur que nous retiendront. On note tout de même que l'arrondi au supérieur présente un faible écart avec l'ordre choisi. Notre filtre devrait respecter les spécifications mais des approximations pourraient entraîner des débordements notamment aux fréquences particulières $f_c$ et $f_s$.
-\paragraph{Prototype passe bas normalisé vers passe bande dénormalisé} ~~\\ \noindent
+\subsection{Prototype passe bas normalisé vers passe bande dénormalisé}
 Cette étape vise à transformer le schéma passe bas en son équivalent passe bande. Il existe deux schémas possibles dit de type impédance et de type admittance où, respectivement, le premier élément est une inductance ou un condensateur. Le cahier des charges ne donne pas d'indications sur ce point. Nous choisirons le schéma qui a l'avantage de simplifier la transposition micro ruban.
 \begin{figure}[H]
 	\centering
@@ -657,9 +657,9 @@ Le schéma du filtre passe bande en éléments localisés après transformation 
 \end{figure}
 A partir des expression précédente il est possible de calculer les valeurs normalisée de ces nouveaux composants. Nous pouvons pas le même occasion opérer la dénormalisation. Les grandeurs dénormalisées seront notées en majuscule. De nouveau on s'appuis sur le cours d'électrique moyenne fréquence \cite{cours_MF}. On y extrait les égalités suivantes :
 \begin{equation}
-C_k = \frac{c_k}{2\pi f_0.R},
+C_k = \frac{c_k}{2\pi f_0.R}
 \quad
-L_k = \frac{l_k.R}{2\pi .f_0},
+L_k = \frac{l_k.R}{2\pi .f_0}
 \quad
 k=\{1,2,3\}
 \end{equation}
@@ -709,16 +709,81 @@ Il fait intervenir des composants de la bibliothèque "lumbed component". La sim
 	\label{fig:ads_S21_BP_localise1}
 \end{figure}
 La figure de gauche représente le paramètre S21 en db sur la bande spécifiée par le gabarit. On relève une atténuation de 15,58dB et 14,97dB au points m1 et m4. Seul le premier garantie respect strictement le cahier des charges. La figure de gauche représente elle aussi le coefficient de transition mais sur une bande plus étroite correspondant à la bande passante. La condition du gabarit spécifie une ondulation inférieur à 0,1dB. Elle est respecter partout sauf au point m5 où on relève 0,101dB. Les résultats de cette simulation présentent deux débordements aux fréquences particulières $f_c^-$ et $f_s^-$. Cela s'explique par une approximation réalisée lors du centrage du gabarit. En effet, seule la borne $f_c^+$ a été déplacée se qui entraîne une légère dysmétrie entre le gabarit initial et celui recentré. Aussi, nous avons pu remarqué que l'ordre du filtre décimal est très proche de la valeur entière retenue. Cela a pour effet de laisser peu de marge aux fréquences particulières. Ces deux éléments cumulés ont joué en notre défaveur et aboutie à une synthèse en limite de spécification. 
-Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_c^+$ et $f_c-$ lors du recentrage. Cette méthode est plus complexe mais aurait probablement permise de réaliser une synthèse répondant parfaitement au gabarit.\\
-Les résultats de simulation reste malgré tout concluant car ils présentent une erreur très faible. Nous conserverons donc les valeurs des composants pour la suite des calculs.\\
+Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_c^+$ et $f_c^-$ lors du recentrage. Cette méthode est plus complexe mais aurait probablement permise de réaliser une synthèse répondant parfaitement au gabarit.Les résultats de simulation reste malgré tout concluant car ils présentent une erreur très faible. Nous conserverons donc les valeurs des composants pour la suite des calculs.\\
 
 Les valeurs dénormalisées obtenues devrait permettre en théorie de constituer un filtre passe bande en éléments localisés. Cependant en pratique l'ordre de grandeur (0,1pF pour les condensateurs et 1nH pour les inductances) pose un problème de provisionnement. En effet, elles sont peu réaliste puisque comparables aux phénomènes parasites des boîtiers et conducteurs. Il est possible de résoudre ce problème en transformant cette synthèse localisé en synthèse distribuée.
 
-\subsection{title}
-Il existe plusieurs circuits basés sur les propriété des lignes pour réalisé un filtre passe bande. Nous détaillerons deux solutions basées uniquement sur des lignes $\lambda /2$ et $\lambda /4$. 
+\subsection{Transposition vers technologie micro-rubans}
+Il existe plusieurs circuits s'appuyant sur les propriété des lignes pour réalisé un filtre passe bande. Nous en détaillerons deux basées uniquement sur des lignes $\lambda /2$ et $\lambda /4$ dans cette partie. La première opère une transformation des résonateurs séries et parallèles en ligne $\lambda /2$ et stubs $\lambda /2$ CO quant la seconde s'appuis sur des inverseurs d'impédances, des lignes $\lambda /4$ et des stubs. L'objectif est de transposer le filtre conçus à partir d'élément localise vers une technologie distribuée. Commençons par le résonateur série dans le schéma est le suivant :
+\begin{figure}[H]
+	\centering
+	\ctikzset{bipoles/length=1.1cm}
+	\begin{circuitikz}[scale=0.85]
+		\draw (0,0)
+		to[L=$l$] (3,0)
+		to[C=$c$] (6,0);
+	\end{circuitikz}
+	\caption{Schéma résonateur LC série}
+	\label{fig:res_lc_serie}
+\end{figure}
+Comme le montre la figure \ref{fig:res_lc_serie} ce circuit est composé d'une self et d'un condensateur en série. L'expression de l'impédance équivalente est simplement la somme des impédances respectives dont la forme faisant apparaître la partie complexe est la suivante :
+\begin{equation}
+	\underline{Z_{equ}}(\omega) = j\Big(L\omega-\frac{1}{C\omega}\Big)
+\end{equation} 
+Un tel circuit est caractérisé par sa fréquence de résonance. C'est la fréquence particulaire pour laquelle sa partie imaginaire s'annule. On peut la noter ainsi : 
+\begin{equation}
+	Im(\underline{Z_{equ}}(\omega)) = 0 \text{ donc }\underline{Z_{equ}}(\omega_0)=0, \quad \omega_0 =\frac{1}{\sqrt{LC}}
+\end{equation}
+La  pulsation de résonance $\omega_0$ est obtenue lorsque la partie imaginaire est nulle, $\underline{Z_{equ}}$ étant purement imaginaire cela revient l'annuler. Après résolution il vient la valeur de $\omega_0$. Le résonateur série ne modifie pas les propriété du signal le traversant à cette pulsation puisque son impédance équivalente est nulle. Il s'agit maintenant de trouver la topologie micro-rubans ayant le même comportement. Le résultat est connu, le circuit équivalent est une ligne demie onde série. Faisons tout de même l'hypothèse de cela et essayons de le démonter.
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}[scale=0.85]
+		 \draw (0,0)
+		 to[mstline, mstlinelen=2, l=line$Z_c \beta$,*-] (4,0) to[R,l=$Z_0$] (4,-2)
+		 node[ground]{};
+	\end{circuitikz}
+	\caption{Schéma ligne demie onde chargée}
+\label{fig:ligne_demie_onde}
+\end{figure}
+Afin de monter que ce circuit à base d'une ligne demie onde est équivalente au schéma précédent figure \ref{fig:res_lc_serie} on exprime l'impédance $Z_{vue}$ ramenée en entrée de la ligne.
+\begin{equation}
+	Z_{vue} = Z_c\frac{Z_0+jZ_ctan(\beta L)}{Z_c+jZ_0tan(\beta L)}
+\end{equation}
+Avec $\beta L = \pi, tan(\beta L)=0$
+\begin{equation}
+Z_{vue} = Z_0
+\end{equation}
+L'impédance $Z_{vue}$ vue en entrée de la ligne est la même que celle en sortie. La ligne en question, à la fréquence garantissant $L=\lambda/2$, ne modifie pas les propriété du signal le traversant. Ce modèle peut donc être assimilé à un résonateur série. De la même façon, il est possible d'établir un modèle équivalent au résonateur parallèle en technologie micro-rubans.
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}[scale=0.85]
+	\draw	(0.5,3) to[short,*-] (0.5,2.5)
+(0,2.5) -- (1,2.5)
+(0,2.5) to[L=$l$] (0,0.5)
+(1,2.5) to[C=$c$] (1,0.5)
+(0,0.5) -- (1,0.5)
+(0.5,0) to[short,*-] (0.5,0.5)
+(3,0.5) --(5,0.5)
+(4,0.5) to[short,*-] (4,1) 
+(4,1) node[mslstub, rotate=90]{$Z_c \beta$};
+\end{circuitikz}
+	\caption{Schéma ligne demie onde chargée}
+	\label{fig:res_parallele}
+\end{figure}
+La figure \ref{fig:res_parallele} représente un résonateur LC parallèle à droite et  un stub demis onde CO à gauche. Ils ramènent tous deux un circuit ouvert à la fréquence de résonance. En effet, l'admittance du premier est très proche de l'impédance du résonateur série est d'exprime :
+\begin{equation}
+	Y(\omega)=j\Big(C\omega-\frac{1}{L\omega}\Big)
+\end{equation}  
+De nouveau on obtient en admittance cette fois: 
+\begin{equation}
+Im(\underline{Y_{equ}}(\omega)) = 0 \text{ donc }\underline{Y_{equ}}(\omega_0)=0, \quad \omega_0 =\frac{1}{\sqrt{LC}}
+\end{equation}
+Le résonateur série ramène donc un admittance nulle soit un circuit ouvert. La démonstration de l'impédance ramenée du stub demie onde parallèle est la même que pour la ligne $\lambda /2$ série : $Z_{vue} = Z_0$. La terminaison du stub étant un circuit ouvert, l'impédance ramenée est infinie. Nous venons donc de monter qu'un résonateur LC parallèle peut être transposé en un stub demie onde ouvert. 
+
+
 
 \section{Conclusion}
-Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_{so}$ et $f_{co}$. Elle permet d'optimiser la contrainte sur le sélectivité. 
+
 
 
 
