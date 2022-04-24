@@ -486,6 +486,7 @@ On isole l'inductance $L$.
 
 \begin{equation}
 	L = \frac{Z_c l}{v_\phi}
+	\label{eq:resultat_L}
 \end{equation}
 
 On a ici une expression d'une inductance en fonction des paramètre d'une ligne de transmission à savoir, son impédance $Z_c$ et de sa longueur $l$. 
@@ -579,6 +580,7 @@ On isole la capacité $C$.
 
 \begin{equation}
 	C = \frac{l}{Z_c v_\phi}
+	\label{eq:resultat_C}
 \end{equation}
 
 On a ici une expression d'une capacité en fonction des paramètre d'une ligne de transmission à savoir, son impédance $Z_c$ et de sa longueur $l$. 
@@ -586,27 +588,134 @@ On a ici une expression d'une capacité en fonction des paramètre d'une ligne d
 
 \subsubsection{Limites de validité}
 
-Comme nous l'avons vu dans les parties précédentes, des lignes de transmission peuvent s'apparenter à des effets capacitifs ou inductifs sous certaines conditions. Ces conditions sont aux nombres de deux. La première est sur l'impédance de la ligne de transmission $Z_c$ tandis que la deuxième est lié à la constante de phase $\beta$ et plus particulièrement la fréquence.\\
+Comme nous l'avons vu dans les parties précédentes, des lignes de transmission peuvent s'apparenter à des effets capacitifs ou inductifs sous certaines conditions. Ces conditions sont aux nombres de deux. La première est sur l'impédance de la ligne de transmission $Z_c$ tandis que la deuxième est liée au terme $\beta l$ contenue dans l'expression de l'impédance ramenée.\\
 %La condition du $Z_c$ est lié aux contraintes dépend de la largeur des pistes et donc de des procédés de fabrication. Cette condition sera abordé dans la partie suivante sur le passage des composants discret à des lignes de transmission. Il nous reste donc la
 
 \textbf{Condition du $Z_c$\\}
 
-Dans le cas où l'on cherche apparenter une bobine série à une ligne de transmission, son impédance caractéristique doit être très supérieur à $Z_0$ soit $Z_c >> Z_0$. Dans ces conditions l'impédance $Z_c$ s'écrit :
+Nous allons voir que la conditions sur $Z_c$ est directement lié à la largeur des lignes de transmission.
+
+Dans le cas où l'on cherche à \underline{apparenter une bobine série avec une charge} à une ligne de transmission série avec une charge, son impédance caractéristique doit être très supérieur à $Z_0$ soit $Z_c >> Z_0$. Dans ces conditions l'impédance $Z_c$ s'écrit :
+
+\begin{equation}
+	Z_c = \frac{119,9}{\sqrt{2(\epsilon_r + 1)}} \left[ ln\left(4\frac{h}{w} + \sqrt{16\left(\frac{h}{w}\right)^2 + 2}\right) - \frac{1}{2}\left(\frac{\epsilon_r - 1}{\epsilon_r + 1}\right) \left(ln\frac{\pi}{2} + \frac{1}{\epsilon_r}ln\frac{4}{\pi}\right) \right]
+	\label{eq:Z_c_bobine}
+\end{equation}
+
+Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'épaisseur de cuivre en mm et $w$ la largeur de la piste de cuivre en mm. La permittivité relative est donné par le constructeur où alors elle peut être trouver de manière expérimentale comme on a pu le faire dans les premières séance de TP (cf partie sur la caractérisation). Dans notre cas l'épaisseur h a une valeur standard de 1,58 mm. La largeur $w$ quant à elle, dépend des procédés de fabrication. Au vue de l'expression de $Z_c$, sachant $Z_0=50 \Omega$ où w de 4,8 mm (donnée dans le sujet du TP) et sachant également l'expression de $Z_c$ ainsi que $Z_c >> Z_0$, on en déduit qu'il faut $w << 4,8$ mm. Les contraintes technologiques nous permettent de faire des pistes de cuivre ayant \underline{une largeur $w$ de 0,5 mm}.\\
+
+Dans le cas où l'on cherche à \underline{apparenter un condensateur parallèle avec une charge} à une ligne de transmission série avec une charge, son impédance caractéristique doit être très inférieure à $Z_0$ soit $Z_c << Z_0$. Dans ces conditions l'impédance $Z_c$ s'écrit :
 
 \begin{equation}
 	Z_c= \frac{119,9\pi}{2\sqrt{\epsilon_r}}\left[\frac{w}{2h} + \frac{ln4}{\pi} + \frac{ln(e\pi^2 / 16)}{2\pi}\left(\frac{\epsilon_r + 1}{\epsilon_r}\right) + \frac{\epsilon_r + 1}{2\pi \epsilon_r} \left( ln\frac{\pi e}{2} +  ln\left(\frac{w}{2h} + 0,94 \right) \right)  \right]^{-1}
+	\label{eq:Z_c_condo}
 \end{equation}
 
-Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'épaisseur de cuivre en mm et $w$ la largeur de la piste de cuivre en mm. La permittivité relative est donné par le constructeur où alors elle peut être trouver de manière expérimentale comme on a pu le faire dans les premières séance de TP (cf partie sur la caractérisation). Dans notre cas l'épaisseur h a une valeur standard de 1,58 mm. La largeur $w$ quant à elle, dépend des procédés de fabrication. Au vue de l'expression de $Z_c$, sachant $Z_0=50 \Omega$ où w de 4,8 mm (donnée dans le sujet du TP) et sachant également l'expression de $Z_c$ ainsi que $Z_c>>Z_0$, on en déduit qu'il faut $w<< 4,8$ mm.
+
+Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'épaisseur de cuivre en mm et $w$ la largeur de la piste de cuivre en mm. La permittivité relative est donné par le constructeur où alors elle peut être trouver de manière expérimentale comme on a pu le faire dans les premières séance de TP (cf partie sur la caractérisation). Dans notre cas l'épaisseur h a une valeur standard de 1,58 mm. La largeur $w$ quant à elle, dépend des procédés de fabrication. Au vue de l'expression de $Z_c$, sachant $Z_0=50 \Omega$ où w de 4,8 mm (donnée dans le sujet du TP) et sachant également l'expression de $Z_c$ ainsi que $Z_c << Z_0$, on en déduit qu'il faut $w >> 4,8$ mm. Les contraintes technologiques nous permettent de faire des pistes de cuivre ayant \underline{une largeur $w$ de 10 mm}.\\
 
 
+\textbf{Condition du $\beta l$\\}
 
+Lors de la présentation de la technologie micro ruban nous avons linéariser l'expression $tan(\beta l)$ en disant que $tan(\beta l)=\beta l$ pour des petites variations de $\beta l$. Étudions maintenant ces conditions plus en détail. Pour ce faire on commence par tracer sur la figure \ref{fig:tan_x} la fonction $y = tan(x)$
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=6cm]{photo/tan_x.png}
+	\caption{Tracé de la fonction tangente de x}
+	\label{fig:tan_x}
+\end{figure}
 
+La fonction $tan(x)$ n'est définie que sur l'intervalle $[-\frac{\pi}{2}; \frac{\pi}{2}]$. D'après le développement limité de Taylor et de manière graphique on observe bien que plus x est proche de 0 et plus l'expression $tan(x) = x$ est vraie. On en déduit que pour linéariser l'expression il faut $x << \frac{\pi}{2}$. Dans notre application $tan(x) = tan(\beta l)$ donc $x = \beta l$. On rappelle que $\beta$ peut s'écrire :
+
+\begin{equation}
+	\beta = \frac{2 \pi}{\lambda}
+\end{equation}
+
+Où $f$ est la fréquence de l'onde électromagnétique en Hz et $v_\phi$ la vitesse de propagation en m/s. D'après les dire précédent pour linéariser la tangente $x << \frac{\pi}{2}$ soit $\beta l << \frac{\pi}{2}$ ce qui nous donne la condition sur $l$ :
+
+\begin{equation}
+	l << \frac{\lambda}{4}
+\end{equation}
+
+Cette condition nous indique que la longueur de la ligne de transmission $l$ doit être très inférieure à $\frac{\lambda}{4}$ pour que les lignes de transmissions puissent s'apparenter correctement à des bobines ou à des condensateurs.
 
 
 \subsection{Passage des composants discrets à des lignes de transmission}
 
+\subsubsection{Introduction et rappel}
+
+Dans cette partie on cherche à remplacer les éléments localisés du filtre de la figure \ref{fig:schema_localise_passe_bas_ads} par des lignes de transmission. On part des expressions \ref{eq:resultat_L} et \ref{eq:resultat_C} que l'on tourne pour obtenir une expression de longueur des lignes de transmission. On appellera $l_C$ la longueur de la lignes qui va s'apparenter à un condensateur et $l_L$ la longueur des ligne qui va s'apparenter à une bobine.
+
+\begin{equation}
+	l_L = \frac{L v_\phi}{Z_c}
+	\qquad
+	l_C = C Z_c v_\phi
+	\label{eq:expression_l}
+\end{equation}
+
+Avec $Z_c$, l'impédance caractéristique de la ligne de transmission (ATTENTION : la valeur est différente pour les bobines et les condensateurs) en Ohms, $l_C$ et $l_L$ en m, $L$ en H, $C$ en F et $v_\phi$ en m/s dont l'expression est donné par :
+
+\begin{equation}
+	v_\phi = \frac{3.10^8}{\sqrt{\epsilon_{reff}}}
+\end{equation}
+
+Où $\epsilon_{reff}$ est la permittivité relative effective du matériau sans unité et s'exprime par : 
+
+\begin{equation}
+	\epsilon_{reff} = \frac{\epsilon_r + 1}{2} + \frac{\epsilon_r - 1}{2}\left(1 + \frac{10h}{w}\right)^{-1/2}
+	\label{eq:espilon_reff}
+\end{equation}
+
+
+\subsubsection{Transformation des éléments localisés en éléments distribués}
+
+L'objectif ici est de déterminer les paramètres des lignes de transmissions qui vont remplacer les bobines et les condensateurs. Ces paramètres sont la permittivité du substrat, l'impédance caractéristique de la ligne, la hauteur de cuivre, sa largeur ou encore sa longueur.\\
+7,092
+On commence par le \underline{remplacement de toutes les bobines}. On fait le choix de détailler les calculs \underline{pour un substrat en teflon} de permittivité relative 2,209 obtenu à partir des plaques de teflon large lors de la partie sur la caractérisation. On se base sur une hauteur de cuivre $h$ standard de 1,580 mm et une largeur de piste $w$ de 0,500 mm comme expliqué dans la partie sur les limites de validités. A partir de tous ces éléments et des équations \ref{eq:espilon_reff} et \ref{eq:Z_c_bobine} on trouve :
+
+\begin{equation}
+	\epsilon_{reff} = 1,710
+	\qquad
+	Z_c = 147,510 \Omega
+\end{equation}
+
+Il ne nous reste plus qu'à calculer les longueurs des lignes de transmissions qui vont remplacer les bobines. Pour cela on utilise l'expression de $l_L$ de la formule \ref{eq:expression_l}. Le tableau ci-dessous récapitule les longueurs obtenues en fonction des valeurs des bobines.
+
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		$L$ & 4,560 nH & 7,850 nH \\
+		\hline
+		$l_L$ & 7,092 mm & 12,208 mm\\
+		\hline
+	\end{tabular}
+	\caption{Longueurs des lignes de transmission qui remplacent les bobines.}
+	\label{tab:longueur_ligne_bobine_passe_bas}
+\end{table}
+
+
+On s'attaque maintenant au \underline{remplacement des condensateurs}. On fait les mêmes choix de valeurs pour la permittivité relative (2,209) et pour la hauteur de cuivre (1,580 mm). Pour la largeur de cuivre, conformément à la partie sur les limites de validité on prendra une largeur de 10 mm. Pour le calcul de $\epsilon_{reff}$ on utilise toujours l'équation \ref{eq:espilon_reff} tandis que pour $Z_c$ on utilise maintenant la formule \ref{eq:Z_c_condo} ce qui donne :
+
+\begin{equation}
+	\epsilon_{reff} = 1,981
+	\qquad
+	Z_c = 29,207 \Omega
+\end{equation}
+
+Il ne nous reste plus qu'à calculer les longueurs des lignes de transmissions qui vont remplacer les bobines. Pour cela on utilise l'expression de $l_C$ de la formule \ref{eq:expression_l}. Le filtre contient une seule valeur de capacité : 2,18 pF. Cela fait que nous avons qu'une seule longueur à calculer :
+
+\begin{equation}
+	l_C = \frac{2,18.10^{-12} * 29,207 * 3.10^8}{\sqrt{1,981}} = 13,571 mm
+\end{equation}
+
+
+
+\subsubsection{Simulation sur le substrat de teflon}
+
+Pour vérifier nos valeurs obtenues on passe sur le logiciel de simulation ADS. Le schéma réalisé est disponible à la figure \ref{fig:schema_distribue_passe_bas_ads}. Il est composé de cinq éléments mis en série. Aux extrémités on trouve deux terminaux (ou charge) $50\Omega$. Les éléments mis en série sont des lignes de transmission basé sur une largeur W, une longueur L et un substrat Subst. Les deux premier paramètre sont remplis selon les résultats obtenus dans les parties précédentes. Pour le substrat on utilise un bloc MSub que l'on appellera MSub1. Il contient toute les informations concernant le substrat sur lequel on souhaite simuler notre filtre. On y trouve par exemple la permittivité relative du matériau, la hauteur du cuivre voulue ou encore les pertes liés à $tan(\delta)$.
 
 \begin{figure}[H]
 	\centering
@@ -615,14 +724,14 @@ Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'ép
 	\label{fig:schema_distribue_passe_bas_ads}
 \end{figure}
 
-
+Pour valider le comportement du filtre on affiche le coefficient de transmission S21. La figure \ref{fig:simu_passe_bas_distribue} contient le résultat de la simulation sur deux intervalles de fréquences. A gauche, on observe le comportement général du filtre sans avoir de détails sur la bande passante tandis qu'à droite on y a un zoom.
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[b]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_passe_bas_distribue.PNG}
 		\caption{Sans zoom}
-		\label{fig:simu_passe_bas_distribue}
+		\label{fig:simu_passe_bas_distribueG}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_zoom_passe_bas_distribue.PNG}
@@ -630,8 +739,22 @@ Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'ép
 		\label{fig:simu_zoom_passe_bas_distribue}
 	\end{subfigure}
 	\caption{Simulation du module du coefficient de transmission S43 en dB}
-	%	\label{fig:observation_registres_internes}
+	\label{fig:simu_passe_bas_distribue}
 \end{figure}
+
+
+Sur la figure \ref{fig:simu_passe_bas_distribueG} on observe le comportement d'un filtre passe-bas avec une fréquence de coupure à environ 2 GHz. Du côté de la bande passante l'atténuation va jusqu'à 0,759 dB (pour 2 GHz) ce qui est supérieur aux 0,1 dB voulues par le cahier des charges. Au niveau de la bande atténuée, l'atténuation commence à 17 dB (à 3 GHz) ce qui respecte le gabarit (qui imposait 15 dB) jusqu'à la fréquence approximative de 6,4 GHz uniquement. A partir de cette fréquence (et depuis 4,5 GHz environ) le coefficient de transmission remonte puis fait des "va et vient" à 0 dB sous la forme de lobes. \\
+
+\textbf{justifier a partir de tan(B l)}
+
+
+
+\subsubsection{Amélioration}
+
+\subsection{Comparaison des substrats}
+
+\subsection{Comparaison avec des filtres réel sur PCBs}
+
 
 
 \begin{figure}[H]
