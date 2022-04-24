@@ -4,9 +4,11 @@
 \input{configuration}
 \input{titre}
 
+
 \begin{document}
 \myTitle[Rapport de mini-projet \\ - Électronique Hautes Fréquences - ]
 \newpage
+\pagestyle{plain} % Début de la numérotation des pages
 
 \textbf{Il faudra pas oublier de rajouter une table des figures et matières}
 
@@ -156,7 +158,7 @@ La superposition des résultats expérimentaux (courbe rouge) avec le résultat 
 	\caption{Résultats des paramètres de la ligne après simulation et ajustement du modèle}
 \end{table}
 
-Les paramètres sont à mettre en regard avec les données garanties par le fabricant. La fiche technique pour le verre téflon (autrement nommé PTFE, polytétrafluoroéthylène) est proposée par la société CIF (Circuit Imprimé Français). La fiche technique pour le verre epoxy FR4 est celle de LP (Laminated Plastics). Ces paramètres $\varepsilon_r$ et $\mbox{tan}(\delta)$ donnés dans le tableau ci-après ont été déterminés sous une fréquence de 1 GHz avec une hauteur de substrat de 0,062 pouce, soit 1,58 mm, qui semble être après recherche une hauteur de référence pour la documentation des fabricants.
+Les paramètres sont à mettre en regard avec les données garanties par le fabricant. La fiche technique pour le verre téflon (autrement nommé PTFE, polytétrafluoroéthylène) est proposée par la société CIF (Circuit Imprimé Français).\cite{data_PTFE} La fiche technique pour le verre epoxy FR4 est celle de LP (Laminated Plastics).\cite{data_fr4} Ces paramètres $\varepsilon_r$ et $\mbox{tan}(\delta)$ donnés dans le tableau ci-après ont été déterminés sous une fréquence de 1 GHz avec une hauteur de substrat de 0,062 pouce, soit 1,58 mm, qui semble être après recherche une hauteur de référence pour la documentation des fabricants.
 
 \newpage
 
@@ -274,6 +276,7 @@ Le résultat de l'application numérique avec h = 1,58mm, w = 7,87mm et L=74,83m
 
 \section{Synthèse de filtre passe-bas Tchebychev en technologie micro-ruban}
 
+\subsection{Choix des valeurs de composants}
 
 L'objectif est de réaliser un filtre passe-bas dont le gabarit est donné à la figure \ref{fig:gabarit_PasseBas} avec une réponse de Tchebychev.
 
@@ -380,6 +383,7 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 	\label{tab:valeurs_composant_passe_bas}
 \end{table}
 
+Pour vérifier et valider les valeurs de composants de notre filtre nous utilisons le logiciel ADS. Le schéma simulé est celui de la figure \ref{fig:schema_distribue_ameliore_passe_bas_ads}. 
 
 \begin{figure}[H]
 	\centering
@@ -388,6 +392,7 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 	\label{fig:schema_localise_passe_bas_ads}
 \end{figure}
 
+On note la présence de deux blocs S-PARAMETERS. Le premier permet une simulation sur la bande de fréquence $[0; 10\ GHz]$ pour observer le comportement général du filtre. Le second permet une simulation sur la bande $[0; 2\ GHz]$ pour avoir un zoom sur la bande passante et analyser l'ondulation en bande passante. La figure \ref{fig:simu_passe_bas_localise_global} montre le résultat de ces simulations.
 
 \begin{figure}[H]
 	\centering
@@ -402,8 +407,205 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 		\label{fig:simu_zoom_passe_bas_localise}
 	\end{subfigure}
 	\caption{Simulation du module du coefficient de transmission S21 en dB}
-%	\label{fig:observation_registres_internes}
+	\label{fig:simu_passe_bas_localise_global}
 \end{figure}
+
+D'une manière globale on a bien un comportement de type basse-bas. L'ondulation en bande passante sur la figure \ref{fig:simu_zoom_passe_bas_localise} est comprise entre 0 et 0,1 dB comme souhaité par notre cahier des charges. Au niveau des fréquences caractéristiques nous observons que l'ondulation en bande passante est correctement conservé jusqu'à 2 GHz (fréquence de coupure nommée fs dans le gabarit de la figure \ref{fig:gabarit_PasseBas}). Au delà de 3 GHz (fréquence nommée fc sur la figure \ref{fig:gabarit_PasseBas}) l'atténuation du filtre est supérieur à 19 dB ce qui est conforme aux 15 dB d'atténuation minimum voulus par le cahier des charges. Les résultat observé à la figure \ref{fig:simu_passe_bas_localise_global} nous permettent donc de valider les valeurs des composants (condensateurs et bobines) au regard du cahier des charges. \\
+
+
+La prochaine étape est de choisir une technologie pour implémenter ce filtre. C'est là que la subtilité des hautes fréquences intervient. Le choix que l'on aurait fait en basse ou moyenne fréquence de prendre une technologie localisé (composants traversant et CMS)\footnote{Cette technologie est dite localisée car elle fait référence aux composants qui voient leurs tailles physiques grandes ou proches de la longueur d'onde des signaux qu'ils traitent.} serait faux. La principale raison est la prise en compte des effets inductifs qui était négligeable en basse et en moyenne fréquence va maintenant entraîner des effets parasites indésirables. La technologie proposé dans le cours est dite distribué. Ce terme vient du fait que la longueur d'onde des signaux mises en jeu est proche de la taille des éléments physiques qui vont remplacer les capacités et les bobines voulues. Chaque éléments discrets (bobine et capacité) va être remplacé par une ligne à micro ruban. Une ligne à micro ruban est une ligne de propagation qui peut avoir des effets capacitifs ou inductifs selon son dimensionnement. 
+
+\subsection{La technologie micro ruban}
+\subsubsection{Les lignes de transmission inductives}
+
+
+Dans cette partie on cherche à remplacer les inductances série du filtre par des lignes de transmission qui apportent le même effet capacitif. La figure \ref{fig:probleme_ligne_inductive} illustre les deux schémas que nous utiliserons.
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\begin{circuitikz}
+			\draw (0,2)
+			node[above]{$Z_{vue}$}
+			to[TL=$Z_c$\texttt{,} $l$] (2,2)
+			to [generic=$Z_0$] (2,0) node[ground]{};
+		\end{circuitikz}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\begin{circuitikz}
+			\draw (0,2)
+			node[above]{$Z_{vue'}$}
+			to[L=$L$] (2,2)
+			to [generic=$Z_0$] (2,0) node[ground]{};
+		\end{circuitikz}
+	\end{subfigure}
+	\caption{Schéma d'une ligne de transmission apparenter à une inductance.}
+	\label{fig:probleme_ligne_inductive}
+\end{figure}
+
+On précise que $Z_c$ est l'impédance caractéristique de la ligne de transmission, $l$ est la longueur de la ligne, $L$ la valeur de l'inductance équivalente et $Z_0$ la charge. L'impédance vue en entrée de la ligne de transmission est donné par la formule :
+
+\begin{equation}
+	Z_{vue} = Z_c\ \frac{Z_0 + j Z_c tan(\beta l)}{Z_c + j Z_0 tan(\beta l)}
+\end{equation}
+
+Dans le cas où l'on choisit une ligne de transmission avec une impédance caractéristique très supérieur à l'impédance de charge on a $Z_c>>Z_0$ et donc :
+
+\begin{equation}
+	Z_{vue} = Z_0 + j Z_c tan(\beta l)
+\end{equation}
+
+L'impédance vue en entrée du montage avec la bobine idéale L est donne par 
+
+\begin{equation}
+	Z_{vue'} = Z_0 + j 2\pi f L 
+	\label{eq:ZvueL1}
+\end{equation}
+
+On a ici une évolution de l'impédance $Z_{vue'}$ proportionnelle à la fréquence. Dans le cas de la ligne de transmission on rappelle que la constante de phase $beta$ est relié à la fréquence par la formule :
+
+\begin{equation}
+	\beta = \frac{2 \pi f}{v_\phi}
+\end{equation}
+
+Où $f$ est la fréquence en Hz et $v_\phi$ la vitesse de l'onde électromagnétique dans la ligne en m/s. On sait aussi que le développement limité de $tan(x)=x$ pour des petites variations de x autour de 0. Dans ces conditions on se trouve également avec une relation de proportionnalité entre $Z_{vue}$ et la fréquence :
+
+\begin{equation}
+	Z_{vue} = Z_0 + jZ_c\frac{2 \pi f}{v_\phi} l
+	\label{eq:ZvueL2}
+\end{equation}
+
+Il nous est maintenant possible d'assimiler les équations \ref{eq:ZvueL1} et \ref{eq:ZvueL2} on obtient :
+
+\begin{equation}
+	Z_0 + j 2\pi f L = Z_0 + jZ_c\frac{2 \pi f}{v_\phi} l
+\end{equation}
+
+On isole l'inductance $L$.
+
+\begin{equation}
+	L = \frac{Z_c l}{v_\phi}
+\end{equation}
+
+On a ici une expression d'une inductance en fonction des paramètre d'une ligne de transmission à savoir, son impédance $Z_c$ et de sa longueur $l$. 
+
+\subsubsection{Les lignes de transmission capacitives}
+
+Dans cette partie on cherche à remplacer les condensateurs parallèles du filtre par des lignes de transmission qui apportent le même effet capacitif. La figure \ref{fig:probleme_ligne_capacitive} illustre les deux schémas pour cette étude.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\begin{circuitikz}
+			\draw (0,2)
+			node[above]{$Z_{vue}$}
+			to[TL=$Z_c$\texttt{,} $l$] (2,2)
+			to [generic=$Z_0$] (2,0) node[ground]{};
+		\end{circuitikz}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\begin{circuitikz}
+			\draw (0,2)
+			node[above]{$Z_{vue'}$}
+			to [short](2,2)
+			(2,2)to[C=$C$] (2,0)
+			(2,0)node[ground]{}
+			(2,2) to [short](4,2)
+			(4,2)to [generic=$Z_0$] (4,0) node[ground]{};
+		\end{circuitikz}
+	\end{subfigure}
+	\caption{Schéma d'une ligne de transmission apparenter à un condensateur.}
+	\label{fig:probleme_ligne_capacitive}
+\end{figure}
+
+Comme pour la partie précédente, on précise que $Z_c$ est l’impédance caractéristique de la ligne de transmission, $l$ est la longueur de la
+ligne, $C$ la valeur de l’inductance équivalente et $Z_0$ la charge. L’impédance vue en entrée de la ligne de transmission
+est donné par la formule :
+
+
+\begin{equation}
+	Z_{vue} = Z_c\ \frac{Z_0 + j Z_c tan(\beta l)}{Z_c + j Z_0 tan(\beta l)}
+\end{equation}
+
+Dans le cas où l'on choisit une ligne de transmission avec une impédance caractéristique très inférieure à l'impédance de charge on a $Z_c<<Z_0$ et donc :
+
+\begin{equation}
+	Z_{vue} = \frac{Z_c Z_0}{2_c + j Z_0 tan(\beta l)}
+\end{equation}
+
+On en déduit que l'admittance vue en entrée de la ligne de transmission est égal à :
+
+\begin{equation}
+	Y_{vue} = \frac{1}{Z_{vue}} = \frac{1}{Z_0} + \frac{j tan(\beta l)}{Z_c}
+\end{equation}
+
+Du côté de l'impédance vue en entrée du montage avec le condensateur C on a :
+
+\begin{equation}
+	Z_{vue'} = \frac{Z_0}{1 + j C Z_0 2 \pi f}
+\end{equation}
+
+
+Et donc une admittance $Y_{vue'}$ :
+
+\begin{equation}
+	Y_{vue'} =  \frac{1}{Z_{vue'}} = \frac{1}{Z_0} + j C 2 \pi f
+	\label{eq:YvueC1}
+\end{equation}
+
+
+On a ici une évolution de l'admittance $Y_{vue'}$ proportionnelle à la fréquence. Dans le cas de la ligne de transmission on rappelle que la constante de phase $beta$ est relié à la fréquence par la formule :
+
+\begin{equation}
+	\beta = \frac{2 \pi f}{v_\phi}
+\end{equation}
+
+
+Où $f$ est la fréquence en Hz et $v_\phi$ la vitesse de l'onde électromagnétique dans la ligne en m/s. On sait aussi que le développement limité de $tan(x)=x$ pour des petites variations de x autour de 0. Dans ces conditions on se trouve également avec une relation de proportionnalité entre $Y_{vue}$ et la fréquence :
+
+\begin{equation}
+	Y_{vue} = \frac{1}{Z_{vue}} = \frac{1}{Z_0} + \frac{j 2\pi f}{v_\phi Z_c} l
+	\label{eq:YvueC2}
+\end{equation}
+
+Il nous est maintenant possible d'assimiler les équations \ref{eq:YvueC1} et \ref{eq:YvueC2} on obtient :
+
+\begin{equation}
+	\frac{1}{Z_0} + j C 2 \pi f = \frac{1}{Z_0} + \frac{j 2\pi f}{v_\phi Z_c} l
+\end{equation}
+
+On isole la capacité $C$.
+
+\begin{equation}
+	C = \frac{l}{Z_c v_\phi}
+\end{equation}
+
+On a ici une expression d'une capacité en fonction des paramètre d'une ligne de transmission à savoir, son impédance $Z_c$ et de sa longueur $l$. 
+
+
+\subsubsection{Limites de validité}
+
+Comme nous l'avons vu dans les parties précédentes, des lignes de transmission peuvent s'apparenter à des effets capacitifs ou inductifs sous certaines conditions. Ces conditions sont aux nombres de deux. La première est sur l'impédance de la ligne de transmission $Z_c$ tandis que la deuxième est lié à la constante de phase $\beta$ et plus particulièrement la fréquence.\\
+%La condition du $Z_c$ est lié aux contraintes dépend de la largeur des pistes et donc de des procédés de fabrication. Cette condition sera abordé dans la partie suivante sur le passage des composants discret à des lignes de transmission. Il nous reste donc la
+
+\textbf{Condition du $Z_c$\\}
+
+Dans le cas où l'on cherche apparenter une bobine série à une ligne de transmission, son impédance caractéristique doit être très supérieur à $Z_0$ soit $Z_c >> Z_0$. Dans ces conditions l'impédance $Z_c$ s'écrit :
+
+\begin{equation}
+	Z_c= \frac{119,9\pi}{2\sqrt{\epsilon_r}}\left[\frac{w}{2h} + \frac{ln4}{\pi} + \frac{ln(e\pi^2 / 16)}{2\pi}\left(\frac{\epsilon_r + 1}{\epsilon_r}\right) + \frac{\epsilon_r + 1}{2\pi \epsilon_r} \left( ln\frac{\pi e}{2} +  ln\left(\frac{w}{2h} + 0,94 \right) \right)  \right]^{-1}
+\end{equation}
+
+Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'épaisseur de cuivre en mm et $w$ la largeur de la piste de cuivre en mm. La permittivité relative est donné par le constructeur où alors elle peut être trouver de manière expérimentale comme on a pu le faire dans les premières séance de TP (cf partie sur la caractérisation). Dans notre cas l'épaisseur h a une valeur standard de 1,58 mm. La largeur $w$ quant à elle, dépend des procédés de fabrication. Au vue de l'expression de $Z_c$, sachant $Z_0=50 \Omega$ où w de 4,8 mm (donnée dans le sujet du TP) et sachant également l'expression de $Z_c$ ainsi que $Z_c>>Z_0$, on en déduit qu'il faut $w<< 4,8$ mm.
+
+
+
+
+
+
+
+\subsection{Passage des composants discrets à des lignes de transmission}
 
 
 \begin{figure}[H]
@@ -460,33 +662,17 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 
 
 
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_passe_bas_reel_tche_epoxy.PNG}
-		\caption{Sans zoom}
-		\label{fig:simu_passe_bas_reel_tche_epoxy}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_zoom_passe_bas_reel_tche_epoxy.PNG}
-		\caption{Avec zoom sur la bande passante}
-		\label{fig:simu_zoom_passe_bas_distribue_ameliore}
-	\end{subfigure}
-	\caption{Module du coefficient de transmission S65 en dB d'un filtre passe-bas sur substrat epoxy}
-	%	\label{fig:observation_registres_internes}
-\end{figure}
-
 
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_passe_bas_reel_tche_teflon.PNG}
+		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_passe_bas_reel_tche.PNG}
 		\caption{Sans zoom}
 		\label{fig:simu_passe_bas_reel_tche_teflon}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_zoom_passe_bas_reel_tche_teflon.PNG}
+		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_zoom_passe_bas_reel_tche.PNG}
 		\caption{Avec zoom sur la bande passante}
 		\label{fig:simu_zoom_passe_bas_reel_tche_teflon}
 	\end{subfigure}
@@ -500,11 +686,126 @@ Le tableau ci-dessous donne les applications numériques pour les composants du 
 
 \subsection{Avant-propos : rappel du cahier des charges}
 
-\subsection{Synthèse du filtre passe-bas en éléments localisés}
+La partie qui suit consiste en la conception d'un second type de filtre passe-bande. Il s'agit d'un filtre passe-bas elliptique, également appelé filtre de Cauer selon la littérature. Un tel système possède diverses propriétés intéressantes. En effet, il s'agit d'un filtre avec une ondulation en bande passante mais également en bande atténuée. L'ondulation en bande atténuée présente à des fréquences particulières un gain en dB projeté vers $-\infty$. Il s'agit d'une propriété très intéressante car si le concepteur a la main sur ces fréquences particulières, celui-ci peut s'en servir pour grandement atténuer un quelconque signal nuisible. De plus, aucun autre filtre d'ordre égal peut avoir une raideur aussi importante que le filtre de Cauer. 
+Le gabarit en atténuation fourni dans le cahier des charges est donné ci-dessous avec $f_c$ la fréquence de coupure du filtre à 2,5 GHz.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=10cm]{../3synthPBas/elliptique/gabarit_passe-bas_elliptique.png}
+	\caption{Gabarit du filtre passe-bas elliptique imposé par le cahier des charges}
+	\label{fig:gabarit_elliptique}
+\end{figure}
+
+Le cahier des charges contient également une table de valeurs pour la détermination du filtre passe-bas elliptique normalisé. Le choix de la ligne est effectuée en fonction des spécifications données sur le gabarit. Il est demandé par exemple une atténuation maximale $A_{max}$ en bande passante de 0,01 dB et un ROS (Rapport d'ondes stationnaires) n'excédant pas 1,1. La ligne choisie dans le nomogramme est donnée ci-dessous.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		$A_{max}$ (en dB) & $VSWR$ & $\Omega$ & $A_s$ (en dB) & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$ & $g_7$\\
+		\hline
+		0.01 & 1.10 & 1.41 & 30.2 & 0.6265 & 0.1920 & 1.1099 & 1.2706 & 0.6535 & 0.7125 & 0.3441\\
+		\hline
+	\end{tabular}
+	\caption{Nomogramme pour la détermination du filtre passe-bas elliptique normalisé}
+	\label{tab:nomogramme_elliptique}
+\end{table}
+
+L'ensemble des $g_k$ formera un filtre respectant le gabarit imposé. Il s'agit des quatre premiers paramètres qui justifient le choix de ces valeurs. En effet l'atténuation maximale en bande passante est de 0,01 dB comme exigé sur le cahier des charges. Le VSWR (\textit{Voltage standing wave ratio}) est un paramètre inconnu mais simplement de nom. En réalité il s'agit du ROS, un critère à maîtriser afin d'éviter une importante réflexion qui mènerait à une perte de puissance. Le ROS est fixé à 1,10 c'est-à-dire que sur l'ensemble de la puissance transmise, 99,8\% est pour la charge et 0,2\% de la puissance est réfléchie. Ce paramètre semble peut-être anecdotique mais il peut s'avérer très important dans certaines applications. Par exemple, une puissance réfléchie trop élevée brûlerait le circuit et provoquerait la destruction du composant. Le paramètre $A_s$ donnera une atténuation minimale en bande atténuée de 30,2 dB, ce qui satisfait amplement le cahier des charges. Par ailleurs, la dernière variable $\Omega$ garantit qu'à la fréquence de 1,41$f_c$, la valeur $A_s$ sera atteinte.
+
+\newpage
+
+\subsection{Synthèse du filtre passe-bas elliptique en éléments localisés}
+
+Dans cette section, il s'agit de synthétiser le filtre passe-bas elliptique en éléments localisés, c'est-à-dire avec des selfs et des capacités. Le cahier des charges offre le choix entre le filtre passe-bas en topologie impédance ou admittance. Le choix de l'un par rapport à l'autre n'apportera aucune différence sur le comportement fréquentiel. Afin de respecter le modèle d'équivalence tronçon de ligne - éléments localisés en technologie micro-ruban, la topologie impédance est choisie car le modèle suggère que les capacités doivent être tirées à la masse. Cependant, une publication IEEE (\textit{Institute electrical and electronics engineers}) propose la conception en micro-ruban de filtres elliptiques topologie admittance à l'aide d'une ligne symétrique à deux coudes et d'une capacité interdigitée.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=9cm]{../3synthPBas/elliptique/solution_admittance.png}
+	\caption{Topologie admittance du filtre elliptique en éléments localisés (b) et de son équivalent en technologie micro-ruban}
+	\label{fig:elliptique_IEEE}
+\end{figure}
+
+\vspace{-1cm} %retrecissement pour que tout rentre sur une page
+
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}
+		\ctikzset{inductors/scale=0.9,inductor=american}
+		\draw (0,2)
+		to[L=$g_1$] (2,2)
+		to[L=$g_2$] (2,0)
+		to[C=$g_3$]	(2,-1) node[ground]{}
+		(2,2)to[L=$g_4$] (4,2)
+		to[L=$g_5$] (4,0)
+		to[C=$g_6$]	(4,-1) node[ground]{}
+		(4,2)to[L=$g_7$] (6,2);
+	\end{circuitikz}
+	\caption{Schéma prototype d'un filtre passe-bas de Cauer en topologie impédance}
+\end{figure}
+
+La structure a été décrite sous ADS, en passant des éléments $g_k$ normalisés aux valeurs de selfs et de capacités. Celle-ci est disponible dans la figure ci-dessous.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=12cm]{../3synthPBas/elliptique/modele_ADS_elliptique.png}
+	\caption{Structure du filtre passe-bas elliptique en impédance sous ADS}
+	\label{fig:montage_ADS_elliptique}
+\end{figure}
+
+\newpage
 
 \subsection*{Validations}
 
-\subsection{Transposition du filtre passe-bas en technologie micro-ruban}
+La sous-section qui suit s'intéresse à valider la conception du filtre passe-bas elliptique en éléments localisés avant la transposer en lignes micro-rubans. La simulation sous ADS est effectuée entre 0 et 8 GHz. Le résultat de la simulation est donné dans la figure (\ref{fig:validation_elliptique_localise}) ci-dessous. Le graphique à gauche représente la réponse du filtre sur l'ensemble de la plage fréquentielle simulée. Celui de droite est compris entre 0 et 3 GHz, il s'agit d'un agrandissement effectué pour visualiser la réponse dans la bande passante.\\
+En ce qui concerne la bande atténuée, l'atténuation minimale est de 30,133 dB bien supérieure au 18 dB exigé dans le cahier des charges, ce qui laisse une marge d'environ 12 dB. La bande passante n'offre pas le comportement désiré. En effet, l'atténuation maximale $A_{max}$ dépasse à quelque $10^{-3}$ près des 0,01 dB souhaité. Également à la fréquence de coupure $f_c$, le gain est de -0,012 dB et non de -0,01 dB.\\
+Il pourrait être intéressant de réaliser une simulation en mode tuning et régler les $g_k$ pour obtenir le comportement en bande passante désiré.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=16cm]{../3synthPBas/elliptique/filtre_elliptique_localise.png}
+	\caption{Graphique représentant l'évolution du gain en dB du filtre passe-bas elliptique en éléments localisés en fonction de la fréquence}
+	\label{fig:validation_elliptique_localise}
+\end{figure}
+
+\subsection{Transposition du filtre passe-bas elliptique en technologie micro-ruban}
+
+Il s'agit dans cette section de transposer le filtre conçu précédemment en technologie micro-ruban. En respectant le modèle d'équivalence tronçon de ligne -  éléments localisés et ses hypothèses (il faut que $l \ll \lambda_g$,$Z_C \gg Z_0$ pour les inductances et $Z_C \ll Z_0$ pour les capacités), les selfs seront réalisées avec des petites largeurs et les capacités avec des largeurs $W$ plus élevées. La figure ci-dessous est un exemple de structure de ce filtre en micro-ruban présenté dans divers ouvrages. 
+
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}[scale=0.8]
+		\draw (-5,0) to (-4,0)
+		to(-4,0.25) to (-1.75,0.25)
+		to(-1.75,-1) to(-2.25,-1)
+		to(-2.25,-2) to(-1,-2)
+		to(-1,-1) to(-1.5,-1)
+		to(-1.5,0.25) to(-0.25,0.25)
+		to(-0.25,0) to (0.75,0);
+		\draw (-5,0.75) to (-4,0.75)
+		to(-4,0.5) to (-3,0.5)
+		to(-3,2) to (-3.5,2)
+		to(-3.5,3) to (-2.25,3)
+		to(-2.25,2) to (-2.75,2)
+		to (-2.75,0.5) to (-0.25,0.5)
+		to(-0.25,0.75) to (0.75,0.75);
+		\node at (-3.5,-0.1) {$L_1$};
+		\node at (-2.4,1.2) {$L_2$};
+		\node at (-1.9,2.4) {$C_3$};
+		\node at (-2.2,-0.1) {$L_4$};
+		\node at (-1.1,-0.4) {$L_5$};
+		\node at (-0.6,-1.5) {$C_6$};
+		\node at (-0.8,0.75) {$L_7$};
+	\end{circuitikz}
+	\caption{Schéma représentatif de la structure du filtre passe-bas elliptique en ligne micro-ruban}
+	\label{fig:modele_elliptique_microstrip}
+\end{figure}
+
+\newpage
+
+La conception du filtre passe-bas Tchebychev a respecté à la lettre l'ensemble de ce modèle d'équivalence y compris la relation d'ordre $l \ll \lambda_g$, hypothèse qui justifie la linéarisation du terme $\mbox{tan}(\beta l)$ dans la formule de l'impédance vue $Z_{vue}$. Cependant comme le montre la figure (\ref{fig:simu_passe_bas_distribue}), à partir d'une certaine fréquence la longueur d'onde guidée $\lambda_g$ est de l'ordre de la longueur $l$ de la ligne. La linéarisation de la tangente n'a plus de sens à partir de cette fréquence. Ainsi pour la suite du rapport et dans l'objectif d'obtenir un meilleur résultat, la linéarisation $\mbox{tan}(\beta l) \approx \beta l$ ne sera pas effectuée.\\
+
+Il s'agit désormais de fixer les limites géométriques qui seront utilisées pour obtenir des lignes d'impédance caractéristique $Z_C$ faible ou élevée. Dans le cas d'impédance élevée ($Z_C \gg Z_0$ pour les inductances), la largeur de ligne $W$ sera fixée selon la technologie de gravure et sa précision. Les procédés de photolithographie choisis pour les plaques de test en laboratoire possèdent une limite de gravure de 0,50 mm. La largeur de ligne pour les inductances, notée $W_L$, sera donc de 0,50 mm.
 
 \subsection*{Validations}
 
