@@ -1,6 +1,6 @@
 \documentclass[french]{article}
 
-
+\usepackage{siunitx}
 \input{configuration}
 \input{titre}
 
@@ -953,7 +953,7 @@ Le schéma du filtre passe bande en éléments localisés après transformation 
 		(5.5,0.5) -- (6.5,0.5)
 		(6,0.5) -- (6,0);
 	\end{circuitikz}
-	\caption{Schéma filtre passe-bande ordre 3 en impédance}
+	\caption{Schéma filtre passe-bande ordre 3 type impédance en éléments localisés}
 	\label{fig:ordre3_BP_imp}
 \end{figure}
 A partir des expression précédente il est possible de calculer les valeurs normalisée de ces nouveaux composants. Nous pouvons pas le même occasion opérer la dénormalisation. Les grandeurs dénormalisées seront notées en majuscule. De nouveau on s'appuis sur le cours d'électrique moyenne fréquence \cite{cours_MF}. On y extrait les égalités suivantes :
@@ -997,8 +997,8 @@ On prendra la résistance de charge valant $50\Omega$ et la fréquence centrale 
 Afin de valider les valeurs obtenue nous pouvons recourir à une simulation sur ADS. Le schémas tracé est illustré par la figure \ref{fig:ads_sch_BP_localise}.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\linewidth]{../4synthPBande/impedance/schema_passe_bande_localise}
-	\caption{Schéma passe bande ADS}
+	\includegraphics[width=0.8\linewidth]{../4synthPBande/impedance/schema_passe_bande_localise}
+	\caption{Schéma filtre passe-bande ordre 3 type impédance en éléments localisés sous ADS}
 	\label{fig:ads_sch_BP_localise}
 \end{figure}
 Il fait intervenir des composants de la bibliothèque "lumbed component". La simulation porte sur l'observation des paramètres S et plus particulièrement du coefficient de transition $S_{21}$. Le résultat obtenue est donné par la deux figure \ref{fig:ads_S21_BP_localise1}. Elles permettent respectivement de vérifier la coupure et l'ondulation en bande passante.
@@ -1019,7 +1019,7 @@ Il existe plusieurs circuits s'appuyant sur les propriété des lignes pour réa
 \begin{figure}[H]
 	\centering
 	\ctikzset{bipoles/length=1.1cm}
-	\begin{circuitikz}[scale=0.85]
+	\begin{circuitikz}[scale=0.8]
 		\draw (0,0)
 		to[L=$l$] (3,0)
 		to[C=$c$] (6,0);
@@ -1038,9 +1038,9 @@ Un tel circuit est caractérisé par sa fréquence de résonance. C'est la fréq
 La  pulsation de résonance $\omega_0$ est obtenue lorsque la partie imaginaire est nulle, $\underline{Z_{equ}}$ étant purement imaginaire cela revient l'annuler. Après résolution il vient la valeur de $\omega_0$. Le résonateur série ne modifie pas les propriété du signal le traversant à cette pulsation puisque son impédance équivalente est nulle. Il s'agit maintenant de trouver la topologie micro-rubans ayant le même comportement. Le résultat est connu, le circuit équivalent est une ligne demie onde série. Faisons tout de même l'hypothèse de cela et essayons de le démonter.
 \begin{figure}[H]
 	\centering
-	\begin{circuitikz}[scale=0.85]
+	\begin{circuitikz}[scale=0.75]
 		 \draw (0,0)
-		 to[mstline, mstlinelen=2, l=line$Z_c \beta$,*-] (4,0) to[R,l=$Z_0$] (4,-2)
+		 to[mstline, mstlinelen=1, l=line$Z_c \beta$,*-] (4,0) to[R,l=$Z_0$] (4,-2)
 		 node[ground]{};
 	\end{circuitikz}
 	\caption{Schéma ligne demie onde chargée}
@@ -1048,16 +1048,16 @@ La  pulsation de résonance $\omega_0$ est obtenue lorsque la partie imaginaire 
 \end{figure}
 Afin de monter que ce circuit à base d'une ligne demie onde est équivalente au schéma précédent figure \ref{fig:res_lc_serie} on exprime l'impédance $Z_{vue}$ ramenée en entrée de la ligne.
 \begin{equation}
-	Z_{vue} = Z_c\frac{Z_0+jZ_ctan(\beta L)}{Z_c+jZ_0tan(\beta L)}
+\underline{Z_{equ}} = Z_c\frac{Z_0+jZ_ctan(\beta L)}{Z_c+jZ_0tan(\beta L)}
 \end{equation}
 Avec $\beta L = \pi, tan(\beta L)=0$
 \begin{equation}
 Z_{vue} = Z_0
 \end{equation}
-L'impédance $Z_{vue}$ vue en entrée de la ligne est la même que celle en sortie. La ligne en question, à la fréquence garantissant $L=\lambda/2$, ne modifie pas les propriété du signal le traversant. Ce modèle peut donc être assimilé à un résonateur série. De la même façon, il est possible d'établir un modèle équivalent au résonateur parallèle en technologie micro-rubans.
+L'impédance $Z_{vue}$ vue en entrée de la ligne est la même que celle en sortie. \emph{La ligne en question, à la fréquence garantissant $L=\lambda/2$, ne modifie pas les propriété du signal le traversant. Ce modèle peut donc être assimilé à un résonateur série}. De la même façon, il est possible d'établir un modèle équivalent au résonateur parallèle en technologie micro-rubans.
 \begin{figure}[H]
 	\centering
-	\begin{circuitikz}[scale=0.85]
+	\begin{circuitikz}[scale=0.8]
 	\draw	(0.5,3) to[short,*-] (0.5,2.5)
 (0,2.5) -- (1,2.5)
 (0,2.5) to[L=$l$] (0,0.5)
@@ -1071,18 +1071,50 @@ L'impédance $Z_{vue}$ vue en entrée de la ligne est la même que celle en sort
 	\caption{Schéma ligne demie onde chargée}
 	\label{fig:res_parallele}
 \end{figure}
-La figure \ref{fig:res_parallele} représente un résonateur LC parallèle à droite et  un stub demis onde CO à gauche. Ils ramènent tous deux un circuit ouvert à la fréquence de résonance. En effet, l'admittance du premier est très proche de l'impédance du résonateur série est d'exprime :
+La figure \ref{fig:res_parallele} représente un résonateur LC parallèle à gauche et  un stub demis onde CO à droite. Ils ramènent tous deux un circuit ouvert à la fréquence de résonance. En effet, l'admittance du premier s'exprime :
 \begin{equation}
-	Y(\omega)=j\Big(C\omega-\frac{1}{L\omega}\Big)
+	\underline{Y_{equ}}(\omega)=j\Big(C\omega-\frac{1}{L\omega}\Big)
 \end{equation}  
-De nouveau on obtient en admittance cette fois: 
+Avec la même méthode que pour le résonateur série en admittance cette fois, on obtient: 
 \begin{equation}
 Im(\underline{Y_{equ}}(\omega)) = 0 \text{ donc }\underline{Y_{equ}}(\omega_0)=0, \quad \omega_0 =\frac{1}{\sqrt{LC}}
 \end{equation}
-Le résonateur série ramène donc un admittance nulle soit un circuit ouvert. La démonstration de l'impédance ramenée du stub demie onde parallèle est la même que pour la ligne $\lambda /2$ série : $Z_{vue} = Z_0$. La terminaison du stub étant un circuit ouvert, l'impédance ramenée est infinie. Nous venons donc de monter qu'un résonateur LC parallèle peut être transposé en un stub demie onde ouvert. 
+Le résonateur série ramène donc une admittance nulle, soit un circuit ouvert. Dans le cas du stub demie onde, la démonstration de l'impédance ramenée est la même que pour la ligne $\lambda /2$ série : $Z_{vue} = Z_0$. La terminaison du stub étant un circuit ouvert, l'impédance ramenée est infinie. Nous venons donc de monter qu'\emph{un résonateur LC parallèle peut être transposé en un stub demie onde ouvert}. \\
 
-
-
+La transposition des résonateurs séries et parallèles a été démontrée. Il est donc possible de proposer un modèle de filtre passe bande en technologie micro-rubans en se basant sur la structure en éléments localisés précédement proposée. En remplaçant les couple LC série par des lignes demie onde et le couple LC parallèle par un stubs demie onde ouvert de la figure \ref{fig:ordre3_BP_imp} on obtient le schéma figure \ref{fig:ordre3_BP_imp_dis}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../4synthPBande/impedance/schema_passe_bande_microruban}
+	\caption{Schéma filtre passe-bande ordre 3 type impédance à base de lignes demie onde sous ADS}
+	\label{fig:ads_sch_BP_localise}
+\end{figure}
+Les lignes présentes sur ce schéma sont en pratique des lignes de cuivre dont il faut fixer deux paramètre, la longueur et la largeur. Dans notre cas ces paramètres permettent respectivement de fixer la fréquence centrale et la bande passante à travers $Z_c$. La longueur d'une ligne demie onde est naturellement $\lambda /2$. La fréquence centrale est obtenue par moyenne arithmétique comme le montre son expression ci-dessous. 
+\begin{equation}
+f_0 = \frac{f_s^-+f_s^+}{2}=\frac{1,750+2,250}{2}=2\text{kHz}
+\end{equation}
+La largeur fixe l'impédance caractéristique $Z_c$ de la ligne. Son expression, est donnée dans le cours \cite{cours_HF} et diffère dans le cas d'une ligne série et parallèle. Les expressions ci-dessous donnent à gauche, l'impédance d'une ligne demis onde série et à droite, l'admittance d'un stub demie onde : 
+\begin{equation}
+	\text{série : } Z_c = 4.f_0.L \quad \text{ parallèle : } Y_c=4.f_0.C
+\end{equation} 
+où $f_0$ la fréquence centrale vaut $2\text{GHz}$, L l'impédance dénormalisée L1 donnée dans le tableau \ref{tab:denorm_BP} est de 16,46nH et C le condensateur dénormalisé C2 également dans le tableau \ref{tab:denorm_BP} vaut 7,307pF. Les valeurs d'inductances L1 et L3 étant identiques, seul deux applications numériques sont nécessaires :
+\begin{equation}
+\text{série : } Z_c = 4*2.10^{9}*16,46.10^{-9}=131,3\Omega \quad 
+\end{equation}
+\begin{equation}
+\text{ parallèle : }
+ Y_c=4*2.10^{9}*7,307.10^{-12} = 58,46mS \text{ soit } Z_c=17,11\Omega
+\end{equation}
+L'impédance de la ligne série est de 131,3$\Omega$ et du stub 17,11$\Omega$. Après simulation ADS du paramètre $S_{21}$ suivant le schéma \ref{fig:ordre3_BP_imp_dis} on obtient le résultat ci-dessous :
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.59\linewidth]{../4synthPBande/impedance/S21_passe_bande_microruban}
+	\includegraphics[width=0.4\linewidth]{../4synthPBande/impedance/S21__bande_passante_passe_bande_microruban}
+	\caption{Simulation S21 passe bande micro-ruban}
+	\label{fig:ads_S21_BP_microruban}
+\end{figure}
+Les résultat de cette simulation présentés par la figure \ref{fig:ads_S21_BP_microruban} montrent une légère dissymétrie de la réponse fréquentielle. Ainsi le gabarit est respecté du coté haute fréquence avec une atténuation de 19,552dB mais mais ne l'est pas sur la pente des basse fréquence avec 13,528dB. L'atténuation en limite de bande passante est supérieure aux 0,1dB du cahier des charges mais symétrique, elle est de 0,459dB. La figure de droite permet de valider la conformité en milieu de bande passante. \emph{Les résultats sont cohérents bien qu'ils ne respectent pas parfaitement les spécifications}. Bien qu'absent du cahier des charges il peut être intéressant d'observer la périodicité de la réponse car cela donne la plage de validité de la fonction passe bande. Dans notre cas en s'appuyant sur l'outils recherche de "Valley" sur ADS la bande est de 2GHz. 
+ 
+\newpage
 \section{Conclusion}
 
 
@@ -1090,27 +1122,6 @@ Le résonateur série ramène donc un admittance nulle soit un circuit ouvert. L
 
 
 
-
-
-
-
-
-
-
-Une fois le coefficient de dénormalisation appliqué nous obtenons les valeurs suivantes.
-
-\begin{table}[H]
-	\centering
-	\begin{tabular}{|c|c|c|p{2cm}|p{2cm}|}
-		\hline
-		$L_1$ & $C_2$ & $L_3$ & $C_4$ & $L_5$\\
-		\hline
-		4.56 nH & 2.18 pF & 7.86 nH & 2.18 pF & 4.56 nH\\
-		\hline
-	\end{tabular}
-	\caption{Valeurs réelles des composants du filtre passe-bas.}
-	\label{tab:valeurs_composant_passe_bas}
-\end{table}
 
 \cite{cours_MF} \cite{cours_HF} \cite{data_fr4} \cite{data_PTFE}
 \bibliography{bib_hf}{}
