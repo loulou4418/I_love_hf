@@ -758,7 +758,8 @@ La structure a été décrite sous ADS, en passant des éléments $g_k$ normalis
 \subsection*{Validations}
 
 La sous-section qui suit s'intéresse à valider la conception du filtre passe-bas elliptique en éléments localisés avant la transposer en lignes micro-rubans. La simulation sous ADS est effectuée entre 0 et 8 GHz. Le résultat de la simulation est donné dans la figure (\ref{fig:validation_elliptique_localise}) ci-dessous. Le graphique à gauche représente la réponse du filtre sur l'ensemble de la plage fréquentielle simulée. Celui de droite est compris entre 0 et 3 GHz, il s'agit d'un agrandissement effectué pour visualiser la réponse dans la bande passante.\\
-
+En ce qui concerne la bande atténuée, l'atténuation minimale est de 30,133 dB bien supérieure au 18 dB exigé dans le cahier des charges, ce qui laisse une marge d'environ 12 dB. La bande passante n'offre pas le comportement désiré. En effet, l'atténuation maximale $A_{max}$ dépasse à quelque $10^{-3}$ près des 0,01 dB souhaité. Également à la fréquence de coupure $f_c$, le gain est de -0,012 dB et non de -0,01 dB.\\
+Il pourrait être intéressant de réaliser une simulation en mode tuning et régler les $g_k$ pour obtenir le comportement en bande passante désiré.
 
 \begin{figure}[H]
 	\centering
@@ -766,8 +767,6 @@ La sous-section qui suit s'intéresse à valider la conception du filtre passe-b
 	\caption{Graphique représentant l'évolution du gain en dB du filtre passe-bas elliptique en éléments localisés en fonction de la fréquence}
 	\label{fig:validation_elliptique_localise}
 \end{figure}
-
-\newpage
 
 \subsection{Transposition du filtre passe-bas elliptique en technologie micro-ruban}
 
