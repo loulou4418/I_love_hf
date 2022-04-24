@@ -948,7 +948,7 @@ $\bullet$ $D_{i}$ est calculé comme D après avoir supprimé le trajet direct d
 
 Donc dans nos cas, on obtient finalement:
 \begin{equation}
-	G=\frac{B}{A}=\frac{t_{e}S_{21}t_{L}}{1-\left (S_{11}\Gamma_{e}+S_{22}\Gamma_{L}+S_{21}\Gamma_{L}S_{12}\Gamma_{e}\right)+S_{11}\Gamma_{e}S_{22}\Gamma_{L}}
+	G=\frac{N}{D}=\frac{t_{e}S_{21}t_{L}}{1-\left (S_{11}\Gamma_{e}+S_{22}\Gamma_{L}+S_{21}\Gamma_{L}S_{12}\Gamma_{e}\right)+S_{11}\Gamma_{e}S_{22}\Gamma_{L}}
 \end{equation}
 
 Par la suite, on utilise les équations \ref{eq2} et \ref{eq3} pour remplacer $\mid t_{e}\mid ^{2}$ et $\mid t_{l}\mid ^{2}$. On obtient donc:
@@ -956,15 +956,209 @@ Par la suite, on utilise les équations \ref{eq2} et \ref{eq3} pour remplacer $\
 	G_{T}=\frac{\mid t_{e}\mid ^{2}}{\mid 1-\Gamma_{e}{S_{11}}'\mid ^{2}}\mid S_{21}\mid ^{2}\frac{\mid t_{L}\mid ^{2}}{\mid 1-\Gamma_{L}S_{22}\mid^{2}}
 \end{equation}
 
+Pour connaître le gain maximum de l’amplificateur, on suppose que le quadripôle d’entrée adapte en puissance l’entrée du transistor au générateur et que le quadripôle de sortie adapte la sortie du transistor à la charge, alors :
+\begin{equation}
+	\Gamma_{e}={S_{11}}'^\ast
+\end{equation}
+\begin{equation}
+	\Gamma_{L}={S_{22}}'^\ast
+\end{equation}
+
+Etant donné que les paramètres $S_{11}$, $S_{21}$, $S_{12}$, et $S_{22}$ sont connus, seuls ${S_{11}}'$ et ${S_{22}}'$ sont inconnus, ce qui nous donne deux équations :
+\begin{equation}
+	\left\{\begin{matrix}
+		{S_{11}}'=\frac{B_{1}+\sqrt{B_{1}^{2}-4\mid C_{1}\mid^{2}}}{2{C_{1}}^\ast}\\
+		{S_{22}}'=\frac{B_{2}+\sqrt{B_{2}^{2}-4\mid C_{2}\mid^{2}}}{2{C_{2}}^\ast}
+	\end{matrix}\right.
+\end{equation}
+
+Avec:
+\begin{equation}
+	\left\{\begin{matrix}
+		B_{1}=1+\mid S_{11}\mid^{2}-\mid S_{22}\mid^{2}-\mid \Delta \mid^{2}\\
+		B_{2}=1+\mid S_{22}\mid^{2}-\mid S_{11}\mid^{2}-\mid \Delta \mid^{2}\\
+		C_{1}=S_{11}-\left(\Delta S_{22}^\ast\right)\\
+		C_{2}=S_{22}-\left(\Delta S_{11}^\ast\right)\\
+		\Delta=S_{11}S_{22}-S_{12}S_{21}
+	\end{matrix}\right.
+\end{equation}
+
+Par application numérique, on obtient:
+
+{\centering
+$\Delta=0.047e^{j182^{\circ}}$, $B_{1}=1.166$, $B_{2}=0.829$,\\ $C_{1}=0.57e^{j165^{\circ}}$, $C_{2}=0.39e^{-j41^{\circ}}$,\\ $S_{11}'=0.799e^{j164^{\circ}}$, $S_{22}'=0.725e^{-j41^{\circ}}$\\
+}
+
+Le gain MAG obtenu a donc la forme suivante :
+\begin{equation}
+	MAG=\frac{1}{\mid 1-\mid S_{11}'\mid^{2}\mid^{2}}\mid S_{21}\mid^{2}\frac{1-\mid S_{22}'\mid^{2}}{\mid 1-S_{22}S_{22}'^{\ast}\mid^{2}}
+\end{equation}
+
+En utilisant les valeurs calculées ci-dessus, en appliquant cette équation, on peut obtenir:
+
+{\centering
+	$MAG=13.58 dB$ pour $S_{12}=0$\\
+}
+
+\subsubsection{Vérification de la stabilité de l’amplificateur}
+Il convient de vérifier la stabilité de l’amplificateur dans ces deux conditions:
+
+{\centering
+$\mid \Delta\mid<1$\\
+$k>1$\\
+}
+
+Par les calculs précédents, on a obtenu:
+
+{\centering
+$\Delta=0.047e^{j182^{\circ}}=-0.046-j0.001$\\
+}
+
+Ensuite, on peut calculer $k$ utilisant cette equation:
+\begin{equation}
+	k=\frac{1+\mid \Delta\mid^{2}-\mid S_{11}\mid^{2}-\mid S_{22}\mid^{2}}{2\mid S_{11}\mid \mid S_{22}\mid}
+\end{equation}
+
+Donc on obtient:
+
+{\centering
+	$k=1.168$\\
+}
+
+Ces deux résultats remplissent les conditions de stabilité de l'amplificateur. Donc il prouve la stabilité de notre transistor à 2GHz.
+
 
 \subsection{Conception d’amplificateur idéal}
+Après avoir préalablement calculé le MAG, dans un premier temps il s’agit de concevoir l’amplificateur avec la ligne idéal. Cette conception est mise en œuvre avec le logiciel ADS en utilisant le modèle de transistor AT-41485 qui est déjà polarisé.
+
+Pour obtenir le MAG de l’amplificateur en bande étroite, il faut adapter l’entrée et la sortie du transistor, donc on va utiliser une adaptation simple stub adaptée. En entrée, le transistor présent un coefficient de réflexion égal à $S_{11}’$ qui doit être adapté à l’impédance du générateur (en général 50 Ohm). Il présente, en sortie, un coefficient de réflexion égal à $S_{22}’$ qui doit être adapté à l’impédance de la charge (en général 50 Ohm). La structure est la suivante :
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{../5SynthAmp/adaptation_e_s}
+	\caption{Adaptation du transistor}
+	\label{fig:adaptation_e_s}
+\end{figure}
+
+On sait que le coefficient de réflexion en entrée est égal à:
+\begin{equation}
+	S_{11}'=0.799e^{j164^{\circ}}=-0.7699+j0.2140
+\end{equation}
+
+Grâce à l’Abaque de Smith, on obtient les longueurs de stub en entrée suivantes:
+
+{\centering
+	$d_{1}=0.192\lambda$\\
+	$l_{1}=0.029\lambda$\\
+}
+	
+D’où $d_{1}$ et $l_{1}$ sont respectivement exprimés par la figure suivante:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{../5SynthAmp/simple_stub_e}
+	\caption{Adaptation simple stub en entrée}
+	\label{fig:simple_stub_e}
+\end{figure}
+
+De la même manière, on peut obtenir les longueurs de stub en sortie suivantes :
+ 
+{\centering
+	$d_{2}=0.321\lambda$\\
+	$l_{2}=0.133\lambda$\\
+}
+
+En utilisant ces 4 paramètres sous ADS, le montage de l’amplificateur avec les lignes idéales est montrée dans la figure \ref{fig:ligne_ideal}:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{../5SynthAmp/ligne_ideal}
+	\caption{Montage de l’amplificateur avec les lignes idéales}
+	\label{fig:ligne_ideal}
+\end{figure}
+
+Le montage qu’on a utilisé représente le résultat de la simulation ci-dessous (Dans cette simulation, S12 peut être approximativement égal à 0) :
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.2\linewidth]{../5SynthAmp/ligne_ideal_Sparametres}
+	\caption{Simulation du montage avec ligne idéal}
+	\label{fig:ligne_ideal_Sparametres}
+\end{figure}
+
+Lorsque la fréquence de simulation est de 2 GHz, les résultats montrent que $S_{21}$ est de 15.232 à ce point, c'est-à-dire que le MAG à ce moment est de 15.232 dB. Ce résultat est conforme à l'exigence du cahier des charges selon laquelle le MAG doit respecter 13.58 dB à 2 GHz. De plus, les réflexions d’entrée et de sortie qui représentées respectivement par le $S_{11}$ et le $S_{22}$ sont minimales à environ 2 GHz avec les valeurs -31.193 dB et -47.544 dB. Cela montre également que le transistor est adapté en entrée et en sortie.
+
+Cependant, les valeurs numériques de ces longueurs ne sont pas figées. Lorsque la fréquence de travail change, la valeur de la longueur de simple stub change également en conséquence, et la valeur peut être calculée en appliquant l’Abaque de Smith.
 
 \subsection{Conception d’amplificateur en technologie micro-ruban}
+Après avoir montré le résultat de l’amplificateur avec les lignes idéal précédemment, dans cette partie, on va utiliser les lignes en technologie micro-ruban pour simuler une situation plus réaliste sous ADS.
+
+Le substrat utilisé est téflon. D'après l'analyse des sections précédentes, dans cette partie on va fixer à 2 GHz la valeur de la constante diélectrique $\varepsilon_{r}$ est de 2.61 $F.m^{-1}$, et sur un modèle de substrat sans pertes, la tangente de perte $\mbox{tan}(\delta)$ est négligé.
+
+L’outil LineCal fournie par le logiciel ADS peut déterminer les paramètres de substrat. Les longueurs $d_{1}$, $l_{1}$, $d_{2}$ et $l_{2}$ de la ligne idéale précédentes sont présentées par $L$ et $W$ de la ligne micro-ruban. Après avoir fixé $\varepsilon_{r}=2.61$, $h=1.58 mm$ et $f=2 GHz$, on peut calculer les valeurs de L et W. Les resultats sont comme suivant :
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Composant & L (mm) & W(mm) \\
+		\hline
+		TL7 & 19.508 & 4.361 \\
+		\hline
+		TL5 & 2.946 & 4.361 \\
+		\hline
+		TL6 & 13.513 & 4.361 \\
+		\hline
+		TL8 & 32.615 & 4.361\\
+		\hline
+	\end{tabular}
+	\caption{Tableau présentant les valeurs de L et W de la ligne micro-ruban}
+\end{table}
+
+On a appliqué ces valeurs à l'amplificateur, le schéma est présenté ci-dessous :
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\linewidth]{../5SynthAmp/ligne_micro_ruban}
+	\caption{Montage de l’amplificateur avec les lignes micro-ruban}
+	\label{fig:ligne_micro_ruban}
+\end{figure}
+
+Le montage qu’on a utilisé représente le résultat de la simulation ci-dessous:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.2\linewidth]{../5SynthAmp/ligne_micro_ruban_Sparametres}
+	\caption{Simulation du montage avec ligne micro-ruban}
+	\label{fig:ligne_micro_ruban_Sparametres}
+\end{figure}
+
+Lorsque la fréquence de simulation est de 2 GHz, les résultats montrent que $S_{43}$ est de 15.232 à ce point, c'est-à-dire que le MAG à ce moment est de 15.232 dB, et ce résultat est également conforme à l'exigence du cahier des charges. De plus, les réflexions d’entrée et de sortie qui représentées respectivement par le $S_{33}$ et le $S_{44}$ sont minimales à environ 2 GHz avec les valeurs -31.194 dB et -47.549 dB. Les résultats sont cohérents avec ceux obtenus par le montage avec la ligne idéale.
 
 \subsection{Adaptation d’un transistor avec polarisation}
+Dans les sections précédentes, nous avons utilisé un modèle de transistor AT-41485 polarisé, qui satisfait déjà ces deux conditions :$V_{CE}=8 V$ et $I_{C}=10 mA$. Maintenant, on s’intéresse à la polarisation du transistor. La valeur de résistance de la résistance doit être calculée pour que le circuit réponde aux conditions de conception du transistor. Le circuit de polarisation à concevoir doit avoir une faible impédance pour les basses fréquences et une haute impédance pour les hautes fréquences. De plus, des condensateurs doivent être ajoutés entre le transistor et la source et la charge, respectivement, pour empêcher le courant continu d'entrer dans le reste du circuit.
+
+La maquette donnée comporte le transistor à caractériser, sa polarisation et des lignes d'accès à la base et au collecteur d'une longueur électrique supérieure à $\frac{\lambda}{2}$ à 2 GHz. De plus, on dispose d'une ligne 50Ohm de traversée(THRU) et d’une ligne terminée par un court-circuit dans le plan d'entrée du transistor(REFLECT) qui permettent d'étalonner le relevé des paramètre S. La polarisation est découplée du signal par une ligne $\frac{\lambda}{4}$ a haute impédance et une capacité de retour à la masse sur les accès base et collecteur. 
+
+Le circuit est présenté ci-dessous:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\linewidth]{../5SynthAmp/polarisation}
+	\caption{Montage de polarisation du transistor}
+	\label{fig:polarisation}
+\end{figure}
+
+Après simulation, on peut obtenir les résultats suivants:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.2\linewidth]{../5SynthAmp/polarisation_Sparametres}
+	\caption{Simulation du montage de polarisation du transistor}
+	\label{fig:polarisation_simu}
+\end{figure}
+
+Lorsque la fréquence de simulation est de 2 GHz, les résultats montrent que $S_{21}$ est de 18.437 à ce point, c'est-à-dire que le MAG à ce moment est de 18.437 dB. Ce résultat est conforme à l'exigence du cahier des charges. Cela montre également que le transistor est bien polarisé.
 
 
-\cite{cours_MF} \cite{cours_HF}
+
+
+
+\newpage
+%\cite{cours_MF} \cite{cours_HF}
 \bibliography{bib_hf}{}
 \bibliographystyle{plain}
 \newpage
