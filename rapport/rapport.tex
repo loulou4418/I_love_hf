@@ -770,6 +770,43 @@ Il pourrait être intéressant de réaliser une simulation en mode tuning et ré
 
 \subsection{Transposition du filtre passe-bas elliptique en technologie micro-ruban}
 
+Il s'agit dans cette section de transposer le filtre conçu précédemment en technologie micro-ruban. En respectant le modèle d'équivalence tronçon de ligne -  éléments localisés et ses hypothèses (il faut que $l \ll \lambda_g$,$Z_C \gg Z_0$ pour les inductances et $Z_C \ll Z_0$ pour les capacités), les selfs seront réalisées avec des petites largeurs et les capacités avec des largeurs $W$ plus élevées. La figure ci-dessous est un exemple de structure de ce filtre en micro-ruban présenté dans divers ouvrages. 
+
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}[scale=0.8]
+		\draw (-5,0) to (-4,0)
+		to(-4,0.25) to (-1.75,0.25)
+		to(-1.75,-1) to(-2.25,-1)
+		to(-2.25,-2) to(-1,-2)
+		to(-1,-1) to(-1.5,-1)
+		to(-1.5,0.25) to(-0.25,0.25)
+		to(-0.25,0) to (0.75,0);
+		\draw (-5,0.75) to (-4,0.75)
+		to(-4,0.5) to (-3,0.5)
+		to(-3,2) to (-3.5,2)
+		to(-3.5,3) to (-2.25,3)
+		to(-2.25,2) to (-2.75,2)
+		to (-2.75,0.5) to (-0.25,0.5)
+		to(-0.25,0.75) to (0.75,0.75);
+		\node at (-3.5,-0.1) {$L_1$};
+		\node at (-2.4,1.2) {$L_2$};
+		\node at (-1.9,2.4) {$C_3$};
+		\node at (-2.2,-0.1) {$L_4$};
+		\node at (-1.1,-0.4) {$L_5$};
+		\node at (-0.6,-1.5) {$C_6$};
+		\node at (-0.8,0.75) {$L_7$};
+	\end{circuitikz}
+	\caption{Schéma représentatif de la structure du filtre passe-bas elliptique en ligne micro-ruban}
+	\label{fig:modele_elliptique_microstrip}
+\end{figure}
+
+\newpage
+
+La conception du filtre passe-bas Tchebychev a respecté à la lettre l'ensemble de ce modèle d'équivalence y compris la relation d'ordre $l \ll \lambda_g$, hypothèse qui justifie la linéarisation du terme $\mbox{tan}(\beta l)$ dans la formule de l'impédance vue $Z_{vue}$. Cependant comme le montre la figure (\ref{fig:simu_passe_bas_distribue}), à partir d'une certaine fréquence la longueur d'onde guidée $\lambda_g$ est de l'ordre de la longueur $l$ de la ligne. La linéarisation de la tangente n'a plus de sens à partir de cette fréquence. Ainsi pour la suite du rapport et dans l'objectif d'obtenir un meilleur résultat, la linéarisation $\mbox{tan}(\beta l) \approx \beta l$ ne sera pas effectuée.\\
+
+Il s'agit désormais de fixer les limites géométriques qui seront utilisées pour obtenir des lignes d'impédance caractéristique $Z_C$ faible ou élevée. Dans le cas d'impédance élevée ($Z_C \gg Z_0$ pour les inductances), la largeur de ligne $W$ sera fixée selon la technologie de gravure et sa précision. Les procédés de photolithographie choisis pour les plaques de test en laboratoire possèdent une limite de gravure de 0,50 mm. La largeur de ligne pour les inductances, notée $W_L$, sera donc de 0,50 mm.
+
 \subsection*{Validations}
 
 \newpage
