@@ -18,7 +18,7 @@
 \section{Remerciement}
 Nous souhaitons sincèrement remercier Yann Mahe pour le temps et la patience dont il fait preuve pour nous enseigner sa discipline. Il a su s'adapter en corrigeant nos lacunes tout en évoquant des notions nouvelles issues de la recherche. \\
 
-Nous remercions également Anne Chousseauq qui, durant les travaux pratiques, nous a accompagnée avec calme et passion.\\
+Nous remercions également Anne Chousseaud qui, durant les travaux pratiques, nous a accompagnée avec calme et passion.\\
 
 Finalement, nous sommes reconnaissant envers Tchanguiz RAZBAN pour les cours dispensés et les ressources pédagogiques mises à dispositions.
 
@@ -986,9 +986,34 @@ Et les longueurs $l_C$ et $l_L$ définies comme :
 	l_C= \frac{1}{\beta_C} \mbox{arctan}\big(2 \pi f_c Z_{C_C} C\big) \mbox{ et } l_L= \frac{1}{\beta_L} \mbox{arctan}\big(\frac{2 \pi f_c L}{Z_{C_L}}\big)
 \end{equation}
 
-La figure qui suit représente la structure
+\vspace{2cm}
+
+La figure (\ref{fig:structure_elliptique_microstrip}) représente la structure utilisée sur ADS pour l'implémentation du filtre elliptique en technologie micro-ruban. L'ensemble des équations ci-dessus ont été écrites à l'aide de la directive \texttt{VAR}. Les composants \texttt{MLIN} représentent les lignes dont les longueurs et largeurs ont été déterminées précédemment. Les composants \texttt{MTEE} (\textit{T-junction}) et \texttt{MSTEP} (\textit{Step in width}) affinent la structure en prenant en compte les discontinuités. En effet, le \texttt{MSTEP} prends en compte la transformation d'impédance provoquée par le changement brusque de largeur de ligne. En ce qui concerne le composant \texttt{MTEE}, celui-ci prends en compte une discontinuité de la distribution du champ $\overrightarrow{E}$, provoquée par la forme coudée de la ligne.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=14cm]{../3synthPBas/elliptique/modele_microstrip_ADS.png}
+	\caption{Montage du filtre elliptique en ligne micro-ruban sur ADS}
+	\label{fig:structure_elliptique_microstrip}
+\end{figure}
+
+\newpage
 
 \subsection*{Validations}
+
+Il s'agit dans cette sous-section de simuler le comportement du filtre elliptique en technologie micro-ruban. La simulation est réalisée dans un intervalle de fréquence de 0 à 8 GHz. La figure (\ref{fig:resultat_elliptique_microstrip}) précise le résultat de la simulation. La courbe rouge représente les mesures réalisées en laboratoire à l'aide du VNA sur verre téflon. La courbe bleue correspond au résultat du filtre structuré sur ADS. Le graphique de gauche est l'ensemble de la réponse sur la gamme de fréquence de simulation. Le graphique de droite est un agrandissement sur la bande passante.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=16cm]{../3synthPBas/elliptique/resultat_simu_microstrip.png}
+	\caption{Graphique de la réponse fréquentielle du filtre simulé et des mesures expérimentales du filtre elliptique fourni au laboratoire}
+	\label{fig:resultat_elliptique_microstrip}
+\end{figure}
+
+Il est possible de remarquer la présence d'une ondulation en bande atténuée, élément caractéristique d'un filtre de Cauer. La bande atténuée commence à la fréquence de 3,5 GHz, à cette fréquence le gain est de -30 dB ce qui valide le cahier des charges avec une marge de 12 dB d'atténuation. Une remontée en gain s'effectue ensuite mais reste en dessous des 18 dB d'atténuation minimale exigé. Une telle remontée est provoquée par le changement de comportement des inductances et des capacités à des fréquences particulières. Néanmoins, cette remontée est rendue bien moins abrupte grâce à la non-linéarisation de la tangente (non respect de l'hypothèse $l \ll \lambda_g$ car n'est plus valable à partir d'une certaine fréquence).\\
+À comparer avec le résultat expérimental, la courbe de la simulation est en dessous de la rouge en bande atténuée. Le comportement en bande atténuée respecte davantage le cahier des charges que le filtre réalisé sur plaque en laboratoire. Cela pourrait s'expliquer par un angle de perte utilisé en simulation de 0,046 c'est-à-dire le double d'un angle de perte classique d'un diélectrique verre téflon. Il s'agirait également de cette mauvaise estimation de la tangente de perte $\mbox{tan}(\delta)$ qui provoquerait une descente brutale du gain en bande passante. Le cahier des charges n'est pas valide en ce qui concerne la bande passante.\\
+
 
 \newpage
 
