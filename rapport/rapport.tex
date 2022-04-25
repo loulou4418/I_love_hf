@@ -8,27 +8,48 @@
 \begin{document}
 \myTitle[Rapport de mini-projet \\ - Électronique Hautes Fréquences - ]
 \newpage
+
+\tableofcontents
+\newpage
+\listoffigures
+\listoftables
+\newpage
+
+
+\vspace*{4cm}
+\section*{Résumé}
+L'électronique des hautes-fréquences est une discipline essentielle lorsqu'il s'agit de manipuler et modifier des signaux dont les fréquences sont de l'ordre du Gigahertz.\\
+Et ce domaine est d'autant plus indispensable dans un monde connecté dont les produits électroniques tendent à être toujours plus rapides. Cette discipline est présente dans le domaine des télécommunications que ce soit civil ou militaire, dans le médical ou encore la sécurité et regroupe un ensemble de problématique comme l'émission ou réception de signaux, leur traitement par filtrage ou amplification et bien plus encore.\\
+Ce rapport permet de découvrir une infime branche de l'électronique hautes-fréquences, et se focalise sur la découverte de la technologie micro-ruban et la conception selon un cahier des charges de diverses fonctions d'électronique.
+
+\vspace{1cm}
+
+\section*{Remerciement}
+Nous souhaitons sincèrement remercier Yann MAHE pour le temps et la patience dont il fait preuve pour nous enseigner sa discipline. Il a su s'adapter en corrigeant nos lacunes tout en évoquant des notions nouvelles issues de la recherche et à aiguiser davantage notre curiosité sur le domaine des hautes-fréquences.\\
+Nous remercions tout autant Anne CHOUSSEAUD qui, durant les travaux pratiques, nous a accompagnée avec calme et passion.\\
+Et pour n'oublier personne, nous sommes reconnaissant envers Tchanguiz RAZBAN pour les cours dispensés et les ressources pédagogiques mises à dispositions.\\
+Un merci à notre camarade Huanqing LIN qui nous a aidé pour la partie amplification.
+
+\newpage
 \pagestyle{plain} % Début de la numérotation des pages
-
-\textbf{Il faudra pas oublier de rajouter une table des figures et matières}
-
-\section{Résumé}
-\textbf{Resume le mini-projet}
-
-\section{Remerciement}
-Nous souhaitons sincèrement remercier Yann Mahe pour le temps et la patience dont il fait preuve pour nous enseigner sa discipline. Il a su s'adapter en corrigeant nos lacunes tout en évoquant des notions nouvelles issues de la recherche. \\
-
-Nous remercions également Anne Chousseaud qui, durant les travaux pratiques, nous a accompagnée avec calme et passion.\\
-
-Finalement, nous sommes reconnaissant envers Tchanguiz RAZBAN pour les cours dispensés et les ressources pédagogiques mises à dispositions.
 
 \section{Introduction}
 \subsection{Contextualisation}
-\textbf{Parler de la limite entre BF et HF (longueur du circuit plus négligeable devant la longueur d'onde des signaux mis en jeu)\\
-parler des applications de l'electronique haute frequence}
+La formation ETN (Électronique et technologies numériques) offerte par l'école polytechnique de l'Université de Nantes propose d'aborder diverses branches de l'électronique, de la conception de circuits numériques au traitement du signal en passant par l'électronique analogique des hautes-fréquences. Tous les domaines étudiés au cours de cette formation apportent tous les outils nécessaires à l'ingénieur en électronique.\\
+Ce rapport porte sur la matière électronique des hautes-fréquences. Il s'agit d'une toute nouvelle discipline venant bousculer le monde de l'électronique connu par l'analogique basses fréquences étudié en 3ème année de cycle ingénieur. Une telle matière permet d'aborder la manipulation de signaux de fréquences élevées, à tel point que les longueurs d'ondes mises en jeu sont proches des dimensions géométriques du circuit.\\
+Ce rapport de travaux pratiques s'inscrit dans une application concrète du monde de l'ingénierie, c'est-à-dire la conception d'une solution répondant à une problématique, et cela selon un cahier des charges.\\
+
 \subsection{Objectifs du mini-projet}
-\textbf{developpement connaissance en electronique haute frequence\\
-prise en main de logiciel de conception et de simulations (ADS)}
+Ce rapport vise à combiner la théorie et la pratique de la matière électronique des hautes-fréquences. Chaque partie analysera d'abord en détail les principes appliqués et les méthodes utilisées. Des logiciels de modélisation et de simulation comme ADS, AppCAD ou encore GNU Octave seront utilisés pour mettre les principes en application.\\
+
+\noindent Les autres objectifs sont donnés ci-dessous :\\
+
+\begin{itemize}
+	\item Améliorer la maîtrise des outils de modélisation et de simulation, en particulier d'ADS\\
+	\item Découverte de la technologie micro-ruban, son modèle et son cadre de validité\\
+	\item Approfondir la compréhension des multiples connaissances acquises au cours du module\\
+	\item Permettre d'acquérir plus d'expériences dans la méthodologie de résolution de problèmes et la méthode scientifique
+\end{itemize}
 
 \newpage
 
