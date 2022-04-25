@@ -825,9 +825,9 @@ Le cahier des charges contient également une table de valeurs pour la détermin
 	\centering
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
 		\hline
-		$A_{max}$ (en dB) & $VSWR$ & $\Omega$ & $A_s$ (en dB) & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$ & $g_7$\\
+		$A_{max}$(dB) & $VSWR$ & $\Omega$ & $A_s$(dB) & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$ & $g_7$\\
 		\hline
-		0.01 & 1.10 & 1.41 & 30.2 & 0.6265 & 0.1920 & 1.1099 & 1.2706 & 0.6535 & 0.7125 & 0.3441\\
+		0.01 & 1.10 & 1.41 & 30.2 & 0.6265 & 0.1920 & 1.109 & 1.270 & 0.6535 & 0.7125 & 0.3441\\
 		\hline
 	\end{tabular}
 	\caption{Nomogramme pour la détermination du filtre passe-bas elliptique normalisé}
@@ -1213,7 +1213,7 @@ La transposition des résonateurs séries et parallèles a été démontrée. Il
 \end{figure}
 Les lignes présentes sur ce schéma sont en pratique des lignes de cuivre dont il faut fixer deux paramètre, la longueur et la largeur. Dans notre cas ces paramètres permettent respectivement de fixer la fréquence centrale et la bande passante à travers $Z_c$. La longueur d'une ligne demie onde est naturellement $\lambda /2$. La fréquence centrale est obtenue par moyenne arithmétique comme le montre son expression ci-dessous. 
 \begin{equation}
-f_0 = \frac{f_s^-+f_s^+}{2}=\frac{1,750+2,250}{2}=2\text{kHz}
+f_0 = \frac{f_s^-+f_s^+}{2}=\frac{1,750+2,250}{2}=2\text{GHz}
 \end{equation}
 La largeur fixe l'impédance caractéristique $Z_c$ de la ligne. Son expression, est donnée dans le cours \cite{cours_HF} et diffère dans le cas d'une ligne série et parallèle. Les expressions ci-dessous donnent à gauche, l'impédance d'une ligne demis onde série et à droite, l'admittance d'un stub demie onde : 
 \begin{equation}
@@ -1235,13 +1235,12 @@ L'impédance de la ligne série est de 131,3$\Omega$ et du stub 17,11$\Omega$. A
 	\caption{Simulation S21 passe bande micro-ruban}
 	\label{fig:ads_S21_BP_microruban}
 \end{figure}
-Les résultat de cette simulation présentés par la figure \ref{fig:ads_S21_BP_microruban} montrent une légère dissymétrie de la réponse fréquentielle. Ainsi le gabarit est respecté du coté haute fréquence avec une atténuation de 19,552dB mais mais ne l'est pas sur la pente des basse fréquence avec 13,528dB. L'atténuation en limite de bande passante est supérieure aux 0,1dB du cahier des charges mais symétrique, elle est de 0,459dB. La figure de droite permet de valider la conformité en milieu de bande passante. \emph{Les résultats sont cohérents bien qu'ils ne respectent pas parfaitement les spécifications}. Bien qu'absent du cahier des charges il peut être intéressant d'observer la périodicité de la réponse car cela donne la plage de validité de la fonction passe bande. Dans notre cas en s'appuyant sur l'outils recherche de "Valley" sur ADS la bande est de 2GHz. 
+Les résultat de cette simulation présentés par la figure \ref{fig:ads_S21_BP_microruban} montrent une légère dissymétrie de la réponse fréquentielle. Ainsi le gabarit est respecté du coté hautes fréquences avec une atténuation de 19,552dB mais mais ne l'est pas sur la pente des basses fréquences avec 13,528dB. L'atténuation en limite de bande passante est supérieure aux 0,1dB du cahier des charges mais symétrique, elle est de 0,459dB. La figure de droite permet de valider la conformité en milieu de bande passante. \emph{Les résultats sont cohérents malgré qu'ils ne respectent pas parfaitement les spécifications}. Bien qu'absent du cahier des charges, il peut être intéressant d'observer la périodicité de la réponse car cela donne la plage de validité de la fonction passe bande. Dans notre cas en s'appuyant sur l'outils recherche de "Valley" sur ADS la bande est de 2GHz. Il faut comprendre qu'un bruit à $k.\lambda /2$ ne sera pas atténuée.
  
 \newpage
 \section{Conclusion}
 
-
-
+La conception d'un filtre passe bande a été présentée suivant différentes étapes. La première s'attache à vérifier et, si nécessaire recentrer le gabarit. Cela permet de procéder à l'étape suivante, la transformation du gabarit en passe bas. Il est alors aisément possible de déterminer l'ordre du filtre et calculer les valeurs normalisées des composants. Viens ensuite l'étape de dénormalisation visant à remplacer les composants réactifs en résonateur LC série ou parallèle. Le résultat de cette synthèse peut être simuler pour valider le bon fonctionnement. Dans notre cas, une légère dissymétrie lors du recentrage couplé à un ordre de filtre limite ont entraînés une légère sortie du gabarit. L'étape finale de transposition en technologie micro-ruban est spécifique aux contraintes hautes fréquences. Elle vise à transposer les résonateurs en ligne micro-ruban. Nous avons choisi de travailler uniquement avec des ligne demie onde et démonter qu'un résonateur LC série en ligne série et les résonateur LC parallèle stub demie onde ouvert. La simulation ADS du schéma micro-ruban montre quelques points de désaccord avec la gabarit initial. L'atténuation de la bande passante est supérieur de 0,3dB par rapport aux spécifications. Les ordres de grandeurs restent toutefois proche des exigences.  
 
 
 
