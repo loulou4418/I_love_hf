@@ -1,6 +1,6 @@
 \documentclass[french]{article}
 
-\usepackage{siunitx}
+
 \input{configuration}
 \input{titre}
 
@@ -18,9 +18,9 @@
 \section{Remerciement}
 Nous souhaitons sincèrement remercier Yann Mahe pour le temps et la patience dont il fait preuve pour nous enseigner sa discipline. Il a su s'adapter en corrigeant nos lacunes tout en évoquant des notions nouvelles issues de la recherche. \\
 
-Nous remercions également Anne Chousseauq qui, durant les travaux pratiques, nous a accompagnée avec calme et passion.\\
+Nous remercions également Anne Chousseaud qui, durant les travaux pratiques, nous a accompagnée avec calme et passion.\\
 
-Finalement, nous sommes reconnaissant envers Tchanguiz RAZBAN pour les cours dispensés et  les ressources pédagogiques mises à dispositions.
+Finalement, nous sommes reconnaissant envers Tchanguiz RAZBAN pour les cours dispensés et les ressources pédagogiques mises à dispositions.
 
 \section{Introduction}
 \subsection{Contextualisation}
@@ -434,6 +434,7 @@ Dans cette partie on cherche à remplacer les inductances série du filtre par d
 	\begin{subfigure}[b]{0.3\textwidth}
 		\begin{circuitikz}
 			\draw (0,2)
+			to [short,*-](0,2)
 			node[above]{$Z_{vue}$}
 			to[TL=$Z_c$\texttt{,} $l$] (2,2)
 			to [generic=$Z_0$] (2,0) node[ground]{};
@@ -442,6 +443,7 @@ Dans cette partie on cherche à remplacer les inductances série du filtre par d
 	\begin{subfigure}[b]{0.3\textwidth}
 		\begin{circuitikz}
 			\draw (0,2)
+			to [short,*-](0,2)
 			node[above]{$Z_{vue'}$}
 			to[L=$L$] (2,2)
 			to [generic=$Z_0$] (2,0) node[ground]{};
@@ -507,6 +509,7 @@ Dans cette partie on cherche à remplacer les condensateurs parallèles du filtr
 	\begin{subfigure}[b]{0.3\textwidth}
 		\begin{circuitikz}
 			\draw (0,2)
+			to [short,*-](0,2)
 			node[above]{$Z_{vue}$}
 			to[TL=$Z_c$\texttt{,} $l$] (2,2)
 			to [generic=$Z_0$] (2,0) node[ground]{};
@@ -515,6 +518,7 @@ Dans cette partie on cherche à remplacer les condensateurs parallèles du filtr
 	\begin{subfigure}[b]{0.3\textwidth}
 		\begin{circuitikz}
 			\draw (0,2)
+			to [short,*-](0,2)
 			node[above]{$Z_{vue'}$}
 			to [short](2,2)
 			(2,2)to[C=$C$] (2,0)
@@ -682,7 +686,7 @@ L'objectif ici est de déterminer les paramètres des lignes de transmissions qu
 On commence par le \underline{remplacement de toutes les bobines}. On fait le choix de détailler les calculs \underline{pour un substrat en teflon} de permittivité relative 2,209 obtenu à partir des plaques de teflon large lors de la partie sur la caractérisation. On se base sur une hauteur de cuivre $h$ standard de 1,580 mm et une largeur de piste $w$ de 0,500 mm comme expliqué dans la partie sur les limites de validités. A partir de tous ces éléments et des équations \ref{eq:espilon_reff} et \ref{eq:Z_c_bobine} on trouve :
 
 \begin{equation}
-	\epsilon_{reff} = 1,710
+	\epsilon_{reff} = 1,710\ F/m
 	\qquad
 	Z_c = 147,510 \Omega
 \end{equation}
@@ -707,7 +711,7 @@ Il ne nous reste plus qu'à calculer les longueurs des lignes de transmissions q
 On s'attaque maintenant au \underline{remplacement des condensateurs}. On fait les mêmes choix de valeurs pour la permittivité relative (2,209) et pour la hauteur de cuivre (1,580 mm). Pour la largeur de cuivre, conformément à la partie sur les limites de validité on prendra une largeur de 10 mm. Pour le calcul de $\epsilon_{reff}$ on utilise toujours l'équation \ref{eq:espilon_reff} tandis que pour $Z_c$ on utilise maintenant la formule \ref{eq:Z_c_condo} ce qui donne :
 
 \begin{equation}
-	\epsilon_{reff} = 1,981
+	\epsilon_{reff} = 1,981\ F/m
 	\qquad
 	Z_c = 29,207 \Omega
 \end{equation}
@@ -750,19 +754,23 @@ Pour valider le comportement du filtre on affiche le coefficient de transmission
 \end{figure}
 
 
-Sur la figure \ref{fig:simu_passe_bas_distribueG} on observe le comportement d'un filtre passe-bas avec une fréquence de coupure à environ 2 GHz. Du côté de la bande passante l'atténuation va jusqu'à 0,759 dB (pour 2 GHz) ce qui est supérieur aux 0,1 dB voulues par le cahier des charges. Au niveau de la bande atténuée, l'atténuation commence à 17 dB (à 3 GHz) ce qui respecte le gabarit (qui imposait 15 dB) jusqu'à la fréquence approximative de 6,4 GHz uniquement. A partir de cette fréquence (et depuis 4,5 GHz environ) le coefficient de transmission remonte puis fait des "va et vient" à 0 dB sous la forme de lobes. \\
-
-\textbf{justifier a partir de tan(B l)}
+Sur la figure \ref{fig:simu_passe_bas_distribueG} on observe le comportement d'un filtre passe-bas avec une fréquence de coupure à environ 2 GHz. Du côté de la bande passante l'atténuation va jusqu'à 0,759 dB (pour 2 GHz) ce qui est supérieur aux 0,1 dB voulues par le cahier des charges. Au niveau de la bande atténuée, l'atténuation commence à 17 dB (à 3 GHz) ce qui respecte le gabarit (qui imposait 15 dB) jusqu'à la fréquence approximative de 6,4 GHz uniquement. A partir de cette fréquence (et depuis 4,5 GHz environ) le coefficient de transmission remonte puis fait des "va et vient" à 0 dB sous la forme de lobes.\\
 
 
+La justification de ces lobes vient de l'expression de l'impédance ramené et particulièrement du terme $tan(\beta l)$. Dans la partie sur la technologie micro ruban il a été dit que pour linéariser la tangente il faut $l << \frac{\lambda}{4}$. On rappelle le lien entre la longueur d'onde et la fréquence :
 
-\subsubsection{Amélioration}
+\begin{equation}
+	\lambda = \frac{v_\phi}{f}
+\end{equation}
 
-\subsection{Comparaison des substrats}
-
-\subsection{Comparaison avec des filtres réel sur PCBs}
+Avec $\lambda$ la longueur d'onde en m, $f$, la fréquence de l'onde électromagnétique en Hz et $v_\phi$ la vitesse de propagation de l'onde électromagnétique. Dans cette formule on observe que la longueur d'onde diminue lorsque la fréquence augmente. Il est logique de dire que $\lambda$ sera inférieure aux longueurs des lignes de transmission qui s'apparentent aux bobines ou aux condensateurs. Prenons par exemple la bobine L2 de la figure \ref{fig:schema_localise_passe_bas_ads} qui est remplacé une ligne de transmission avec une longueur de 12,208 mm. Au premier creux de la figure \ref{fig:simu_passe_bas_distribueG}, la fréquence est à 4,5 GHz ce qui donne une longueur d'onde de 44,855 mm. La condition sur la longueur de la ligne qui implique que $l << \frac{\lambda}{4}$ n'est plus respectée. On se retrouve avec $l > \frac{\lambda}{4}$ car $12,208 mm\ >\ 11,214 mm$. Plus on augmente la fréquence et moins la condition que l'on avait posé au départ est vraie. Les croissances et décroissances du coefficient de transmission S21 peuvent également être justifier avec la figure \ref{fig:tan_x} qui montre que la composante $tan(x)$ (ou $tan(\beta l)$) est définie uniquement sur l'intervalle $[-\frac{\pi}{2}: \frac{\pi}{2}]$ puis se répète avec une période $\pi$. Quand x devient supérieure à $\frac{\pi}{2}$ la tangente devient négative jusqu'à $\pi$ puis redevient positive jusqu'à $\frac{3 \pi}{2}$ etc. Ce comportement fait que l'impédance ramené de la ligne de transmission va évoluer au rythme de la tangente et donc de façon périodique, avoir de brusques changements.
 
 
+\subsubsection{Amélioration de la réponse fréquentielle}
+
+On a relevé sur la figure \ref{fig:simu_passe_bas_distribue} que le comportement passe-bas n'est pas respecté dans la bande passante mais l'es sur la bande atténuée pour des fréquences comprises entre 3 GHz et 6,5 GHz (environ). Il nous est possible d'augmenter la plage de fréquence de la bande atténuée en ajoutant un stub avec une distance et une fréquence de caractéristique bien choisie. Nous placerons ce stub à l'une des extrémités du filtre. \\
+
+Pour ne pas amené un court-circuit directement dans les basses fréquences nous faisons le choix de prendre un stub à circuit ouvert. L'idée est d'apporter un 0 de transmission (un court circuit) à une fréquence donnée. De cette façon, on serait certain qu'à cette fréquence nous n'avons pas de transmission. Cette non transmission se traduit par un coefficient S21 égal à moins l'infini. Pour apporter un 0 de transmission avec un stub ouvert il nous faut choisir une longueur de stub égal à $\frac{\lambda}{4}$. Du côté de la fréquence caractéristique du stub, nous faisons le choix de la mettre à 6,786 GHz où le coefficient S21 est retourné à 0 dB. La figure \ref{fig:schema_distribue_ameliore_passe_bas_ads} montre le nouveau schéma du filtre.
 
 \begin{figure}[H]
 	\centering
@@ -771,13 +779,14 @@ Sur la figure \ref{fig:simu_passe_bas_distribueG} on observe le comportement d'u
 	\label{fig:schema_distribue_ameliore_passe_bas_ads}
 \end{figure}
 
+On note que la longueur du stub est lié au paramètre E, la longueur électrique en degrés égal au produit : $\beta l$. Sachant que l'on souhaite une longueur de stub égal à $\frac{\lambda}{4}$ pour une fréquence de 6,786 GHz, nous avons mis une valeur de 90° pour le paramètre E. La figure \ref{fig:simu_passe_bas_distribue_ameliore} est le résultat de la simulation.
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[b]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_passe_bas_distribue_ameliore.PNG}
 		\caption{Sans zoom}
-		\label{fig:simu_passe_bas_distribue_ameliore}
+		\label{fig:simu_passe_bas_distribue_amelioreG}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_zoom_passe_bas_distribue_ameliore.PNG}
@@ -785,8 +794,20 @@ Sur la figure \ref{fig:simu_passe_bas_distribueG} on observe le comportement d'u
 		\label{fig:simu_zoom_passe_bas_distribue_ameliore}
 	\end{subfigure}
 	\caption{Simulation du module du coefficient de transmission S43 en dB}
-	%	\label{fig:observation_registres_internes}
+	\label{fig:simu_passe_bas_distribue_ameliore}
 \end{figure}
+
+
+Le comportement en bande passante est similaire à celui du filtre sans le stub bien que le comportement en bande passante ne reste toujours pas conforme avec le gabarit.
+
+
+
+\subsection{Comparaison de différents substrats}
+
+\subsection{Comparaison avec des filtres réels sur PCBs}
+
+
+
 
 
 
@@ -936,9 +957,63 @@ Il s'agit dans cette section de transposer le filtre conçu précédemment en te
 La conception du filtre passe-bas Tchebychev a respecté à la lettre l'ensemble de ce modèle d'équivalence y compris la relation d'ordre $l \ll \lambda_g$, hypothèse qui justifie la linéarisation du terme $\mbox{tan}(\beta l)$ dans la formule de l'impédance vue $Z_{vue}$. Cependant comme le montre la figure (\ref{fig:simu_passe_bas_distribue}), à partir d'une certaine fréquence la longueur d'onde guidée $\lambda_g$ est de l'ordre de la longueur $l$ de la ligne. La linéarisation de la tangente n'a plus de sens à partir de cette fréquence. Ainsi pour la suite du rapport et dans l'objectif d'obtenir un meilleur résultat, la linéarisation $\mbox{tan}(\beta l) \approx \beta l$ ne sera pas effectuée.\\
 
 Il s'agit désormais de fixer les limites géométriques qui seront utilisées pour obtenir des lignes d'impédance caractéristique $Z_C$ faible ou élevée. Dans le cas d'impédance élevée ($Z_C \gg Z_0$ pour les inductances), la largeur de ligne $W$ sera fixée selon la technologie de gravure et sa précision. Les procédés de photolithographie choisis pour les plaques de test en laboratoire possèdent une limite de gravure de 0,50 mm. La largeur de ligne pour les inductances, notée $W_L$, sera donc de 0,50 mm.\\
-En ce qui concerne les impédances faibles ($Z_C \ll Z_0$ pour les capacités), la largeur de ligne $W_C$ est définie par la relation $W_C = 0.1\lambda_g$
+En ce qui concerne les impédances faibles ($Z_C \ll Z_0$ pour les capacités), la largeur de ligne $W_C$ est définie par la relation $W_C = 0.1\lambda_g$ avec $\lambda_g$ la longueur d'onde guidée à la fréquence d'intérêt de 2,5 GHz. Une telle dimension géométrique pour la largeur évite l'excitation des modes supérieurs à des fréquences proches de $f_c$. Ces modes sont alors projetés plus dans le plan spectral et cela garantie l'utilisation d'un seul mode qui est le mode dominant. Il est possible de trouver un bon compromis entre ce critère et les limites de gravure. Pour la suite la largeur $W_C$ sera définie à 10 mm.\\
+
+Les valeurs $W_L$ et $W_C$ étant déterminées, il s'agit à l'aide de la hauteur du substrat $h$ et de ses autres paramètres de déterminer les deux impédances $Z_{C_C}$ et $Z_{C_L}$ et constantes diélectriques relatives effectives $\varepsilon_{reffC}$ et $\varepsilon_{reffL}$. Le substrat considéré par la suite sera le verre téflon large. Ces calculs sont réalisés à partir de l'outil LineCalc intégré à ADS. La figure ci-dessous présente son interface. Celle-ci représente la détermination des paramètres $Z_{C_C}$ et $\varepsilon_{reffC}$ à l'aide des données du substrat et de $W_C$ à la fréquence $f_c$ de 2,5 GHz. Le paramètre \texttt{L} d'une valeur de 100 mm ici n'a aucune incidence sur la détermination de ces paramètres. En effet, $\varepsilon_{reffC}$ dépend de $\varepsilon_{r}$ et du rapport $h/W_C$. De même $Z_{C_C}$ ne dépend que de $\varepsilon_{r}$, $h$ et de $W_C$. Le bouton \texttt{Analyze} donne le résultat de \texttt{Z0} ($Z_{C_C}$) et de \texttt{K\_Eff} ($\varepsilon_{reffC}$) à partir des données déjà possédées. Ces deux valeurs sont retenues, puis l'opération est réitérée afin d'obtenir $Z_{C_L}$ et $\varepsilon_{reffL}$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=16cm]{../3synthPBas/elliptique/exemple_linecalc.png}
+	\caption{Présentation de l'interface LineCalc (exemple avec la détermination de $\varepsilon_{reffC}$ et $Z_{C_C}$)}
+	\label{fig:interface_linecalc}
+\end{figure}
+
+\newpage
+
+Pour la suite, l'ensemble des équations suivantes peuvent être calculées avec les grandeurs données par LineCalc. Ces diverses relations sont inscrites dans ADS. La valeur $c$ correspond ici à la célérité de la lumière.
+
+\begin{equation}
+	\lambda_{g_C}=\frac{c}{f_c \sqrt{\varepsilon_{reffC}}} \mbox{ et } \lambda_{g_L}=\frac{c}{f_c \sqrt{\varepsilon_{reffL}}}
+\end{equation}
+
+\begin{equation}
+	\beta_C = \frac{2 \pi}{\lambda_{g_C}} \mbox{ et } \beta_L = \frac{2 \pi}{\lambda_{g_L}}
+\end{equation}
+
+Et les longueurs $l_C$ et $l_L$ définies comme :
+
+\begin{equation}
+	l_C= \frac{1}{\beta_C} \mbox{arctan}\big(2 \pi f_c Z_{C_C} C\big) \mbox{ et } l_L= \frac{1}{\beta_L} \mbox{arctan}\big(\frac{2 \pi f_c L}{Z_{C_L}}\big)
+\end{equation}
+
+\vspace{2cm}
+
+La figure (\ref{fig:structure_elliptique_microstrip}) représente la structure utilisée sur ADS pour l'implémentation du filtre elliptique en technologie micro-ruban. L'ensemble des équations ci-dessus ont été écrites à l'aide de la directive \texttt{VAR}. Les composants \texttt{MLIN} représentent les lignes dont les longueurs et largeurs ont été déterminées précédemment. Les composants \texttt{MTEE} (\textit{T-junction}) et \texttt{MSTEP} (\textit{Step in width}) affinent la structure en prenant en compte les discontinuités. En effet, le \texttt{MSTEP} prends en compte la transformation d'impédance provoquée par le changement brusque de largeur de ligne. En ce qui concerne le composant \texttt{MTEE}, celui-ci prends en compte une discontinuité de la distribution du champ $\overrightarrow{E}$, provoquée par la forme coudée de la ligne.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=14cm]{../3synthPBas/elliptique/modele_microstrip_ADS.png}
+	\caption{Montage du filtre elliptique en ligne micro-ruban sur ADS}
+	\label{fig:structure_elliptique_microstrip}
+\end{figure}
+
+\newpage
 
 \subsection*{Validations}
+
+Il s'agit dans cette sous-section de simuler le comportement du filtre elliptique en technologie micro-ruban. La simulation est réalisée dans un intervalle de fréquence de 0 à 8 GHz. La figure (\ref{fig:resultat_elliptique_microstrip}) précise le résultat de la simulation. La courbe rouge représente les mesures réalisées en laboratoire à l'aide du VNA sur verre téflon. La courbe bleue correspond au résultat du filtre structuré sur ADS. Le graphique de gauche est l'ensemble de la réponse sur la gamme de fréquence de simulation. Le graphique de droite est un agrandissement sur la bande passante.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=16cm]{../3synthPBas/elliptique/resultat_simu_microstrip.png}
+	\caption{Graphique de la réponse fréquentielle du filtre simulé et des mesures expérimentales du filtre elliptique fourni au laboratoire}
+	\label{fig:resultat_elliptique_microstrip}
+\end{figure}
+
+Il est possible de remarquer la présence d'une ondulation en bande atténuée, élément caractéristique d'un filtre de Cauer. La bande atténuée commence à la fréquence de 3,5 GHz, à cette fréquence le gain est de -30 dB ce qui valide le cahier des charges avec une marge de 12 dB d'atténuation. Une remontée en gain s'effectue ensuite mais reste en dessous des 18 dB d'atténuation minimale exigé. Une telle remontée est provoquée par le changement de comportement des inductances et des capacités à des fréquences particulières. Néanmoins, cette remontée est rendue bien moins abrupte grâce à la non-linéarisation de la tangente (non respect de l'hypothèse $l \ll \lambda_g$ car n'est plus valable à partir d'une certaine fréquence).\\
+À comparer avec le résultat expérimental, la courbe de la simulation est en dessous de la rouge en bande atténuée. Le comportement en bande atténuée respecte davantage le cahier des charges que le filtre réalisé sur plaque en laboratoire. Cela pourrait s'expliquer par un angle de perte utilisé en simulation de 0,046 c'est-à-dire le double d'un angle de perte classique d'un diélectrique verre téflon. Il s'agirait également de cette mauvaise estimation de la tangente de perte $\mbox{tan}(\delta)$ qui provoquerait une descente brutale du gain en bande passante. Le cahier des charges n'est pas valide en ce qui concerne la bande passante.\\
+
 
 \newpage
 
