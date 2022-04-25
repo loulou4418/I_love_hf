@@ -1295,7 +1295,7 @@ L'impédance $Z_{vue}$ vue en entrée de la ligne est la même que celle en sort
 (4,0.5) to[short,*-] (4,1) 
 (4,1) node[mslstub, rotate=90]{$Z_c \beta$};
 \end{circuitikz}
-	\caption{Schéma ligne demie onde chargée}
+	\caption{Correspondance entre un résonateur parallèle et un stub demie onde ouvert}
 	\label{fig:res_parallele}
 \end{figure}
 La figure \ref{fig:res_parallele} représente un résonateur LC parallèle à gauche et  un stub demis onde CO à droite. Ils ramènent tous deux un circuit ouvert à la fréquence de résonance. En effet, l'admittance du premier s'exprime :
@@ -1340,8 +1340,46 @@ L'impédance de la ligne série est de 131,3$\Omega$ et du stub 17,11$\Omega$. A
 	\label{fig:ads_S21_BP_microruban}
 \end{figure}
 Les résultat de cette simulation présentés par la figure \ref{fig:ads_S21_BP_microruban} montrent une légère dissymétrie de la réponse fréquentielle. Ainsi le gabarit est respecté du coté hautes fréquences avec une atténuation de 19,552dB mais mais ne l'est pas sur la pente des basses fréquences avec 13,528dB. L'atténuation en limite de bande passante est supérieure aux 0,1dB du cahier des charges mais symétrique, elle est de 0,459dB. La figure de droite permet de valider la conformité en milieu de bande passante. \emph{Les résultats sont cohérents malgré qu'ils ne respectent pas parfaitement les spécifications}. Bien qu'absent du cahier des charges, il peut être intéressant d'observer la périodicité de la réponse car cela donne la plage de validité de la fonction passe bande. Dans notre cas en s'appuyant sur l'outils recherche de "Valley" sur ADS la bande est de 2GHz. Il faut comprendre qu'un bruit à $k.\lambda /2$ ne sera pas atténuée.
- 
 
+\subsection*{Synthèse micro-ruban uniquement à base de lignes quart d'onde}
+Cette partie présente une seconde solution pour transposer le circuit en éléments localisés vers la technologie micro-ruban. Cette synthèse se fera uniquement à base de lignes et stubs quart d'onde. Pour ce faire, comme dans la partie précédente, il faut associer un modèle équivalent aux deux résonateurs, série et parallèle. Commençons par détailler le cas du parallèle. Les résultats précédent nous permettent de dire qu'il présente une impédance infinie à la fréquence de résonance. Ainsi en se basant sur la formule de l'impédance ramenée on peut monter qu'un stub quart d'onde court-circuité se comporte de la même façon.\\
+Avec $l=\lambda/4$, $\beta l = \pi/2$, $tan(\beta l) \rightarrow \infty$ et $Z_0=0$ :
+\begin{equation}
+	Z_{vue}=\frac{Z_c^2}{Z_0}\rightarrow\infty
+\end{equation}
+L'impédance d'un stub CC présente bien comme un circuit ouvert à sa fréquence de résonance. Cette étape permet de fixer la fréquence centrale. La bande passante peut être déterminée en faisant correspondre les deux modèles à la fréquence de coupure. Il convient alors d'exprimer l'impédance caractéristique du stub en fonction des éléments réactifs du résonateur en se plaçant à $\omega_c$. Pour rappel le point de vue schématique est le suivant :
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}[scale=0.8]
+		\draw	(0.5,3) to[short,*-] (0.5,2.5)
+		(0,2.5) -- (1,2.5)
+		(0,2.5) to[L=$l$] (0,0.5)
+		(1,2.5) to[C=$c$] (1,0.5)
+		(0,0.5) -- (1,0.5)
+		(0.5,0) to[short,*-] (0.5,0.5)
+		(3,0.5) --(5,0.5)
+		(4,0.5) to[short,*-] (4,1) 
+		(4,1) node[mslstub, rotate=90]{$Z_c \beta$};
+	\end{circuitikz}
+	\caption{Correspondance entre un résonateur parallèle et un stub quart d'onde fermé}
+	\label{fig:res_parallele_quart}
+\end{figure}
+L'association des deux modèles revient à exprimer $Z_c$ à partir de l'égalité ci-dessous. Procédons par étapes.
+\begin{equation}
+	|\underline{Z_{equ}}|=|\underline{Z_{vue}}|
+\end{equation}
+\begin{equation}
+\Big|\Big(jC\omega-\cfrac{1}{jL\omega}\Big)^{-1}\Big|=\Bigg|Z_c\frac{Z_0+jZ_ctan(\beta L)}{Z_c+jZ_0tan(\beta L)}\Bigg|
+\end{equation}
+Avec un stub fermé $Z_0=0$ quelques simplifications s'opèrent. De plus, il est possible de faire apparaître $\omega$ en développant $\beta$. 
+\begin{equation}
+	\Big|\Big(jC\omega-\cfrac{1}{jL\omega}\Big)^{-1}\Big|=\big|jZ_ctan\Big(\frac{f_c\pi\sqrt{\epsilon}}{2f_0}\Big)\big|
+\end{equation}
+L'expression de $Z_c $ en fonction des composants réactifs du résonateur est la suivante :
+\begin{equation}
+	Z_c=\Big|\Big(j\Big(C\omega-\cfrac{1}{L\omega}\Big)tan\Big(\frac{f_c\pi\sqrt{\varepsilon_r}}{2f_0}\Big)\Big)^{-1}\Big|
+\end{equation}
+L'application numérique avec $C=C_2=7,307pF$, $L=L_2=0,8804nH$, $\varepsilon_r=2,624$, $f_c=1,75$ et $f_0=2$ donne une valeur de XX$\Omega$ pour l'impédance caractéristique $Z_c$ du stub quart d'onde. 
 
 \newpage
 \section{Synthèse d'un amplificateur à bande étroite}
