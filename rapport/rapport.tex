@@ -18,7 +18,7 @@
 
 \vspace*{4cm}
 \section*{Résumé}
-L'électronique des hautes-fréquences est une discipline essentielle lorsqu'il s'agit de manipuler et modifier des signaux dont les fréquences sont de l'ordre du Gigahertz.\\
+L'électronique des hautes fréquences est une discipline essentielle lorsqu'il s'agit de manipuler et modifier des signaux dont la longueur d'onde est de l'ordre des dimensions du circuit.\\
 Et ce domaine est d'autant plus indispensable dans un monde connecté dont les produits électroniques tendent à être toujours plus rapides. Cette discipline est présente dans le domaine des télécommunications que ce soit civil ou militaire, dans le médical ou encore la sécurité et regroupe un ensemble de problématique comme l'émission ou réception de signaux, leur traitement par filtrage ou amplification et bien plus encore.\\
 Ce rapport permet de découvrir une infime branche de l'électronique hautes-fréquences, et se focalise sur la découverte de la technologie micro-ruban et la conception selon un cahier des charges de diverses fonctions d'électronique.
 
@@ -1339,10 +1339,10 @@ L'impédance de la ligne série est de 131,3$\Omega$ et du stub 17,11$\Omega$. A
 	\caption{Simulation S21 passe bande micro-ruban}
 	\label{fig:ads_S21_BP_microruban}
 \end{figure}
-Les résultat de cette simulation présentés par la figure \ref{fig:ads_S21_BP_microruban} montrent une légère dissymétrie de la réponse fréquentielle. Ainsi le gabarit est respecté du coté hautes fréquences avec une atténuation de 19,552dB mais mais ne l'est pas sur la pente des basses fréquences avec 13,528dB. L'atténuation en limite de bande passante est supérieure aux 0,1dB du cahier des charges mais symétrique, elle est de 0,459dB. La figure de droite permet de valider la conformité en milieu de bande passante. \emph{Les résultats sont cohérents malgré qu'ils ne respectent pas parfaitement les spécifications}. Bien qu'absent du cahier des charges, il peut être intéressant d'observer la périodicité de la réponse car cela donne la plage de validité de la fonction passe bande. Dans notre cas en s'appuyant sur l'outils recherche de "Valley" sur ADS la bande est de 2GHz. Il faut comprendre qu'un bruit à $k.\lambda /2$ ne sera pas atténuée.
+Les résultat de cette simulation présentés par la figure \ref{fig:ads_S21_BP_microruban} montrent une légère dissymétrie de la réponse fréquentielle. Ainsi le gabarit est respecté du coté hautes fréquences avec une atténuation de 19,552dB mais ne l'est pas sur la pente des basses fréquences avec 13,528dB. L'atténuation en limite de bande passante est supérieure aux 0,1dB du cahier des charges mais symétrique, elle est de 0,459dB. La figure de droite permet de valider la conformité en milieu de bande passante. \emph{Les résultats sont cohérents malgré qu'ils ne respectent pas parfaitement les spécifications}. Bien qu'absent du cahier des charges, il peut être intéressant d'observer la périodicité de la réponse car cela donne la plage de validité de la fonction passe bande. Dans notre cas en s'appuyant sur l'outils recherche de "Valley" sur ADS la bande est de 2GHz. Il faut comprendre qu'un bruit à $k.\lambda /2$ ne sera pas atténué.
 
 \subsection*{Synthèse micro-ruban uniquement à base de lignes quart d'onde}
-Cette partie présente une seconde solution pour transposer le circuit en éléments localisés vers la technologie micro-ruban. Cette synthèse se fera uniquement à base de lignes et stubs quart d'onde. Pour ce faire, comme dans la partie précédente, il faut associer un modèle équivalent aux deux résonateurs, série et parallèle. Commençons par détailler le cas du parallèle. Les résultats précédent nous permettent de dire qu'il présente une impédance infinie à la fréquence de résonance. Ainsi en se basant sur la formule de l'impédance ramenée on peut monter qu'un stub quart d'onde court-circuité se comporte de la même façon.\\
+Cette partie présente une seconde solution pour transposer le circuit en éléments localisés vers la technologie micro-ruban. Cette synthèse se fera uniquement à base de lignes et stubs quart d'onde. Pour ce faire, comme dans la partie précédente, il faut associer un modèle équivalant aux deux résonateurs, série et parallèle. Commençons par détailler le cas du parallèle. Les résultats précédents nous permettent de dire qu'il présente une impédance infinie à la fréquence de résonance. Ainsi en se basant sur la formule de l'impédance ramenée on peut montrer qu'un stub quart d'onde court-circuité se comporte de la même façon.\\
 Avec $l=\lambda/4$, $\beta l = \pi/2$, $tan(\beta l) \rightarrow \infty$ et $Z_0=0$ :
 \begin{equation}
 	Z_{vue}=\frac{Z_c^2}{Z_0}\rightarrow\infty
@@ -1380,14 +1380,64 @@ L'expression de $Z_c $ en fonction des composants réactifs du résonateur est l
 	Z_c=\Big|\Big(j\Big(C\omega-\cfrac{1}{L\omega}\Big)tan\Big(\frac{f_c\pi\sqrt{\varepsilon_r}}{2f_0}\Big)\Big)^{-1}\Big|
 \end{equation}
 L'application numérique avec $C=C_2=7,307pF$, $L=L_2=0,8804nH$, $\varepsilon_r=2,624$, $f_c=1,75$ et $f_0=2$ donne \emph{une valeur de 12$\Omega$ pour l'impédance caractéristique $Z_c$ du stub quart d'onde.} 
+Un raisonnement semblable peut être appliqué pour déterminer le modèle équivalant d'un résonateur série. Ainsi, il est possible d'y assimiler le schéma équivalent suivant : 
 
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}
+		\draw (0,0.5)
+		to [short,*-](0,0.5)
+		node[above]{$Z_{vue}$}
+		to[TL=$Z_c$\texttt{,} $l$] (3,0.5)
+		(2,0) to [C=$C'$] (2,-2)
+		(4,0) to [L=$L'$] (4,-2) 
+		(3,0.5) to [short] (3,0)
+		(2,0) to [short] (4,0)
+		(2,-2) to [short] (4,-2)
+		(3,-2) node[ground]{};
+	\end{circuitikz}
+\caption{Ligne quart d'onde et résonateur parallèle}
+\end{figure}
+
+On déduit de cette figure l'expression de l'impédance vue en entrée de la ligne :
+\begin{equation}
+	Z_{vue}=\frac{Z_c^2}{Z_{equ}}=Z_c^2Y_{equ}=j\Bigg(Z_c^2C'\omega+\frac{1}{(L/Z_c^2)\omega}\Bigg)
+\end{equation}
+Une inductance et un condensateur peuvent alors apparaître par identification :
+\begin{equation}
+\left\{\begin{matrix}
+L=Z_c^2C' \\
+C=L'/Z_c^2
+\end{matrix}\right.
+\label{eqmatrix}
+\end{equation}
+L'application numérique avec $C'=C_1=0,3217pF$, $L'=L1=16,42nH$ et $Z_c$ fixée à 60$\Omega$ donne :
+\begin{equation}
+	L=1,16nH, \quad C=0,4,46pF
+\end{equation}
+La transformation ne s'arrête pas là puisque nous sommes de nouveau en présence d'un résonateur parallèle. Il peut donc être remplacé par un stub quart d'onde fermé. L'application numérique donne une impédance caractéristique de 9$\Omega$. Finalement, le schéma du filtre passe bande global est obtenu par substitution des résonateurs LC par des lignes et stubs quart d'onde. Le schéma sous ADS est le suivant :
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../4synthPBande/inverseur_impedance/montage_inverseur_ADS}
+	\caption{Simulation passe bande micro-ruban lignes quart d'onde}
+	\label{fig:montageinverseurads}
+\end{figure}
+
+Après simulation en paramètres S et affichage du coefficient de transmission on obtient la figure suivante :
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../4synthPBande/inverseur_impedance/resultat_simulation}
+	\caption{Simulation S21 passe bande micro-ruban lignes quart d'onde}
+	\label{fig:resultatsimulation}
+\end{figure}
+
+Les points m1 et m2 permettent de valider la conformité aux fréquences de coupure avec une atténuation respective de 19,362dB et 24,964dB. Au contraire, la bande passante présente une atténuation anormalement supérieure de 2,1dB. Ce résultat ne remet pas en question la fonction passe bande mais l'écart présent n'est plus négligeable. Malheureusement aucune explication n'a été trouvé à ce problème. \\
+
+Comme pour la synthèse précédente il est possible d'observer le domaine de validité de la fonction passe bande. Dans ce cas la bande valide s'étant de 0Hz à 4GHz. Cette valeur est deux fois supérieure à la synthèse précédente. C'est là l\emph{'avantage principal d'une conception à base uniquement de lignes quart d'onde.} Cela s'explique par la forme de la fonction tangente. Avec $l=\lambda/4$ donc $\beta l = \pi$ la ligne quart d'onde exploite la discontinuité de la fonction trigonométrique et donc deux périodes contre une seule pour la ligne demie onde. Un second phénomène intéressant est observable. La réponse fréquentielle présente une atténuation infinie à 4GHz. Il existe un montage appelé Dual Behavior Resonator (DBR)\footnote{On pensera au mnémotechnique Deux BièRes} basé sur deux stubs parallèles dont la longueur totale vaut $\lambda/4$ permettant de profiter à la fois de la fonction passe bande mais aussi de placer un zéro de transmission à l'endroit souhaité. Cette innovation est issue des laboratoires français. 
 \newpage
 \section{Synthèse d'un amplificateur à bande étroite}
 L’objectif de cette partie est de réaliser un amplificateur à bande étroite adapté en MAG (Maximum Available Gain) à 2GHz prenant la méthodologie de conception (vue en TD). Le transistor utilisé est le transistor AT-41485. En entrée, il reçoit le maximum de puissance par le générateur, et a la sortie, il envoie le maximum de puissance à la charge de 50 Ohm.
-
 \subsection{Démarche de conception d’un amplificateur}
-
-
 \subsubsection{Théorie de la matrice S}
 Les paramètres S relient les ondes réfléchies et les ondes incidentes. En mathématiques, la matrice S est utilisée pour représenter ces paramètres. Un quadripôle est illustré à la figure \ref{fig:matrice_s}, les entrées sont représentées par $a_{1}$ et $a_{2}$, les sorties sont représentées par $b_{1}$ et $b_{2}$. 
 
