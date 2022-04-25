@@ -1,6 +1,6 @@
 \documentclass[french]{article}
 
-\usepackage{siunitx}
+
 \input{configuration}
 \input{titre}
 
@@ -20,7 +20,7 @@ Nous souhaitons sincèrement remercier Yann Mahe pour le temps et la patience do
 
 Nous remercions également Anne Chousseauq qui, durant les travaux pratiques, nous a accompagnée avec calme et passion.\\
 
-Finalement, nous sommes reconnaissant envers Tchanguiz RAZBAN pour les cours dispensés et  les ressources pédagogiques mises à dispositions.
+Finalement, nous sommes reconnaissant envers Tchanguiz RAZBAN pour les cours dispensés et les ressources pédagogiques mises à dispositions.
 
 \section{Introduction}
 \subsection{Contextualisation}
@@ -936,7 +936,36 @@ Il s'agit dans cette section de transposer le filtre conçu précédemment en te
 La conception du filtre passe-bas Tchebychev a respecté à la lettre l'ensemble de ce modèle d'équivalence y compris la relation d'ordre $l \ll \lambda_g$, hypothèse qui justifie la linéarisation du terme $\mbox{tan}(\beta l)$ dans la formule de l'impédance vue $Z_{vue}$. Cependant comme le montre la figure (\ref{fig:simu_passe_bas_distribue}), à partir d'une certaine fréquence la longueur d'onde guidée $\lambda_g$ est de l'ordre de la longueur $l$ de la ligne. La linéarisation de la tangente n'a plus de sens à partir de cette fréquence. Ainsi pour la suite du rapport et dans l'objectif d'obtenir un meilleur résultat, la linéarisation $\mbox{tan}(\beta l) \approx \beta l$ ne sera pas effectuée.\\
 
 Il s'agit désormais de fixer les limites géométriques qui seront utilisées pour obtenir des lignes d'impédance caractéristique $Z_C$ faible ou élevée. Dans le cas d'impédance élevée ($Z_C \gg Z_0$ pour les inductances), la largeur de ligne $W$ sera fixée selon la technologie de gravure et sa précision. Les procédés de photolithographie choisis pour les plaques de test en laboratoire possèdent une limite de gravure de 0,50 mm. La largeur de ligne pour les inductances, notée $W_L$, sera donc de 0,50 mm.\\
-En ce qui concerne les impédances faibles ($Z_C \ll Z_0$ pour les capacités), la largeur de ligne $W_C$ est définie par la relation $W_C = 0.1\lambda_g$
+En ce qui concerne les impédances faibles ($Z_C \ll Z_0$ pour les capacités), la largeur de ligne $W_C$ est définie par la relation $W_C = 0.1\lambda_g$ avec $\lambda_g$ la longueur d'onde guidée à la fréquence d'intérêt de 2,5 GHz. Une telle dimension géométrique pour la largeur évite l'excitation des modes supérieurs à des fréquences proches de $f_c$. Ces modes sont alors projetés plus dans le plan spectral et cela garantie l'utilisation d'un seul mode qui est le mode dominant. Il est possible de trouver un bon compromis entre ce critère et les limites de gravure. Pour la suite la largeur $W_C$ sera définie à 10 mm.\\
+
+Les valeurs $W_L$ et $W_C$ étant déterminées, il s'agit à l'aide de la hauteur du substrat $h$ et de ses autres paramètres de déterminer les deux impédances $Z_{C_C}$ et $Z_{C_L}$ et constantes diélectriques relatives effectives $\varepsilon_{reffC}$ et $\varepsilon_{reffL}$. Le substrat considéré par la suite sera le verre téflon large. Ces calculs sont réalisés à partir de l'outil LineCalc intégré à ADS. La figure ci-dessous présente son interface. Celle-ci représente la détermination des paramètres $Z_{C_C}$ et $\varepsilon_{reffC}$ à l'aide des données du substrat et de $W_C$ à la fréquence $f_c$ de 2,5 GHz. Le paramètre \texttt{L} d'une valeur de 100 mm ici n'a aucune incidence sur la détermination de ces paramètres. En effet, $\varepsilon_{reffC}$ dépend de $\varepsilon_{r}$ et du rapport $h/W_C$. De même $Z_{C_C}$ ne dépend que de $\varepsilon_{r}$, $h$ et de $W_C$. Le bouton \texttt{Analyze} donne le résultat de \texttt{Z0} ($Z_{C_C}$) et de \texttt{K\_Eff} ($\varepsilon_{reffC}$) à partir des données déjà possédées. Ces deux valeurs sont retenues, puis l'opération est réitérée afin d'obtenir $Z_{C_L}$ et $\varepsilon_{reffL}$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=16cm]{../3synthPBas/elliptique/exemple_linecalc.png}
+	\caption{Présentation de l'interface LineCalc (exemple avec la détermination de $\varepsilon_{reffC}$ et $Z_{C_C}$)}
+	\label{fig:interface_linecalc}
+\end{figure}
+
+\newpage
+
+Pour la suite, l'ensemble des équations suivantes peuvent être calculées avec les grandeurs données par LineCalc. Ces diverses relations sont inscrites dans ADS. La valeur $c$ correspond ici à la célérité de la lumière.
+
+\begin{equation}
+	\lambda_{g_C}=\frac{c}{f_c \sqrt{\varepsilon_{reffC}}} \mbox{ et } \lambda_{g_L}=\frac{c}{f_c \sqrt{\varepsilon_{reffL}}}
+\end{equation}
+
+\begin{equation}
+	\beta_C = \frac{2 \pi}{\lambda_{g_C}} \mbox{ et } \beta_L = \frac{2 \pi}{\lambda_{g_L}}
+\end{equation}
+
+Et les longueurs $l_C$ et $l_L$ définies comme :
+
+\begin{equation}
+	l_C= \frac{1}{\beta_C} \mbox{arctan}\big(2 \pi f_c Z_{C_C} C\big) \mbox{ et } l_L= \frac{1}{\beta_L} \mbox{arctan}\big(\frac{2 \pi f_c L}{Z_{C_L}}\big)
+\end{equation}
+
+La figure qui suit représente la structure
 
 \subsection*{Validations}
 
