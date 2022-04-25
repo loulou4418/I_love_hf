@@ -1,6 +1,6 @@
 \documentclass[french]{article}
 
-
+\usepackage{siunitx}
 \input{configuration}
 \input{titre}
 
@@ -14,6 +14,13 @@
 
 \section{Résumé}
 \textbf{Resume le mini-projet}
+
+\section{Remerciement}
+Nous souhaitons sincèrement remercier Yann Mahe pour le temps et la patience dont il fait preuve pour nous enseigner sa discipline. Il a su s'adapter en corrigeant nos lacunes tout en évoquant des notions nouvelles issues de la recherche. \\
+
+Nous remercions également Anne Chousseauq qui, durant les travaux pratiques, nous a accompagnée avec calme et passion.\\
+
+Finalement, nous sommes reconnaissant envers Tchanguiz RAZBAN pour les cours dispensés et  les ressources pédagogiques mises à dispositions.
 
 \section{Introduction}
 \subsection{Contextualisation}
@@ -486,6 +493,7 @@ On isole l'inductance $L$.
 
 \begin{equation}
 	L = \frac{Z_c l}{v_\phi}
+	\label{eq:resultat_L}
 \end{equation}
 
 On a ici une expression d'une inductance en fonction des paramètre d'une ligne de transmission à savoir, son impédance $Z_c$ et de sa longueur $l$. 
@@ -579,6 +587,7 @@ On isole la capacité $C$.
 
 \begin{equation}
 	C = \frac{l}{Z_c v_\phi}
+	\label{eq:resultat_C}
 \end{equation}
 
 On a ici une expression d'une capacité en fonction des paramètre d'une ligne de transmission à savoir, son impédance $Z_c$ et de sa longueur $l$. 
@@ -586,27 +595,134 @@ On a ici une expression d'une capacité en fonction des paramètre d'une ligne d
 
 \subsubsection{Limites de validité}
 
-Comme nous l'avons vu dans les parties précédentes, des lignes de transmission peuvent s'apparenter à des effets capacitifs ou inductifs sous certaines conditions. Ces conditions sont aux nombres de deux. La première est sur l'impédance de la ligne de transmission $Z_c$ tandis que la deuxième est lié à la constante de phase $\beta$ et plus particulièrement la fréquence.\\
+Comme nous l'avons vu dans les parties précédentes, des lignes de transmission peuvent s'apparenter à des effets capacitifs ou inductifs sous certaines conditions. Ces conditions sont aux nombres de deux. La première est sur l'impédance de la ligne de transmission $Z_c$ tandis que la deuxième est liée au terme $\beta l$ contenue dans l'expression de l'impédance ramenée.\\
 %La condition du $Z_c$ est lié aux contraintes dépend de la largeur des pistes et donc de des procédés de fabrication. Cette condition sera abordé dans la partie suivante sur le passage des composants discret à des lignes de transmission. Il nous reste donc la
 
 \textbf{Condition du $Z_c$\\}
 
-Dans le cas où l'on cherche apparenter une bobine série à une ligne de transmission, son impédance caractéristique doit être très supérieur à $Z_0$ soit $Z_c >> Z_0$. Dans ces conditions l'impédance $Z_c$ s'écrit :
+Nous allons voir que la conditions sur $Z_c$ est directement lié à la largeur des lignes de transmission.
+
+Dans le cas où l'on cherche à \underline{apparenter une bobine série avec une charge} à une ligne de transmission série avec une charge, son impédance caractéristique doit être très supérieur à $Z_0$ soit $Z_c >> Z_0$. Dans ces conditions l'impédance $Z_c$ s'écrit :
+
+\begin{equation}
+	Z_c = \frac{119,9}{\sqrt{2(\epsilon_r + 1)}} \left[ ln\left(4\frac{h}{w} + \sqrt{16\left(\frac{h}{w}\right)^2 + 2}\right) - \frac{1}{2}\left(\frac{\epsilon_r - 1}{\epsilon_r + 1}\right) \left(ln\frac{\pi}{2} + \frac{1}{\epsilon_r}ln\frac{4}{\pi}\right) \right]
+	\label{eq:Z_c_bobine}
+\end{equation}
+
+Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'épaisseur de cuivre en mm et $w$ la largeur de la piste de cuivre en mm. La permittivité relative est donné par le constructeur où alors elle peut être trouver de manière expérimentale comme on a pu le faire dans les premières séance de TP (cf partie sur la caractérisation). Dans notre cas l'épaisseur h a une valeur standard de 1,58 mm. La largeur $w$ quant à elle, dépend des procédés de fabrication. Au vue de l'expression de $Z_c$, sachant $Z_0=50 \Omega$ où w de 4,8 mm (donnée dans le sujet du TP) et sachant également l'expression de $Z_c$ ainsi que $Z_c >> Z_0$, on en déduit qu'il faut $w << 4,8$ mm. Les contraintes technologiques nous permettent de faire des pistes de cuivre ayant \underline{une largeur $w$ de 0,5 mm}.\\
+
+Dans le cas où l'on cherche à \underline{apparenter un condensateur parallèle avec une charge} à une ligne de transmission série avec une charge, son impédance caractéristique doit être très inférieure à $Z_0$ soit $Z_c << Z_0$. Dans ces conditions l'impédance $Z_c$ s'écrit :
 
 \begin{equation}
 	Z_c= \frac{119,9\pi}{2\sqrt{\epsilon_r}}\left[\frac{w}{2h} + \frac{ln4}{\pi} + \frac{ln(e\pi^2 / 16)}{2\pi}\left(\frac{\epsilon_r + 1}{\epsilon_r}\right) + \frac{\epsilon_r + 1}{2\pi \epsilon_r} \left( ln\frac{\pi e}{2} +  ln\left(\frac{w}{2h} + 0,94 \right) \right)  \right]^{-1}
+	\label{eq:Z_c_condo}
 \end{equation}
 
-Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'épaisseur de cuivre en mm et $w$ la largeur de la piste de cuivre en mm. La permittivité relative est donné par le constructeur où alors elle peut être trouver de manière expérimentale comme on a pu le faire dans les premières séance de TP (cf partie sur la caractérisation). Dans notre cas l'épaisseur h a une valeur standard de 1,58 mm. La largeur $w$ quant à elle, dépend des procédés de fabrication. Au vue de l'expression de $Z_c$, sachant $Z_0=50 \Omega$ où w de 4,8 mm (donnée dans le sujet du TP) et sachant également l'expression de $Z_c$ ainsi que $Z_c>>Z_0$, on en déduit qu'il faut $w<< 4,8$ mm.
+
+Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'épaisseur de cuivre en mm et $w$ la largeur de la piste de cuivre en mm. La permittivité relative est donné par le constructeur où alors elle peut être trouver de manière expérimentale comme on a pu le faire dans les premières séance de TP (cf partie sur la caractérisation). Dans notre cas l'épaisseur h a une valeur standard de 1,58 mm. La largeur $w$ quant à elle, dépend des procédés de fabrication. Au vue de l'expression de $Z_c$, sachant $Z_0=50 \Omega$ où w de 4,8 mm (donnée dans le sujet du TP) et sachant également l'expression de $Z_c$ ainsi que $Z_c << Z_0$, on en déduit qu'il faut $w >> 4,8$ mm. Les contraintes technologiques nous permettent de faire des pistes de cuivre ayant \underline{une largeur $w$ de 10 mm}.\\
 
 
+\textbf{Condition du $\beta l$\\}
 
+Lors de la présentation de la technologie micro ruban nous avons linéariser l'expression $tan(\beta l)$ en disant que $tan(\beta l)=\beta l$ pour des petites variations de $\beta l$. Étudions maintenant ces conditions plus en détail. Pour ce faire on commence par tracer sur la figure \ref{fig:tan_x} la fonction $y = tan(x)$
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=6cm]{photo/tan_x.png}
+	\caption{Tracé de la fonction tangente de x}
+	\label{fig:tan_x}
+\end{figure}
 
+La fonction $tan(x)$ n'est définie que sur l'intervalle $[-\frac{\pi}{2}; \frac{\pi}{2}]$. D'après le développement limité de Taylor et de manière graphique on observe bien que plus x est proche de 0 et plus l'expression $tan(x) = x$ est vraie. On en déduit que pour linéariser l'expression il faut $x << \frac{\pi}{2}$. Dans notre application $tan(x) = tan(\beta l)$ donc $x = \beta l$. On rappelle que $\beta$ peut s'écrire :
+
+\begin{equation}
+	\beta = \frac{2 \pi}{\lambda}
+\end{equation}
+
+Où $f$ est la fréquence de l'onde électromagnétique en Hz et $v_\phi$ la vitesse de propagation en m/s. D'après les dire précédent pour linéariser la tangente $x << \frac{\pi}{2}$ soit $\beta l << \frac{\pi}{2}$ ce qui nous donne la condition sur $l$ :
+
+\begin{equation}
+	l << \frac{\lambda}{4}
+\end{equation}
+
+Cette condition nous indique que la longueur de la ligne de transmission $l$ doit être très inférieure à $\frac{\lambda}{4}$ pour que les lignes de transmissions puissent s'apparenter correctement à des bobines ou à des condensateurs.
 
 
 \subsection{Passage des composants discrets à des lignes de transmission}
 
+\subsubsection{Introduction et rappel}
+
+Dans cette partie on cherche à remplacer les éléments localisés du filtre de la figure \ref{fig:schema_localise_passe_bas_ads} par des lignes de transmission. On part des expressions \ref{eq:resultat_L} et \ref{eq:resultat_C} que l'on tourne pour obtenir une expression de longueur des lignes de transmission. On appellera $l_C$ la longueur de la lignes qui va s'apparenter à un condensateur et $l_L$ la longueur des ligne qui va s'apparenter à une bobine.
+
+\begin{equation}
+	l_L = \frac{L v_\phi}{Z_c}
+	\qquad
+	l_C = C Z_c v_\phi
+	\label{eq:expression_l}
+\end{equation}
+
+Avec $Z_c$, l'impédance caractéristique de la ligne de transmission (ATTENTION : la valeur est différente pour les bobines et les condensateurs) en Ohms, $l_C$ et $l_L$ en m, $L$ en H, $C$ en F et $v_\phi$ en m/s dont l'expression est donné par :
+
+\begin{equation}
+	v_\phi = \frac{3.10^8}{\sqrt{\epsilon_{reff}}}
+\end{equation}
+
+Où $\epsilon_{reff}$ est la permittivité relative effective du matériau sans unité et s'exprime par : 
+
+\begin{equation}
+	\epsilon_{reff} = \frac{\epsilon_r + 1}{2} + \frac{\epsilon_r - 1}{2}\left(1 + \frac{10h}{w}\right)^{-1/2}
+	\label{eq:espilon_reff}
+\end{equation}
+
+
+\subsubsection{Transformation des éléments localisés en éléments distribués}
+
+L'objectif ici est de déterminer les paramètres des lignes de transmissions qui vont remplacer les bobines et les condensateurs. Ces paramètres sont la permittivité du substrat, l'impédance caractéristique de la ligne, la hauteur de cuivre, sa largeur ou encore sa longueur.\\
+7,092
+On commence par le \underline{remplacement de toutes les bobines}. On fait le choix de détailler les calculs \underline{pour un substrat en teflon} de permittivité relative 2,209 obtenu à partir des plaques de teflon large lors de la partie sur la caractérisation. On se base sur une hauteur de cuivre $h$ standard de 1,580 mm et une largeur de piste $w$ de 0,500 mm comme expliqué dans la partie sur les limites de validités. A partir de tous ces éléments et des équations \ref{eq:espilon_reff} et \ref{eq:Z_c_bobine} on trouve :
+
+\begin{equation}
+	\epsilon_{reff} = 1,710
+	\qquad
+	Z_c = 147,510 \Omega
+\end{equation}
+
+Il ne nous reste plus qu'à calculer les longueurs des lignes de transmissions qui vont remplacer les bobines. Pour cela on utilise l'expression de $l_L$ de la formule \ref{eq:expression_l}. Le tableau ci-dessous récapitule les longueurs obtenues en fonction des valeurs des bobines.
+
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		$L$ & 4,560 nH & 7,850 nH \\
+		\hline
+		$l_L$ & 7,092 mm & 12,208 mm\\
+		\hline
+	\end{tabular}
+	\caption{Longueurs des lignes de transmission qui remplacent les bobines.}
+	\label{tab:longueur_ligne_bobine_passe_bas}
+\end{table}
+
+
+On s'attaque maintenant au \underline{remplacement des condensateurs}. On fait les mêmes choix de valeurs pour la permittivité relative (2,209) et pour la hauteur de cuivre (1,580 mm). Pour la largeur de cuivre, conformément à la partie sur les limites de validité on prendra une largeur de 10 mm. Pour le calcul de $\epsilon_{reff}$ on utilise toujours l'équation \ref{eq:espilon_reff} tandis que pour $Z_c$ on utilise maintenant la formule \ref{eq:Z_c_condo} ce qui donne :
+
+\begin{equation}
+	\epsilon_{reff} = 1,981
+	\qquad
+	Z_c = 29,207 \Omega
+\end{equation}
+
+Il ne nous reste plus qu'à calculer les longueurs des lignes de transmissions qui vont remplacer les bobines. Pour cela on utilise l'expression de $l_C$ de la formule \ref{eq:expression_l}. Le filtre contient une seule valeur de capacité : 2,18 pF. Cela fait que nous avons qu'une seule longueur à calculer :
+
+\begin{equation}
+	l_C = \frac{2,18.10^{-12} * 29,207 * 3.10^8}{\sqrt{1,981}} = 13,571 mm
+\end{equation}
+
+
+
+\subsubsection{Simulation sur le substrat de teflon}
+
+Pour vérifier nos valeurs obtenues on passe sur le logiciel de simulation ADS. Le schéma réalisé est disponible à la figure \ref{fig:schema_distribue_passe_bas_ads}. Il est composé de cinq éléments mis en série. Aux extrémités on trouve deux terminaux (ou charge) $50\Omega$. Les éléments mis en série sont des lignes de transmission basé sur une largeur W, une longueur L et un substrat Subst. Les deux premier paramètre sont remplis selon les résultats obtenus dans les parties précédentes. Pour le substrat on utilise un bloc MSub que l'on appellera MSub1. Il contient toute les informations concernant le substrat sur lequel on souhaite simuler notre filtre. On y trouve par exemple la permittivité relative du matériau, la hauteur du cuivre voulue ou encore les pertes liés à $tan(\delta)$.
 
 \begin{figure}[H]
 	\centering
@@ -615,14 +731,14 @@ Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'ép
 	\label{fig:schema_distribue_passe_bas_ads}
 \end{figure}
 
-
+Pour valider le comportement du filtre on affiche le coefficient de transmission S21. La figure \ref{fig:simu_passe_bas_distribue} contient le résultat de la simulation sur deux intervalles de fréquences. A gauche, on observe le comportement général du filtre sans avoir de détails sur la bande passante tandis qu'à droite on y a un zoom.
 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}[b]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_passe_bas_distribue.PNG}
 		\caption{Sans zoom}
-		\label{fig:simu_passe_bas_distribue}
+		\label{fig:simu_passe_bas_distribueG}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.49\textwidth}
 		\includegraphics[width=\textwidth]{photo/passe_bas_vic/simu_zoom_passe_bas_distribue.PNG}
@@ -630,8 +746,22 @@ Où $\epsilon_r$ est la permittivité relative du substrat en F/m, $h$ est l'ép
 		\label{fig:simu_zoom_passe_bas_distribue}
 	\end{subfigure}
 	\caption{Simulation du module du coefficient de transmission S43 en dB}
-	%	\label{fig:observation_registres_internes}
+	\label{fig:simu_passe_bas_distribue}
 \end{figure}
+
+
+Sur la figure \ref{fig:simu_passe_bas_distribueG} on observe le comportement d'un filtre passe-bas avec une fréquence de coupure à environ 2 GHz. Du côté de la bande passante l'atténuation va jusqu'à 0,759 dB (pour 2 GHz) ce qui est supérieur aux 0,1 dB voulues par le cahier des charges. Au niveau de la bande atténuée, l'atténuation commence à 17 dB (à 3 GHz) ce qui respecte le gabarit (qui imposait 15 dB) jusqu'à la fréquence approximative de 6,4 GHz uniquement. A partir de cette fréquence (et depuis 4,5 GHz environ) le coefficient de transmission remonte puis fait des "va et vient" à 0 dB sous la forme de lobes. \\
+
+\textbf{justifier a partir de tan(B l)}
+
+
+
+\subsubsection{Amélioration}
+
+\subsection{Comparaison des substrats}
+
+\subsection{Comparaison avec des filtres réel sur PCBs}
+
 
 
 \begin{figure}[H]
@@ -702,9 +832,9 @@ Le cahier des charges contient également une table de valeurs pour la détermin
 	\centering
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
 		\hline
-		$A_{max}$ (en dB) & $VSWR$ & $\Omega$ & $A_s$ (en dB) & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$ & $g_7$\\
+		$A_{max}$(dB) & $VSWR$ & $\Omega$ & $A_s$(dB) & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$ & $g_7$\\
 		\hline
-		0.01 & 1.10 & 1.41 & 30.2 & 0.6265 & 0.1920 & 1.1099 & 1.2706 & 0.6535 & 0.7125 & 0.3441\\
+		0.01 & 1.10 & 1.41 & 30.2 & 0.6265 & 0.1920 & 1.109 & 1.270 & 0.6535 & 0.7125 & 0.3441\\
 		\hline
 	\end{tabular}
 	\caption{Nomogramme pour la détermination du filtre passe-bas elliptique normalisé}
@@ -833,7 +963,7 @@ Les valeurs numériques associées au gabarit sont les suivantes. Les fréquence
 	\end{tabular}
 \caption{Valeur numérique gabarit souhaité}
 	\end{table}
-\paragraph{Symétrie du gabarit} ~~\\ \noindent
+\subsection{Symétrie du gabarit}
 Avant de commencer la synthèse du filtre il est nécessaire de valider une condition sur la symétrie. Si elle n'est pas respectée il faudra modifier le gabarit du cahier des charges. La condition s'opère sur la moyenne géométrique de la bande passante et de la bande coupée notées :
 \begin{equation}
 	 f_{co} = \sqrt{f_c^-.f_c^+}, \quad f_{so} = \sqrt{f_s^- f_s^+}
@@ -864,7 +994,7 @@ Les nouvelles valeurs numériques pour le gabarit du filtre sont les suivantes. 
 	\end{tabular}
 	\caption{Valeur numérique gabarit centré}
 \end{table}
-\paragraph{Gabarit passe bas} ~~\\ \noindent
+\subsection{Gabarit passe bas}
 L'étape suivant dans la conception d'un filtre passe bande symétrique vise à simplifier la synthèse en passant par un gabarit passe bas. Cela permet de calculer son ordre puis sa structure en éléments localisés.
 \begin{figure}[H]
 	\centering
@@ -895,7 +1025,7 @@ On calcule avec $A_{min} = 15dB$ et $A_{max} = 0,1dB$. L'ordre $\delta$ est arro
 }{argch(1/0,4488)} = 2,975, \quad \delta = 3
 \end{equation}
 Le gabarit impose un ordre minimum de 3, c'est la valeur que nous retiendront. On note tout de même que l'arrondi au supérieur présente un faible écart avec l'ordre choisi. Notre filtre devrait respecter les spécifications mais des approximations pourraient entraîner des débordements notamment aux fréquences particulières $f_c$ et $f_s$.
-\paragraph{Prototype passe bas normalisé vers passe bande dénormalisé} ~~\\ \noindent
+\subsection{Prototype passe bas normalisé vers passe bande dénormalisé}
 Cette étape vise à transformer le schéma passe bas en son équivalent passe bande. Il existe deux schémas possibles dit de type impédance et de type admittance où, respectivement, le premier élément est une inductance ou un condensateur. Le cahier des charges ne donne pas d'indications sur ce point. Nous choisirons le schéma qui a l'avantage de simplifier la transposition micro ruban.
 \begin{figure}[H]
 	\centering
@@ -954,14 +1084,14 @@ Le schéma du filtre passe bande en éléments localisés après transformation 
 		(5.5,0.5) -- (6.5,0.5)
 		(6,0.5) -- (6,0);
 	\end{circuitikz}
-	\caption{Schéma filtre passe-bande ordre 3 en impédance}
+	\caption{Schéma filtre passe-bande ordre 3 type impédance en éléments localisés}
 	\label{fig:ordre3_BP_imp}
 \end{figure}
 A partir des expression précédente il est possible de calculer les valeurs normalisée de ces nouveaux composants. Nous pouvons pas le même occasion opérer la dénormalisation. Les grandeurs dénormalisées seront notées en majuscule. De nouveau on s'appuis sur le cours d'électrique moyenne fréquence \cite{cours_MF}. On y extrait les égalités suivantes :
 \begin{equation}
-C_k = \frac{c_k}{2\pi f_0.R},
+C_k = \frac{c_k}{2\pi f_0.R}
 \quad
-L_k = \frac{l_k.R}{2\pi .f_0},
+L_k = \frac{l_k.R}{2\pi .f_0}
 \quad
 k=\{1,2,3\}
 \end{equation}
@@ -998,8 +1128,8 @@ On prendra la résistance de charge valant $50\Omega$ et la fréquence centrale 
 Afin de valider les valeurs obtenue nous pouvons recourir à une simulation sur ADS. Le schémas tracé est illustré par la figure \ref{fig:ads_sch_BP_localise}.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\linewidth]{../4synthPBande/impedance/schema_passe_bande_localise}
-	\caption{Schéma passe bande ADS}
+	\includegraphics[width=0.8\linewidth]{../4synthPBande/impedance/schema_passe_bande_localise}
+	\caption{Schéma filtre passe-bande ordre 3 type impédance en éléments localisés sous ADS}
 	\label{fig:ads_sch_BP_localise}
 \end{figure}
 Il fait intervenir des composants de la bibliothèque "lumbed component". La simulation porte sur l'observation des paramètres S et plus particulièrement du coefficient de transition $S_{21}$. Le résultat obtenue est donné par la deux figure \ref{fig:ads_S21_BP_localise1}. Elles permettent respectivement de vérifier la coupure et l'ondulation en bande passante.
@@ -1011,42 +1141,117 @@ Il fait intervenir des composants de la bibliothèque "lumbed component". La sim
 	\label{fig:ads_S21_BP_localise1}
 \end{figure}
 La figure de gauche représente le paramètre S21 en db sur la bande spécifiée par le gabarit. On relève une atténuation de 15,58dB et 14,97dB au points m1 et m4. Seul le premier garantie respect strictement le cahier des charges. La figure de gauche représente elle aussi le coefficient de transition mais sur une bande plus étroite correspondant à la bande passante. La condition du gabarit spécifie une ondulation inférieur à 0,1dB. Elle est respecter partout sauf au point m5 où on relève 0,101dB. Les résultats de cette simulation présentent deux débordements aux fréquences particulières $f_c^-$ et $f_s^-$. Cela s'explique par une approximation réalisée lors du centrage du gabarit. En effet, seule la borne $f_c^+$ a été déplacée se qui entraîne une légère dysmétrie entre le gabarit initial et celui recentré. Aussi, nous avons pu remarqué que l'ordre du filtre décimal est très proche de la valeur entière retenue. Cela a pour effet de laisser peu de marge aux fréquences particulières. Ces deux éléments cumulés ont joué en notre défaveur et aboutie à une synthèse en limite de spécification. 
-Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_c^+$ et $f_c-$ lors du recentrage. Cette méthode est plus complexe mais aurait probablement permise de réaliser une synthèse répondant parfaitement au gabarit.\\
-Les résultats de simulation reste malgré tout concluant car ils présentent une erreur très faible. Nous conserverons donc les valeurs des composants pour la suite des calculs.\\
+Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_c^+$ et $f_c^-$ lors du recentrage. Cette méthode est plus complexe mais aurait probablement permise de réaliser une synthèse répondant parfaitement au gabarit.Les résultats de simulation reste malgré tout concluant car ils présentent une erreur très faible. Nous conserverons donc les valeurs des composants pour la suite des calculs.\\
 
 Les valeurs dénormalisées obtenues devrait permettre en théorie de constituer un filtre passe bande en éléments localisés. Cependant en pratique l'ordre de grandeur (0,1pF pour les condensateurs et 1nH pour les inductances) pose un problème de provisionnement. En effet, elles sont peu réaliste puisque comparables aux phénomènes parasites des boîtiers et conducteurs. Il est possible de résoudre ce problème en transformant cette synthèse localisé en synthèse distribuée.
 
-\subsection{title}
-Il existe plusieurs circuits basés sur les propriété des lignes pour réalisé un filtre passe bande. Nous détaillerons deux solutions basées uniquement sur des lignes $\lambda /2$ et $\lambda /4$. 
-
-\section{Conclusion}
-Il existe une méthode détaillée dans le \textit{cours de filtrage actif} de Vincent Gouret faisant varier à la fois $f_{so}$ et $f_{co}$. Elle permet d'optimiser la contrainte sur le sélectivité. 
-
-
-
-
-
-
-
-
-
-
-
-
-Une fois le coefficient de dénormalisation appliqué nous obtenons les valeurs suivantes.
-
-\begin{table}[H]
+\subsection{Transposition vers technologie micro-rubans}
+Il existe plusieurs circuits s'appuyant sur les propriété des lignes pour réalisé un filtre passe bande. Nous en détaillerons deux basées uniquement sur des lignes $\lambda /2$ et $\lambda /4$ dans cette partie. La première opère une transformation des résonateurs séries et parallèles en ligne $\lambda /2$ et stubs $\lambda /2$ CO quant la seconde s'appuis sur des inverseurs d'impédances, des lignes $\lambda /4$ et des stubs. L'objectif est de transposer le filtre conçus à partir d'élément localise vers une technologie distribuée. Commençons par le résonateur série dans le schéma est le suivant :
+\begin{figure}[H]
 	\centering
-	\begin{tabular}{|c|c|c|p{2cm}|p{2cm}|}
-		\hline
-		$L_1$ & $C_2$ & $L_3$ & $C_4$ & $L_5$\\
-		\hline
-		4.56 nH & 2.18 pF & 7.86 nH & 2.18 pF & 4.56 nH\\
-		\hline
-	\end{tabular}
-	\caption{Valeurs réelles des composants du filtre passe-bas.}
-	\label{tab:valeurs_composant_passe_bas}
-\end{table}
+	\ctikzset{bipoles/length=1.1cm}
+	\begin{circuitikz}[scale=0.8]
+		\draw (0,0)
+		to[L=$l$] (3,0)
+		to[C=$c$] (6,0);
+	\end{circuitikz}
+	\caption{Schéma résonateur LC série}
+	\label{fig:res_lc_serie}
+\end{figure}
+Comme le montre la figure \ref{fig:res_lc_serie} ce circuit est composé d'une self et d'un condensateur en série. L'expression de l'impédance équivalente est simplement la somme des impédances respectives dont la forme faisant apparaître la partie complexe est la suivante :
+\begin{equation}
+	\underline{Z_{equ}}(\omega) = j\Big(L\omega-\frac{1}{C\omega}\Big)
+\end{equation} 
+Un tel circuit est caractérisé par sa fréquence de résonance. C'est la fréquence particulaire pour laquelle sa partie imaginaire s'annule. On peut la noter ainsi : 
+\begin{equation}
+	Im(\underline{Z_{equ}}(\omega)) = 0 \text{ donc }\underline{Z_{equ}}(\omega_0)=0, \quad \omega_0 =\frac{1}{\sqrt{LC}}
+\end{equation}
+La  pulsation de résonance $\omega_0$ est obtenue lorsque la partie imaginaire est nulle, $\underline{Z_{equ}}$ étant purement imaginaire cela revient l'annuler. Après résolution il vient la valeur de $\omega_0$. Le résonateur série ne modifie pas les propriété du signal le traversant à cette pulsation puisque son impédance équivalente est nulle. Il s'agit maintenant de trouver la topologie micro-rubans ayant le même comportement. Le résultat est connu, le circuit équivalent est une ligne demie onde série. Faisons tout de même l'hypothèse de cela et essayons de le démonter.
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}[scale=0.75]
+		 \draw (0,0)
+		 to[mstline, mstlinelen=1, l=line$Z_c \beta$,*-] (4,0) to[R,l=$Z_0$] (4,-2)
+		 node[ground]{};
+	\end{circuitikz}
+	\caption{Schéma ligne demie onde chargée}
+\label{fig:ligne_demie_onde}
+\end{figure}
+Afin de monter que ce circuit à base d'une ligne demie onde est équivalente au schéma précédent figure \ref{fig:res_lc_serie} on exprime l'impédance $Z_{vue}$ ramenée en entrée de la ligne.
+\begin{equation}
+\underline{Z_{equ}} = Z_c\frac{Z_0+jZ_ctan(\beta L)}{Z_c+jZ_0tan(\beta L)}
+\end{equation}
+Avec $\beta L = \pi, tan(\beta L)=0$
+\begin{equation}
+Z_{vue} = Z_0
+\end{equation}
+L'impédance $Z_{vue}$ vue en entrée de la ligne est la même que celle en sortie. \emph{La ligne en question, à la fréquence garantissant $L=\lambda/2$, ne modifie pas les propriété du signal le traversant. Ce modèle peut donc être assimilé à un résonateur série}. De la même façon, il est possible d'établir un modèle équivalent au résonateur parallèle en technologie micro-rubans.
+\begin{figure}[H]
+	\centering
+	\begin{circuitikz}[scale=0.8]
+	\draw	(0.5,3) to[short,*-] (0.5,2.5)
+(0,2.5) -- (1,2.5)
+(0,2.5) to[L=$l$] (0,0.5)
+(1,2.5) to[C=$c$] (1,0.5)
+(0,0.5) -- (1,0.5)
+(0.5,0) to[short,*-] (0.5,0.5)
+(3,0.5) --(5,0.5)
+(4,0.5) to[short,*-] (4,1) 
+(4,1) node[mslstub, rotate=90]{$Z_c \beta$};
+\end{circuitikz}
+	\caption{Schéma ligne demie onde chargée}
+	\label{fig:res_parallele}
+\end{figure}
+La figure \ref{fig:res_parallele} représente un résonateur LC parallèle à gauche et  un stub demis onde CO à droite. Ils ramènent tous deux un circuit ouvert à la fréquence de résonance. En effet, l'admittance du premier s'exprime :
+\begin{equation}
+	\underline{Y_{equ}}(\omega)=j\Big(C\omega-\frac{1}{L\omega}\Big)
+\end{equation}  
+Avec la même méthode que pour le résonateur série en admittance cette fois, on obtient: 
+\begin{equation}
+Im(\underline{Y_{equ}}(\omega)) = 0 \text{ donc }\underline{Y_{equ}}(\omega_0)=0, \quad \omega_0 =\frac{1}{\sqrt{LC}}
+\end{equation}
+Le résonateur série ramène donc une admittance nulle, soit un circuit ouvert. Dans le cas du stub demie onde, la démonstration de l'impédance ramenée est la même que pour la ligne $\lambda /2$ série : $Z_{vue} = Z_0$. La terminaison du stub étant un circuit ouvert, l'impédance ramenée est infinie. Nous venons donc de monter qu'\emph{un résonateur LC parallèle peut être transposé en un stub demie onde ouvert}. \\
+
+La transposition des résonateurs séries et parallèles a été démontrée. Il est donc possible de proposer un modèle de filtre passe bande en technologie micro-rubans en se basant sur la structure en éléments localisés précédement proposée. En remplaçant les couple LC série par des lignes demie onde et le couple LC parallèle par un stubs demie onde ouvert de la figure \ref{fig:ordre3_BP_imp} on obtient le schéma figure \ref{fig:ordre3_BP_imp_dis}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{../4synthPBande/impedance/schema_passe_bande_microruban}
+	\caption{Schéma filtre passe-bande ordre 3 type impédance à base de lignes demie onde sous ADS}
+	\label{fig:ads_sch_BP_localise}
+\end{figure}
+Les lignes présentes sur ce schéma sont en pratique des lignes de cuivre dont il faut fixer deux paramètre, la longueur et la largeur. Dans notre cas ces paramètres permettent respectivement de fixer la fréquence centrale et la bande passante à travers $Z_c$. La longueur d'une ligne demie onde est naturellement $\lambda /2$. La fréquence centrale est obtenue par moyenne arithmétique comme le montre son expression ci-dessous. 
+\begin{equation}
+f_0 = \frac{f_s^-+f_s^+}{2}=\frac{1,750+2,250}{2}=2\text{GHz}
+\end{equation}
+La largeur fixe l'impédance caractéristique $Z_c$ de la ligne. Son expression, est donnée dans le cours \cite{cours_HF} et diffère dans le cas d'une ligne série et parallèle. Les expressions ci-dessous donnent à gauche, l'impédance d'une ligne demis onde série et à droite, l'admittance d'un stub demie onde : 
+\begin{equation}
+	\text{série : } Z_c = 4.f_0.L \quad \text{ parallèle : } Y_c=4.f_0.C
+\end{equation} 
+où $f_0$ la fréquence centrale vaut $2\text{GHz}$, L l'impédance dénormalisée L1 donnée dans le tableau \ref{tab:denorm_BP} est de 16,46nH et C le condensateur dénormalisé C2 également dans le tableau \ref{tab:denorm_BP} vaut 7,307pF. Les valeurs d'inductances L1 et L3 étant identiques, seul deux applications numériques sont nécessaires :
+\begin{equation}
+\text{série : } Z_c = 4*2.10^{9}*16,46.10^{-9}=131,3\Omega \quad 
+\end{equation}
+\begin{equation}
+\text{ parallèle : }
+ Y_c=4*2.10^{9}*7,307.10^{-12} = 58,46mS \text{ soit } Z_c=17,11\Omega
+\end{equation}
+L'impédance de la ligne série est de 131,3$\Omega$ et du stub 17,11$\Omega$. Après simulation ADS du paramètre $S_{21}$ suivant le schéma \ref{fig:ordre3_BP_imp_dis} on obtient le résultat ci-dessous :
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.59\linewidth]{../4synthPBande/impedance/S21_passe_bande_microruban}
+	\includegraphics[width=0.4\linewidth]{../4synthPBande/impedance/S21__bande_passante_passe_bande_microruban}
+	\caption{Simulation S21 passe bande micro-ruban}
+	\label{fig:ads_S21_BP_microruban}
+\end{figure}
+Les résultat de cette simulation présentés par la figure \ref{fig:ads_S21_BP_microruban} montrent une légère dissymétrie de la réponse fréquentielle. Ainsi le gabarit est respecté du coté hautes fréquences avec une atténuation de 19,552dB mais mais ne l'est pas sur la pente des basses fréquences avec 13,528dB. L'atténuation en limite de bande passante est supérieure aux 0,1dB du cahier des charges mais symétrique, elle est de 0,459dB. La figure de droite permet de valider la conformité en milieu de bande passante. \emph{Les résultats sont cohérents malgré qu'ils ne respectent pas parfaitement les spécifications}. Bien qu'absent du cahier des charges, il peut être intéressant d'observer la périodicité de la réponse car cela donne la plage de validité de la fonction passe bande. Dans notre cas en s'appuyant sur l'outils recherche de "Valley" sur ADS la bande est de 2GHz. Il faut comprendre qu'un bruit à $k.\lambda /2$ ne sera pas atténuée.
+ 
+\newpage
+\section{Conclusion}
+
+La conception d'un filtre passe bande a été présentée suivant différentes étapes. La première s'attache à vérifier et, si nécessaire recentrer le gabarit. Cela permet de procéder à l'étape suivante, la transformation du gabarit en passe bas. Il est alors aisément possible de déterminer l'ordre du filtre et calculer les valeurs normalisées des composants. Viens ensuite l'étape de dénormalisation visant à remplacer les composants réactifs en résonateur LC série ou parallèle. Le résultat de cette synthèse peut être simuler pour valider le bon fonctionnement. Dans notre cas, une légère dissymétrie lors du recentrage couplé à un ordre de filtre limite ont entraînés une légère sortie du gabarit. L'étape finale de transposition en technologie micro-ruban est spécifique aux contraintes hautes fréquences. Elle vise à transposer les résonateurs en ligne micro-ruban. Nous avons choisi de travailler uniquement avec des ligne demie onde et démonter qu'un résonateur LC série en ligne série et les résonateur LC parallèle stub demie onde ouvert. La simulation ADS du schéma micro-ruban montre quelques points de désaccord avec la gabarit initial. L'atténuation de la bande passante est supérieur de 0,3dB par rapport aux spécifications. Les ordres de grandeurs restent toutefois proche des exigences.  
+
+
+
 
 \cite{cours_MF} \cite{cours_HF} \cite{data_fr4} \cite{data_PTFE}
 \bibliography{bib_hf}{}

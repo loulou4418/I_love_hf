@@ -9,7 +9,7 @@ h = 1.58; % Epaisseur du cuivre en mm
 
 
 
-epsilon_r = 2.61; % Pour le teflon (calculé à partir du teflon large)
+epsilon_r = 2.209; % Pour le teflon (calculé à partir du teflon large)
 % epsilon_reff = 3; % pour l'epoxy
 
 
@@ -28,7 +28,7 @@ Z_L = (119.19 / sqrt(2*(epsilon_r + 1))) * c
 epsilon_reff = (epsilon_r + 1) / 2 + ((epsilon_r - 1) / 2) * ((1 + ((10 * h)/w)) ^ (-1/2))
 
 
-% ATTENTION Les calculs suivants sont valables pour w/h < 3.3
+% ATTENTION Les calculs suivants sont valables pour w/h > 3.3
 w = 10;
 % a = (1 + (10*h)/w)^(-1/2);
 % epsilon_r = (2*epsilon_reff + a - 1) / (1 + a);
