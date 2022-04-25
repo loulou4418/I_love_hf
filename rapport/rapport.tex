@@ -1326,7 +1326,7 @@ Avec $l=\lambda/4$, $\beta l = \pi/2$, $tan(\beta l) \rightarrow \infty$ et $Z_0
 \begin{equation}
 	Z_{vue}=\frac{Z_c^2}{Z_0}\rightarrow\infty
 \end{equation}
-L'impédance d'un stub CC présente bien comme un circuit ouvert à sa fréquence de résonance. Cette étape permet de fixer la fréquence centrale. La bande passante peut être déterminée en faisant correspondre les deux modèles à la fréquence de coupure. Il convient alors d'exprimer l'impédance caractéristique du stub en fonction des éléments réactifs du résonateur en se plaçant à $\omega_c$. Pour rappel le point de vue schématique est le suivant :
+L'impédance d'un stub quart d'onde CC, en se comportant tel un inverseur, est bien infinie à sa fréquence de résonance. Cette étape permet de fixer la fréquence centrale. La bande passante peut être déterminée en faisant correspondre les deux modèles à la fréquence de coupure. Il convient alors d'exprimer l'impédance caractéristique du stub en fonction des éléments réactifs du résonateur en se plaçant à $\omega_c$. Pour rappel le point de vue schématique est le suivant :
 \begin{figure}[H]
 	\centering
 	\begin{circuitikz}[scale=0.8]
@@ -1358,7 +1358,7 @@ L'expression de $Z_c $ en fonction des composants réactifs du résonateur est l
 \begin{equation}
 	Z_c=\Big|\Big(j\Big(C\omega-\cfrac{1}{L\omega}\Big)tan\Big(\frac{f_c\pi\sqrt{\varepsilon_r}}{2f_0}\Big)\Big)^{-1}\Big|
 \end{equation}
-L'application numérique avec $C=C_2=7,307pF$, $L=L_2=0,8804nH$, $\varepsilon_r=2,624$, $f_c=1,75$ et $f_0=2$ donne une valeur de XX$\Omega$ pour l'impédance caractéristique $Z_c$ du stub quart d'onde. 
+L'application numérique avec $C=C_2=7,307pF$, $L=L_2=0,8804nH$, $\varepsilon_r=2,624$, $f_c=1,75$ et $f_0=2$ donne \emph{une valeur de 12$\Omega$ pour l'impédance caractéristique $Z_c$ du stub quart d'onde.} 
 
 \newpage
 \section{Synthèse d'un amplificateur à bande étroite}
@@ -1658,7 +1658,7 @@ Pour obtenir le MAG de l’amplificateur en bande étroite, il faut adapter l’
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\linewidth]{../5SynthAmp/adaptation_e_s}
+	\includegraphics[width=0.6\linewidth]{../5SynthAmp/adaptation_e_s}
 	\caption{Adaptation du transistor}
 	\label{fig:adaptation_e_s}
 \end{figure}
@@ -1678,7 +1678,7 @@ Grâce à l’Abaque de Smith, on obtient les longueurs de stub en entrée suiva
 D’où $d_{1}$ et $l_{1}$ sont respectivement exprimés par la figure suivante:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\linewidth]{../5SynthAmp/simple_stub_e}
+	\includegraphics[width=0.55\linewidth]{../5SynthAmp/simple_stub_e}
 	\caption{Adaptation simple stub en entrée}
 	\label{fig:simple_stub_e}
 \end{figure}
@@ -1693,7 +1693,7 @@ De la même manière, on peut obtenir les longueurs de stub en sortie suivantes 
 En utilisant ces 4 paramètres sous ADS, le montage de l’amplificateur avec les lignes idéales est montrée dans la figure \ref{fig:ligne_ideal}:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\linewidth]{../5SynthAmp/ligne_ideal}
+	\includegraphics[width=0.7\linewidth]{../5SynthAmp/ligne_ideal}
 	\caption{Montage de l’amplificateur avec les lignes idéales}
 	\label{fig:ligne_ideal}
 \end{figure}
@@ -1761,7 +1761,7 @@ La maquette donnée comporte le transistor à caractériser, sa polarisation et 
 Le circuit est présenté ci-dessous:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1.0\linewidth]{../5SynthAmp/polarisation}
+	\includegraphics[width=0.75\linewidth]{../5SynthAmp/polarisation}
 	\caption{Montage de polarisation du transistor}
 	\label{fig:polarisation}
 \end{figure}
@@ -1769,7 +1769,7 @@ Le circuit est présenté ci-dessous:
 Après simulation, on peut obtenir les résultats suivants:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{../5SynthAmp/polarisation_Sparametres}
+	\includegraphics[width=\linewidth]{../5SynthAmp/polarisation_Sparametres}
 	\caption{Simulation du montage de polarisation du transistor}
 	\label{fig:polarisation_simu}
 \end{figure}
