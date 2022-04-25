@@ -1245,32 +1245,13 @@ L'impédance de la ligne série est de 131,3$\Omega$ et du stub 17,11$\Omega$. A
 \end{figure}
 Les résultat de cette simulation présentés par la figure \ref{fig:ads_S21_BP_microruban} montrent une légère dissymétrie de la réponse fréquentielle. Ainsi le gabarit est respecté du coté hautes fréquences avec une atténuation de 19,552dB mais mais ne l'est pas sur la pente des basses fréquences avec 13,528dB. L'atténuation en limite de bande passante est supérieure aux 0,1dB du cahier des charges mais symétrique, elle est de 0,459dB. La figure de droite permet de valider la conformité en milieu de bande passante. \emph{Les résultats sont cohérents malgré qu'ils ne respectent pas parfaitement les spécifications}. Bien qu'absent du cahier des charges, il peut être intéressant d'observer la périodicité de la réponse car cela donne la plage de validité de la fonction passe bande. Dans notre cas en s'appuyant sur l'outils recherche de "Valley" sur ADS la bande est de 2GHz. Il faut comprendre qu'un bruit à $k.\lambda /2$ ne sera pas atténuée.
  
-\newpage
-\section{Conclusion}
 
-La conception d'un filtre passe bande a été présentée suivant différentes étapes. La première s'attache à vérifier et, si nécessaire recentrer le gabarit. Cela permet de procéder à l'étape suivante, la transformation du gabarit en passe bas. Il est alors aisément possible de déterminer l'ordre du filtre et calculer les valeurs normalisées des composants. Viens ensuite l'étape de dénormalisation visant à remplacer les composants réactifs en résonateur LC série ou parallèle. Le résultat de cette synthèse peut être simuler pour valider le bon fonctionnement. Dans notre cas, une légère dissymétrie lors du recentrage couplé à un ordre de filtre limite ont entraînés une légère sortie du gabarit. L'étape finale de transposition en technologie micro-ruban est spécifique aux contraintes hautes fréquences. Elle vise à transposer les résonateurs en ligne micro-ruban. Nous avons choisi de travailler uniquement avec des ligne demie onde et démonter qu'un résonateur LC série en ligne série et les résonateur LC parallèle stub demie onde ouvert. La simulation ADS du schéma micro-ruban montre quelques points de désaccord avec la gabarit initial. L'atténuation de la bande passante est supérieur de 0,3dB par rapport aux spécifications. Les ordres de grandeurs restent toutefois proche des exigences.  
-
-
-Une fois le coefficient de dénormalisation appliqué nous obtenons les valeurs suivantes.
-
-\begin{table}[H]
-	\centering
-	\begin{tabular}{|c|c|c|p{2cm}|p{2cm}|}
-		\hline
-		$L_1$ & $C_2$ & $L_3$ & $C_4$ & $L_5$\\
-		\hline
-		4.56 nH & 2.18 pF & 7.86 nH & 2.18 pF & 4.56 nH\\
-		\hline
-	\end{tabular}
-	\caption{Valeurs réelles des composants du filtre passe-bas.}
-	\label{tab:valeurs_composant_passe_bas}
-\end{table}
 
 \newpage
-\section{Synthèse d'amplificateur à bande étroite}
+\section{Synthèse d'un amplificateur à bande étroite}
 L’objectif de cette partie est de réaliser un amplificateur à bande étroite adapté en MAG (Maximum Available Gain) à 2GHz prenant la méthodologie de conception (vue en TD). Le transistor utilisé est le transistor AT-41485. En entrée, il reçoit le maximum de puissance par le générateur, et a la sortie, il envoie le maximum de puissance à la charge de 50 Ohm.
 
-\subsection{Démarche de conception d’amplificateur}
+\subsection{Démarche de conception d’un amplificateur}
 
 
 \subsubsection{Théorie de la matrice S}
@@ -1496,8 +1477,8 @@ Pour connaître le gain maximum de l’amplificateur, on suppose que le quadrip�
 Etant donné que les paramètres $S_{11}$, $S_{21}$, $S_{12}$, et $S_{22}$ sont connus, seuls ${S_{11}}'$ et ${S_{22}}'$ sont inconnus, ce qui nous donne deux équations :
 \begin{equation}
 	\left\{\begin{matrix}
-		{S_{11}}'=\frac{B_{1}+\sqrt{B_{1}^{2}-4\mid C_{1}\mid^{2}}}{2{C_{1}}^\ast}\\
-		{S_{22}}'=\frac{B_{2}+\sqrt{B_{2}^{2}-4\mid C_{2}\mid^{2}}}{2{C_{2}}^\ast}
+		{S_{11}}'=\cfrac{B_{1}+\sqrt{B_{1}^{2}-4\mid C_{1}\mid^{2}}}{2{C_{1}}^\ast}\\
+		{S_{22}}'=\cfrac{B_{2}+\sqrt{B_{2}^{2}-4\mid C_{2}\mid^{2}}}{2{C_{2}}^\ast}
 	\end{matrix}\right.
 \end{equation}
 
@@ -1564,7 +1545,7 @@ Pour obtenir le MAG de l’amplificateur en bande étroite, il faut adapter l’
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\linewidth]{../5SynthAmp/adaptation_e_s}
+	\includegraphics[width=0.8\linewidth]{../5SynthAmp/adaptation_e_s}
 	\caption{Adaptation du transistor}
 	\label{fig:adaptation_e_s}
 \end{figure}
@@ -1607,7 +1588,7 @@ En utilisant ces 4 paramètres sous ADS, le montage de l’amplificateur avec le
 Le montage qu’on a utilisé représente le résultat de la simulation ci-dessous (Dans cette simulation, S12 peut être approximativement égal à 0) :
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1.2\linewidth]{../5SynthAmp/ligne_ideal_Sparametres}
+	\includegraphics[width=1\linewidth]{../5SynthAmp/ligne_ideal_Sparametres}
 	\caption{Simulation du montage avec ligne idéal}
 	\label{fig:ligne_ideal_Sparametres}
 \end{figure}
@@ -1652,7 +1633,7 @@ On a appliqué ces valeurs à l'amplificateur, le schéma est présenté ci-dess
 Le montage qu’on a utilisé représente le résultat de la simulation ci-dessous:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1.2\linewidth]{../5SynthAmp/ligne_micro_ruban_Sparametres}
+	\includegraphics[width=1\linewidth]{../5SynthAmp/ligne_micro_ruban_Sparametres}
 	\caption{Simulation du montage avec ligne micro-ruban}
 	\label{fig:ligne_micro_ruban_Sparametres}
 \end{figure}
@@ -1675,7 +1656,7 @@ Le circuit est présenté ci-dessous:
 Après simulation, on peut obtenir les résultats suivants:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1.2\linewidth]{../5SynthAmp/polarisation_Sparametres}
+	\includegraphics[width=1\linewidth]{../5SynthAmp/polarisation_Sparametres}
 	\caption{Simulation du montage de polarisation du transistor}
 	\label{fig:polarisation_simu}
 \end{figure}
@@ -1683,6 +1664,10 @@ Après simulation, on peut obtenir les résultats suivants:
 Lorsque la fréquence de simulation est de 2 GHz, les résultats montrent que $S_{21}$ est de 18.437 à ce point, c'est-à-dire que le MAG à ce moment est de 18.437 dB. Ce résultat est conforme à l'exigence du cahier des charges. Cela montre également que le transistor est bien polarisé.
 
 
+\newpage
+\section{Conclusion}
+
+La conception d'un filtre passe bande a été présentée suivant différentes étapes. La première s'attache à vérifier et, si nécessaire recentrer le gabarit. Cela permet de procéder à l'étape suivante, la transformation du gabarit en passe bas. Il est alors aisément possible de déterminer l'ordre du filtre et calculer les valeurs normalisées des composants. Viens ensuite l'étape de dénormalisation visant à remplacer les composants réactifs en résonateur LC série ou parallèle. Le résultat de cette synthèse peut être simuler pour valider le bon fonctionnement. Dans notre cas, une légère dissymétrie lors du recentrage couplé à un ordre de filtre limite ont entraînés une légère sortie du gabarit. L'étape finale de transposition en technologie micro-ruban est spécifique aux contraintes hautes fréquences. Elle vise à transposer les résonateurs en ligne micro-ruban. Nous avons choisi de travailler uniquement avec des ligne demie onde et démonter qu'un résonateur LC série en ligne série et les résonateur LC parallèle stub demie onde ouvert. La simulation ADS du schéma micro-ruban montre quelques points de désaccord avec la gabarit initial. L'atténuation de la bande passante est supérieur de 0,3dB par rapport aux spécifications. Les ordres de grandeurs restent toutefois proche des exigences.  
 
 
 
