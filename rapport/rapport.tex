@@ -1305,7 +1305,7 @@ Il fait intervenir des composants de la bibliothèque "lumbed component". La sim
 	\centering
 	\includegraphics[width=0.49\linewidth]{../4synthPBande/impedance/S21__passe_bande_localise}
 	\includegraphics[width=0.49\linewidth]{../4synthPBande/impedance/S21__bande_passante_passe_bande_localise}
-	\caption{Simulation S21 passe bande localisé}
+	\caption{Simulation du module de S21 pour passe bande localisé en dB}
 	\label{fig:ads_S21_BP_localise1}
 \end{figure}
 La figure de gauche représente le paramètre S21 en db sur la bande spécifiée par le gabarit. On relève une atténuation de 15,58dB et 14,97dB aux points m1 et m4. Seul le premier respecte strictement le cahier des charges. La figure de gauche représente elle aussi le coefficient de transition mais sur une bande plus étroite correspondant à la bande passante. La condition du gabarit spécifie une ondulation inférieure à 0,1dB. Elle est respectée partout sauf aux points m5 où on relève 0,101dB. Les résultats de cette simulation présentent deux débordements aux fréquences particulières $f_c^-$ et $f_s^-$. Cela s'explique par une approximation réalisée lors du centrage du gabarit. En effet, seule la borne $f_c^+$ a été déplacée ce qui entraîne une légère dissymétrie entre le gabarit initial et celui recentré. Aussi, nous avons pu remarquer que l'ordre du filtre décimal est très proche de la valeur entière retenue. Cela a pour effet de laisser peu de marge aux fréquences particulières. Ces deux éléments cumulés ont joué en notre défaveur et aboutie à une synthèse en limite de spécification. 
@@ -1367,7 +1367,7 @@ L'impédance $Z_{vue}$ vue en entrée de la ligne est la même que celle en sort
 (4,0.5) to[short,*-] (4,1) 
 (4,1) node[mslstub, rotate=90]{$Z_c \beta$};
 \end{circuitikz}
-	\caption{Correspondance entre un résonateur parallèle et un stub demie-onde ouvert}
+	\caption{Schéma de correspondance entre un résonateur parallèle LC et un stub demie-onde ouvert}
 	\label{fig:res_parallele}
 \end{figure}
 La figure \ref{fig:res_parallele} représente un résonateur LC parallèle à gauche et  un stub demis-onde CO à droite. Ils ramènent tous deux un circuit ouvert à la fréquence de résonance. En effet, l'admittance du premier s'exprime :
@@ -1378,9 +1378,9 @@ Avec la même méthode que pour le résonateur série en admittance cette fois, 
 \begin{equation}
 Im(\underline{Y_{equ}}(\omega)) = 0 \text{ donc }\underline{Y_{equ}}(\omega_0)=0, \quad \omega_0 =\frac{1}{\sqrt{LC}}
 \end{equation}
-Le résonateur série ramène donc une admittance nulle, soit un circuit ouvert. Dans le cas du stub demie-onde, la démonstration de l'impédance ramenée est la même que pour la ligne $\lambda /2$ série : $Z_{vue} = Z_0$. La terminaison du stub étant un circuit ouvert, l'impédance ramenée est infinie. Nous venons donc de monter qu'\emph{un résonateur LC parallèle peut être transposé en un stub demie-onde ouvert}. \\
+Le résonateur série ramène donc une admittance nulle, soit un circuit ouvert. Dans le cas du stub demie-onde, la démonstration de l'impédance ramenée est la même que pour la ligne $\lambda /2$ série : $Z_{vue} = Z_0$. La terminaison du stub étant un circuit ouvert, l'impédance ramenée est infinie. Nous venons donc de monter qu'\emph{un résonateur LC parallèle peut être transposé en stub demie-onde ouvert}. \\
 
-La transposition des résonateurs séries et parallèles a été démontrée. Il est donc possible de proposer un modèle de filtre passe-bande en technologie micro-ruban en se basant sur la structure en éléments localisés précédemment proposée. En remplaçant les couple LC série par des lignes demie-onde et le couple LC parallèle par un stubs demie-onde ouvert de la figure \ref{fig:ordre3_BP_imp} on obtient le schéma figure \ref{fig:ordre3_BP_imp_dis}.
+La transposition des résonateurs séries et parallèles a été démontrée. Il est donc possible de proposer un modèle de filtre passe-bande en technologie micro-ruban en se basant sur la structure en éléments localisés précédemment proposée. En remplaçant les couple LC série par des lignes demie-onde et le couple LC parallèle par un stubs demie-onde ouvert de la figure \ref{fig:ordre3_BP_imp} on obtient le schéma figure \ref{fig:ads_sch_BP_localise}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{../4synthPBande/impedance/schema_passe_bande_microruban}
@@ -1408,7 +1408,7 @@ L'impédance de la ligne série est de 131,3$\Omega$ et du stub 17,11$\Omega$. A
 	\centering
 	\includegraphics[width=0.59\linewidth]{../4synthPBande/impedance/S21_passe_bande_microruban}
 	\includegraphics[width=0.4\linewidth]{../4synthPBande/impedance/S21__bande_passante_passe_bande_microruban}
-	\caption{Simulation S21 passe bande micro-ruban}
+	\caption{Simulation module de S21 passe bande micro-ruban en dB}
 	\label{fig:ads_S21_BP_microruban}
 \end{figure}
 Les résultats de cette simulation présenté par la figure \ref{fig:ads_S21_BP_microruban} montrent une légère dissymétrie de la réponse fréquentielle. Ainsi le gabarit est respecté du coté hautes-fréquences avec une atténuation de 19,552dB mais ne l'est pas sur la pente des basses fréquences avec 13,528dB. L'atténuation en limite de bande passante est supérieure aux 0,1dB du cahier des charges mais symétrique, elle est de 0,459dB. La figure de droite permet de valider la conformité en milieu de bande passante. \emph{Les résultats sont cohérents malgré qu'ils ne respectent pas parfaitement les spécifications}. Bien qu'absent du cahier des charges, il peut être intéressant d'observer la périodicité de la réponse car cela donne la plage de validité de la fonction passe-bande. Dans notre cas en s'appuyant sur l'outils recherche de "Valley" sur ADS la bande est de 2GHz. Il faut comprendre qu'un bruit à $k.\lambda /2$ ne sera pas atténuée.
@@ -1452,7 +1452,9 @@ L'expression de $Z_c $ en fonction des composants réactifs du résonateur est l
 	Z_c=\Big|\Big(j\Big(C\omega-\cfrac{1}{L\omega}\Big)tan\Big(\frac{f_c\pi\sqrt{\varepsilon_r}}{2f_0}\Big)\Big)^{-1}\Big|
 \end{equation}
 L'application numérique avec $C=C_2=7,307pF$, $L=L_2=0,8804nH$, $\varepsilon_r=2,624$, $f_c=1,75$ et $f_0=2$ donne \emph{une valeur de 12$\Omega$ pour l'impédance caractéristique $Z_c$ du stub quart d'onde.} 
-Un raisonnement semblable peut être appliqué pour déterminer le modèle équivalant d'un résonateur série. Ainsi, il est possible d'y assimiler le schéma équivalent suivant : 
+Un raisonnement semblable peut être appliqué pour déterminer le modèle équivalant d'un résonateur série.
+
+ Ainsi, il est possible d'y assimiler le schéma équivalent suivant : 
 
 \begin{figure}[H]
 	\centering
@@ -1468,7 +1470,7 @@ Un raisonnement semblable peut être appliqué pour déterminer le modèle équi
 		(2,-2) to [short] (4,-2)
 		(3,-2) node[ground]{};
 	\end{circuitikz}
-\caption{Ligne quart d'onde et résonateur parallèle}
+\caption{Schéma ligne quart d'onde et résonateur parallèle}
 \end{figure}
 
 On déduit de cette figure l'expression de l'impédance vue en entrée de la ligne :
@@ -1491,15 +1493,15 @@ La transformation ne s'arrête pas là puisque nous sommes de nouveau en présen
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{../4synthPBande/inverseur_impedance/montage_inverseur_ADS}
-	\caption{Simulation passe bande micro-ruban lignes quart d'onde}
+	\caption{Schéma passe bande micro-ruban lignes quart d'onde}
 	\label{fig:montageinverseurads}
 \end{figure}
-
-Après simulation en paramètres S et affichage du coefficient de transmission on obtient la figure suivante :
+\newpage
+Après simulation en paramètres S et affichage du coefficient de transmission on obtient la figure suivante:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{../4synthPBande/inverseur_impedance/resultat_simulation}
-	\caption{Simulation S21 passe bande micro-ruban lignes quart d'onde}
+	\caption{Simulation module de S21 passe bande micro-ruban lignes quart d'onde}
 	\label{fig:resultatsimulation}
 \end{figure}
 
@@ -1572,7 +1574,7 @@ Donc la datasheet choisie est la suivante:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\linewidth]{../5SynthAmp/Datasheet_AT41485}
-	\caption{Datasheet de AT-41485}
+	\caption{Paramètres S du transistor AT-41485 issue de la datasheet}
 	\label{fig:datasheet_AT}
 \end{figure}
 
@@ -1589,7 +1591,7 @@ Pour réaliser cet amplificateur, il faut mettre en cascade. Donc on insère le 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.9\linewidth]{../5SynthAmp/Schema_ampli}
-	\caption{Schéma du montage amplificateur}
+	\caption{Schéma quadripôle du montage amplificateur}
 	\label{fig:schema_ampli}
 \end{figure}
 
@@ -1803,7 +1805,7 @@ Pour obtenir le MAG de l’amplificateur en bande étroite, il faut adapter l’
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{../5SynthAmp/adaptation_e_s}
-	\caption{Adaptation du transistor}
+	\caption{Schéma d'adaptation du  transistor}
 	\label{fig:adaptation_e_s}
 \end{figure}
 
@@ -1823,7 +1825,7 @@ D’où $d_{1}$ et $l_{1}$ sont respectivement exprimés par la figure suivante:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.55\linewidth]{../5SynthAmp/simple_stub_e}
-	\caption{Adaptation simple stub en entrée}
+	\caption{Schéma adaptation simple stub en entrée du transistor}
 	\label{fig:simple_stub_e}
 \end{figure}
 
@@ -1838,7 +1840,7 @@ En utilisant ces 4 paramètres sous ADS, le montage de l’amplificateur avec le
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{../5SynthAmp/ligne_ideal}
-	\caption{Montage de l’amplificateur avec les lignes idéales}
+	\caption{Schéma de l’amplificateur avec les lignes idéales}
 	\label{fig:ligne_ideal}
 \end{figure}
 
@@ -1846,7 +1848,7 @@ Le montage qu’on a utilisé représente le résultat de la simulation ci-desso
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{../5SynthAmp/ligne_ideal_Sparametres}
-	\caption{Simulation du montage avec ligne idéal}
+	\caption{Simulation module de S montage avec ligne idéal en dB}
 	\label{fig:ligne_ideal_Sparametres}
 \end{figure}
 
@@ -1883,15 +1885,15 @@ On a appliqué ces valeurs à l'amplificateur, le schéma est présenté ci-dess
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1.0\linewidth]{../5SynthAmp/ligne_micro_ruban}
-	\caption{Montage de l’amplificateur avec les lignes micro-ruban}
+	\caption{Schéma de l’amplificateur avec les lignes micro-ruban}
 	\label{fig:ligne_micro_ruban}
 \end{figure}
-
+\newpage
 Le montage qu’on a utilisé représente le résultat de la simulation ci-dessous:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{../5SynthAmp/ligne_micro_ruban_Sparametres}
-	\caption{Simulation du montage avec ligne micro-ruban}
+	\caption{Simulation module de S du montage avec ligne micro-ruban en dB}
 	\label{fig:ligne_micro_ruban_Sparametres}
 \end{figure}
 
@@ -1900,21 +1902,22 @@ Lorsque la fréquence de simulation est de 2 GHz, les résultats montrent que $S
 \subsection{Adaptation d’un transistor avec polarisation}
 Dans les sections précédentes, nous avons utilisé un modèle de transistor AT-41485 polarisé, qui satisfait déjà ces deux conditions :$V_{CE}=8 V$ et $I_{C}=10 mA$. Maintenant, on s’intéresse à la polarisation du transistor. La valeur de résistance de la résistance doit être calculée pour que le circuit réponde aux conditions de conception du transistor. Le circuit de polarisation à concevoir doit avoir une faible impédance pour les basses fréquences et une haute impédance pour les hautes fréquences. De plus, des condensateurs doivent être ajoutés entre le transistor et la source et la charge, respectivement, pour empêcher le courant continu d'entrer dans le reste du circuit.
 
-La maquette donnée comporte le transistor à caractériser, sa polarisation et des lignes d'accès à la base et au collecteur d'une longueur électrique supérieure à $\frac{\lambda}{2}$ à 2 GHz. De plus, on dispose d'une ligne 50Ohm de traversée(THRU) et d’une ligne terminée par un court-circuit dans le plan d'entrée du transistor(REFLECT) qui permettent d'étalonner le relevé des paramètre S. La polarisation est découplée du signal par une ligne $\frac{\lambda}{4}$ a haute impédance et une capacité de retour à la masse sur les accès base et collecteur. 
+La maquette donnée comporte le transistor à caractériser, sa polarisation et des lignes d'accès à la base et au collecteur d'une longueur électrique supérieure à $\lambda\2$ à 2 GHz. De plus, on dispose d'une ligne 50Ohm de traversée(THRU) et d’une ligne terminée par un court-circuit dans le plan d'entrée du transistor(REFLECT) qui permettent d'étalonner le relevé des paramètre S. La polarisation est découplée du signal par une ligne $\lambda\4$ a haute impédance et une capacité de retour à la masse sur les accès base et collecteur. 
+\newpage
 
 Le circuit est présenté ci-dessous:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.75\linewidth]{../5SynthAmp/polarisation}
-	\caption{Montage de polarisation du transistor}
+	\caption{Schéma de polarisation du transistor}
 	\label{fig:polarisation}
 \end{figure}
 
 Après simulation, on peut obtenir les résultats suivants:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{../5SynthAmp/polarisation_Sparametres}
-	\caption{Simulation du montage de polarisation du transistor}
+	\includegraphics[width=0.8\linewidth]{../5SynthAmp/polarisation_Sparametres}
+	\caption{Simulation module de S du montage de polarisation du transistor en dB}
 	\label{fig:polarisation_simu}
 \end{figure}
 
@@ -1926,7 +1929,7 @@ Lorsque la fréquence de simulation est de 2 GHz, les résultats montrent que $S
 
 Au cours de ce rapport il a été vu dans un premier temps une méthodologie de caractérisation d'une ligne micro-ruban sur divers diélectriques. La méthode consistait à la superposition entre les valeurs réelles expérimentales et celles obtenues à partir d'une modélisation. La réalisation d'une bonne caractérisation réside dans la complexité du modèle théorique, qui se doit être la plus réaliste possible. C'est ce qui a été mis en place à l'aide de la prise en compte de phénomènes physiques comme les discontinuités. Il est indispensable de réaliser cette étape de caractérisation avant toutes réalisations de fonctions électroniques car il faut avoir connaissance des paramètres du diélectrique pour que les simulations effectuées soient proches de ce qu'on obtiendrait lors de la réalisation en laboratoire.\\
 
-Le filtre passe-bas elliptique a été conçu en essayant de respecter au mieux les exigences du cahier des charges. Une telle conception a également permis d'étudier un tout nouveau type de filtre qu'est le filtre elliptique, autrement appelé filtre de Cauer. La conception en éléments localisés a été réalisé avec les mêmes méthodes employées lors de la conception en moyennes fréquences. La seconde partie consistait à la transposition en technologie micro-ruban. Un tel passage s'est réalisé en s'appuyant sur un modèle physique basé sur des hypothèses. La réalisation a demandé de fixer des paramètres géométriques qui ont été choisis en fonction des contraintes que les concepteurs avaient (contraintes technologiques photolithographies). Les simulations ont montré que les hypothèses ne sont pas toujours respectées. Il s'agit là d'une leçon utile pour notre future carrières d'ingénieur. En effet un projet offrira diverses conceptions qu'il faudra réaliser, et cela en faisant parfois des hypothèses (pour simplifier le problème par exemple). Il est alors important en tant que futur ingénieur de garder en tête des hypothèses qui ont été émises et de connaître le cadre de validité de notre conception.\\
+Le filtre passe-bas elliptique a été conçu en essayant de respecter au mieux les exigences du cahier des charges. Une telle conception a également permis d'étudier un tout nouveau type de filtre qu'est le filtre elliptique, autrement appelé filtre de Cauer. La conception en éléments localisés a été réalisée avec les mêmes méthodes employées lors de la conception en moyennes fréquences. La seconde partie consistait à la transposition en technologie micro-ruban. Un tel passage s'appui sur un modèle physique basé sur des hypothèses. La réalisation impose de fixer des paramètres géométriques choisis en fonction des contraintes concepteurs (contraintes technologiques photolithographies). Les simulations ont montré que les hypothèses ne sont pas toujours respectées. Il s'agit là d'une leçon utile pour notre future carrière d'ingénieur. En effet, les projets imposent parfois de faire des hypothèses, l'enjeu est de savoir si elles sont bien applicables dans le contexte donné.\\
 
 La conception d'un filtre passe bande a été présentée suivant différentes étapes. La première s'attache à vérifier et, si nécessaire, recentrer le gabarit. Cela permet de procéder à l'étape suivante, la transformation du gabarit en passe bas. Il est alors aisément possible de déterminer l'ordre du filtre et calculer les valeurs normalisées des composants. Viens ensuite l'étape de dénormalisation visant à remplacer chaque composant réactif en résonateur LC série ou parallèle. Le résultat de cette synthèse peut être simulé pour valider le bon fonctionnement. Dans notre cas, une dissymétrie lors du recentrage couplée à un ordre de filtre limite ont entraînés une légère sortie du gabarit. L'étape finale de transposition en technologie micro-ruban est spécifique aux contraintes hautes fréquences. Elle vise à transposer les résonateurs LC en ligne micro-ruban. Deux approches ont été présentées : la première basée uniquement sur des lignes demie onde et la seconde sur des lignes quart d'onde. Dans les deux cas la méthode est similaire, trouver un modèle équivalant aux résonateurs série et parallèle pour opérer la transposition technologique. Finalement, nous avons pu monter par simulation que la bande de validité de la fonction passe bande est deux fois plus large pour la synthèse à base de lignes quart d'onde que pour celle basée sur des lignes demie onde. 
 
