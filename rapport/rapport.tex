@@ -417,7 +417,7 @@ Pour vérifier et valider les valeurs de composants du filtre, le logiciel ADS e
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=9cm]{photo/passe_bas_vic/schema_localise_passe_bas_ads.png}
-	\caption{Filtre passe-bas avec des éléments idéaux.}
+	\caption{Schéma d'un filtre passe-bas avec des éléments localisés}
 	\label{fig:schema_localise_passe_bas_ads}
 \end{figure}
 
@@ -435,7 +435,7 @@ On note la présence de deux blocs S-PARAMETERS. Le premier permet une simulatio
 		\caption{Avec zoom sur la bande passante}
 		\label{fig:simu_zoom_passe_bas_localise}
 	\end{subfigure}
-	\caption{Simulation du module du coefficient de transmission S21 en dB avec des éléments localisés}
+	\caption{Simulation du module de S21 en dB d'un filtre de tchebychef avec des éléments localisés}
 	\label{fig:simu_passe_bas_localise_global}
 \end{figure}
 
@@ -471,7 +471,7 @@ Dans cette partie on cherche à remplacer les inductances séries du filtre par 
 			to [generic=$Z_0$] (2,0) node[ground]{};
 		\end{circuitikz}
 	\end{subfigure}
-	\caption{Schéma d'une ligne de transmission apparentée à une inductance.}
+	\caption{Schéma d'une ligne de transmission apparentée à une inductance}
 	\label{fig:probleme_ligne_inductive}
 \end{figure}
 
@@ -549,7 +549,7 @@ Dans cette partie on cherche à remplacer les condensateurs parallèles du filtr
 			(4,2)to [generic=$Z_0$] (4,0) node[ground]{};
 		\end{circuitikz}
 	\end{subfigure}
-	\caption{Schéma d'une ligne de transmission apparenter à un condensateur.}
+	\caption{Schéma d'une ligne de transmission apparentée à un condensateur}
 	\label{fig:probleme_ligne_capacitive}
 \end{figure}
 
@@ -752,7 +752,7 @@ Pour vérifier nos valeurs obtenues on passe sur le logiciel de simulation ADS. 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=15cm]{photo/passe_bas_vic/schema_distribue_passe_bas_ads.png}
-	\caption{Filtre passe-bas en technologie micro ruban.}
+	\caption{Schéma d'un filtre passe-bas de tchebychef en technologie micro ruban}
 	\label{fig:schema_distribue_passe_bas_ads}
 \end{figure}
 
@@ -770,7 +770,7 @@ Pour valider le comportement du filtre on affiche le coefficient de transmission
 		\caption{Avec zoom sur la bande passante}
 		\label{fig:simu_zoom_passe_bas_distribue}
 	\end{subfigure}
-	\caption{Simulation du module du coefficient de transmission S21 en dB avec la technologie micro ruban}
+	\caption{Simulation du module de S21 en dB d'un filtre de tchebychef en technologie micro ruban}
 	\label{fig:simu_passe_bas_distribue}
 \end{figure}
 
@@ -803,7 +803,7 @@ Une autre chose intéressante a noter est au niveau des paramètres du substrat.
 		\caption{Avec zoom sur la bande passante}
 		\label{fig:simu_zoom_passe_bas_distribue_substrat_avec_perte}
 	\end{subfigure}
-	\caption{Simulation du module du coefficient de transmission S21 en dB avec la technologie micro ruban avec des pertes liées au substrat}
+	\caption{Simulation du module de S21 en dB d'un filtre de tchebychef en technologie micro ruban avec des pertes liées au substrat}
 	\label{fig:simu_passe_bas_distribue_substrat_avec_perte}
 \end{figure}
 
@@ -819,7 +819,7 @@ Pour ne pas amener un court-circuit directement dans les basses fréquences nous
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=15cm]{photo/passe_bas_vic/schema_distribue_ameliore_passe_bas_ads.png}
-	\caption{Filtre passe-bas amélioré en technologie micro ruban.}
+	\caption{Schéma d'un filtre passe-bas de tchebychev amélioré en technologie micro ruban.}
 	\label{fig:schema_distribue_ameliore_passe_bas_ads}
 \end{figure}
 
@@ -837,7 +837,7 @@ On note que la longueur du stub est liée au paramètre E, la longueur électriq
 		\caption{Avec zoom sur la bande passante}
 		\label{fig:simu_zoom_passe_bas_distribue_ameliore}
 	\end{subfigure}
-	\caption{Simulation du module du coefficient de transmission S43 en dB}
+	\caption{Simulation du module de S21 en dB du filtre de Tchebychev amélioré avec un stub}
 	\label{fig:simu_passe_bas_distribue_ameliore}
 \end{figure}
 
@@ -848,7 +848,7 @@ Comme prévu, on note la présence d'un 0 de transmission sur la fréquence 7 GH
 
 \subsection{Comparaison de différents substrats}
 
-Dans cette partie on cherche à comparer la réponse d'un filtre de Tchebychev en technologie micro ruban sur un substrat epoxy et un substrat teflon. Le gabarit du filtre sera le même que pour les parties précédentes.\\
+Dans cette partie on cherche à comparer la réponse d'un filtre de Tchebychev en technologie micro ruban sur un substrat epoxy et un substrat teflon. Le gabarit du filtre sera le même que pour les parties précédentes. Le schéma du filtre considéré est celui de la figure \ref{fig:schema_distribue_passe_bas_ads}. En effet, on décide de ne pas comparer les substrats avec un stub car les filtres réels mis à notre disposition n'en possèdent pas.\\
 
 Pour le substrat en teflon, le filtre et les valeurs ses paramètres sont identiques à ceux de la figure \ref{fig:schema_distribue_passe_bas_ads}.\\
 
@@ -882,7 +882,7 @@ Ces valeurs de lignes et connaissant les paramètres du substrat nous avons simu
 		\caption{Avec zoom sur la bande passante}
 		\label{fig:simu_zoom_comparaison_substrat}
 	\end{subfigure}
-	\caption{Simulation du module du coefficient de transmission S43 en dB pour la technologie micro ruban sur substrat epoxy en rouge et sur substrat teflon en bleu}
+	\caption{Simulation du module de S21 en dB pour des filtres de tchebychev en technologie micro ruban sur substrat epoxy en rouge et sur substrat teflon en bleu}
 	\label{fig:simu_comparaison_substrat}
 \end{figure}
 
@@ -915,7 +915,7 @@ Nous avons répliqué ce schéma une deuxième fois pour le substrat en epoxy pu
 		\caption{Avec zoom sur la bande passante}
 		\label{fig:simu_zoom_passe_bas_reel_tche}
 	\end{subfigure}
-	\caption{Module du coefficient de transmission S43 en dB pour la technologie micro ruban sur substrat epoxy en rouge et sur substrat teflon en bleu}
+	\caption{Module de S21 en dB pour un filtre de tchebychev en technologie micro ruban sur substrat epoxy en rouge et sur substrat teflon en bleu}
 		\label{fig:simu_passe_bas_reel_tche}
 \end{figure}
 
@@ -1932,6 +1932,15 @@ La conception d'un filtre passe bande a été présentée suivant différentes �
 La dernière partie présente la conception d'une fonction d'électronique : l'amplification. Il s'agissait de travailler avec un transistor AT-41485 faible bruit pour amplifier le signal à 2 GHz. De la même manière qu'en électronique des basses ou moyennes fréquences, il a été nécessaire de polariser le transistor. Sa matrice S varie en fonction de la polarisation et de la fréquence ce qui complique la mise au point d'amplificateurs en hautes fréquences. En effet, dans un cas réel, une polarisation n'est jamais parfaite et un petit écart sur la tension $V_{CE}$ ou le courant $I_C$ peut changer brutalement la matrice $S$. Il a donc été nécessaire de déterminer les paramètres S avant la conception des quadripôles d'entrée et de sortie pour adapter.\\
 
 Ce TP traitant d’une thématique concrète a suscité notre intérêt. Les quatre étudiants, conscients des nombreuses connaissances acquises par ce travail, sont satisfaits de l'enseignement. Cela a même suscité des questionnements sur les choix de spécialités de cinquième année et peut-être des vocations. Nous souhaitons de nouveau remercier les enseignants qui ont su, par leur pédagogie, attiser notre curiosité.
+
+La conception d'un filtre passe-bas de Tchebychef en hautes fréquences a été présentée suivant différentes étapes. La première étape était de faire une synthèse avec des éléments localisés. La seconde, de remplacer chaque élément localisé par des éléments distribués : des lignes de transmission. Après simulation, nous avons montré que l'ajout d'un stub avec des paramètres bien précis permet d'augmenter la plage de fréquences où la bande atténuée est conforme au cahier des charges. Ensuite, nous avons observé que l'utilisation d'un substrat en teflon est plus adapté aux hautes fréquences qu'un substrat epoxy. Pour finir, nous avons comparé le résultat de nos simulations avec des filtres déjà implémenté sur PCB. Bien que les allures des réponses en fréquences étaient semblables, des différences existaient liées principalement aux pertes du substrat non prise en compte dans notre simulation.
+
+
+
+
+
+
+
 
 
 \newpage
